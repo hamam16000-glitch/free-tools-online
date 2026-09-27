@@ -1,0 +1,9 @@
+User-agent: *
+
+Allow: /
+
+Disallow: /archive/
+Disallow: /tools-history/
+Disallow: /backups/
+
+Sitemap: https://hamam16000-glitch.github.io/free-tools-online/sitemap.xml
