@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Excel to PDF Converter Online Free</title>
+
+<meta name="description" content="Convert XLSX and XLS Excel spreadsheets to PDF online for free. Choose worksheets, page size and orientation, then create a PDF privately in your browser.">
+
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+.excel-box{
+    width:100%;
+    max-width:850px;
+    box-sizing:border-box;
+}
+
+.drop-zone{
+    width:100%;
+    padding:26px 16px;
+    border:2px dashed #cbd5e1;
+    border-radius:14px;
+    text-align:center;
+    box-sizing:border-box;
+    transition:.2s ease;
+}
+
+.drop-zone.dragover{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.drop-zone input[type="file"]{
+    display:none;
+}
+
+.file-button{
+    display:inline-block;
+    padding:11px 18px;
+    background:#2563eb;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.drop-title{
+    margin-top:12px;
+    font-weight:600;
+}
+
+.drop-subtitle{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.7;
+}
+
+.file-card{
+    display:none;
+    margin-top:15px;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    line-height:1.6;
+    word-break:break-word;
+}
+
+.settings{
+    margin-top:20px;
+}
+
+.settings-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.setting-block{
+    margin-top:12px;
+}
+
+.setting-block label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:600;
+}
+
+.setting-block select{
+    width:100%;
+    box-sizing:border-box;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.sheet-box{
+    display:none;
+    margin-top:15px;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    line-height:1.6;
+}
+
+.progress-wrap{
+    display:none;
+    margin-top:16px;
+}
+
+.progress-track{
+    width:100%;
+    height:10px;
+    overflow:hidden;
+    border-radius:999px;
+    background:#e5e7eb;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#2563eb;
+    transition:width .15s ease;
+}
+
+.progress-text{
+    margin-top:7px;
+    text-align:center;
+    font-size:13px;
+}
+
+.tool-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+    margin-top:18px;
+}
+
+.tool-actions button{
+    width:100%;
+    min-width:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+#info{
+    margin-top:15px;
+    text-align:center;
+    line-height:1.6;
+}
+
+.download-success{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+.privacy-note{
+    margin-top:15px;
+    padding:11px 12px;
+    border-radius:10px;
+    background:#f8fafc;
+    font-size:13px;
+    line-height:1.5;
+}
+
+@media(max-width:600px){
+    .excel-box{
+        padding:0 12px;
+    }
+
+    .drop-zone{
+        padding:20px 12px;
+    }
+
+    .settings-grid{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+
+    .tool-actions button{
+        padding:12px 6px;
+        font-size:14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Excel to PDF Converter</h1>
+
+<p>
+Convert XLSX and XLS spreadsheets into clean PDF documents directly in your browser.
+</p>
+
+<div class="excel-box">
+
+<h2>Convert Excel to PDF</h2>
+
+<div id="dropZone" class="drop-zone">
+
+<label for="excelFile" class="file-button">
+Choose Excel File
+</label>
+
+<input
+    type="file"
+    id="excelFile"
+    accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+>
+
+<div class="drop-title">
+or drag and drop an Excel file here
+</div>
+
+<div class="drop-subtitle">
+XLSX and XLS • Maximum 25 MB
+</div>
+
+</div>
+
+<div id="fileCard" class="file-card"></div>
+
+<div class="settings">
+
+<div class="settings-grid">
+
+<div class="setting-block">
+<label for="sheetSelect">Worksheets</label>
+<select id="sheetSelect" disabled>
+<option value="all">All worksheets</option>
+</select>
+</div>
+
+<div class="setting-block">
+<label for="pageSize">Page size</label>
+<select id="pageSize" disabled>
+<option value="a4" selected>A4</option>
+<option value="letter">US Letter</option>
+</select>
+</div>
+
+<div class="setting-block">
+<label for="orientation">Orientation</label>
+<select id="orientation" disabled>
+<option value="landscape" selected>Landscape</option>
+<option value="portrait">Portrait</option>
+</select>
+</div>
+
+<div class="setting-block">
+<label for="fontSize">Table text size</label>
+<select id="fontSize" disabled>
+<option value="7">Small</option>
+<option value="8" selected>Medium</option>
+<option value="10">Large</option>
+</select>
+</div>
+
+</div>
+</div>
+
+<div id="sheetBox" class="sheet-box"></div>
+
+<div id="progressWrap" class="progress-wrap">
+<div class="progress-track">
+<div id="progressBar" class="progress-bar"></div>
+</div>
+<div id="progressText" class="progress-text"></div>
+</div>
+
+<div class="tool-actions">
+
+<button id="convertBtn" onclick="convertPDF()" disabled>
+Convert to PDF
+</button>
+
+<button id="downloadBtn" onclick="downloadPDF()" disabled>
+Download PDF
+</button>
+
+<button id="resetBtn" onclick="resetOutput()" disabled>
+Reset
+</button>
+
+<button id="clearBtn" onclick="clearAll()">
+Clear
+</button>
+
+</div>
+
+<div id="downloadSuccess"
+     class="download-success"
+     role="status"
+     aria-live="polite">
+✓ PDF downloaded successfully.
+</div>
+
+<div id="info" aria-live="polite"></div>
+
+<div class="privacy-note">
+Your Excel file is processed locally in your browser and is not uploaded to our server.
+</div>
+
+</div>
+
+<section>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Which Excel formats are supported?</h3>
+<p>XLSX and XLS spreadsheet files are supported.</p>
+
+<h3>Can I convert multiple worksheets?</h3>
+<p>Yes. You can convert all worksheets into one PDF or choose a specific worksheet.</p>
+
+<h3>Can I change the PDF orientation?</h3>
+<p>Yes. You can choose landscape or portrait orientation before conversion.</p>
+
+<h3>Are my Excel files uploaded?</h3>
+<p>No. Processing is performed locally in your browser.</p>
+
+</section>
+
+<script>
+let workbook = null;
+let selectedFile = null;
+let generatedPDF = null;
+let generatedName = "excel-to-pdf.pdf";
+let processing = false;
+
+const maxFileSize = 25 * 1024 * 1024;
+
+const fileInput = document.getElementById("excelFile");
+const dropZone = document.getElementById("dropZone");
+const sheetSelect = document.getElementById("sheetSelect");
+const pageSize = document.getElementById("pageSize");
+const orientation = document.getElementById("orientation");
+const fontSize = document.getElementById("fontSize");
+
+fileInput.addEventListener("change", async e => {
+    const file = e.target.files[0];
+    e.target.value = "";
+
+    if(file){
+        await loadExcel(file);
+    }
+});
+
+dropZone.addEventListener("dragover", e => {
+    e.preventDefault();
+
+    if(!processing){
+        dropZone.classList.add("dragover");
+    }
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+});
+
+dropZone.addEventListener("drop", async e => {
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    if(processing){
+        return;
+    }
+
+    const file = e.dataTransfer.files[0];
+
+    if(file){
+        await loadExcel(file);
+    }
+});
+
+[sheetSelect,pageSize,orientation,fontSize].forEach(control => {
+    control.addEventListener("change", resetOutput);
+});
+
+async function loadExcel(file){
+
+    if(processing){
+        return;
+    }
+
+    const valid =
+        /\.(xlsx|xls)$/i.test(file.name);
+
+    if(!valid){
+        alert("Please choose an XLSX or XLS file.");
+        return;
+    }
+
+    if(file.size > maxFileSize){
+        alert("The Excel file must be 25 MB or smaller.");
+        return;
+    }
+
+    clearWorkbookOnly();
+
+    document.getElementById("info").textContent =
+        "Reading Excel file...";
+
+    try{
+
+        const data = await file.arrayBuffer();
+
+        workbook = XLSX.read(data,{
+            type:"array",
+            cellDates:true
+        });
+
+        if(!workbook.SheetNames.length){
+            throw new Error("Workbook contains no worksheets.");
+        }
+
+        selectedFile = file;
+
+        buildSheetOptions();
+
+        document.getElementById("fileCard").style.display =
+            "block";
+
+        document.getElementById("fileCard").innerHTML =
+            "<strong>" + escapeHTML(file.name) + "</strong>" +
+            "<br>File Size: " + formatSize(file.size) +
+            "<br>Worksheets: " + workbook.SheetNames.length;
+
+        updateSheetInfo();
+        setControlsDisabled(false);
+
+        document.getElementById("convertBtn").disabled = false;
+        document.getElementById("resetBtn").disabled = false;
+
+        document.getElementById("info").textContent =
+            "Ready to convert.";
+
+    }catch(error){
+
+        console.error(error);
+
+        clearWorkbookOnly();
+
+        document.getElementById("info").textContent =
+            "Could not read this Excel file.";
+    }
+}
+
+function buildSheetOptions(){
+
+    sheetSelect.innerHTML =
+        '<option value="all">All worksheets</option>';
+
+    workbook.SheetNames.forEach((name,index) => {
+
+        const option = document.createElement("option");
+
+        option.value = String(index);
+        option.textContent = name;
+
+        sheetSelect.appendChild(option);
+    });
+}
+
+sheetSelect.addEventListener("change", updateSheetInfo);
+
+function updateSheetInfo(){
+
+    if(!workbook){
+        return;
+    }
+
+    const box = document.getElementById("sheetBox");
+    box.style.display = "block";
+
+    if(sheetSelect.value === "all"){
+
+        box.innerHTML =
+            "<strong>Worksheets to convert:</strong><br>" +
+            workbook.SheetNames.map(escapeHTML).join("<br>");
+
+    }else{
+
+        const name =
+            workbook.SheetNames[Number(sheetSelect.value)];
+
+        const rows =
+            XLSX.utils.sheet_to_json(
+                workbook.Sheets[name],
+                {
+                    header:1,
+                    defval:"",
+                    raw:false
+                }
+            );
+
+        let maxColumns = 0;
+
+        rows.forEach(row => {
+            maxColumns =
+                Math.max(maxColumns,row.length);
+        });
+
+        box.innerHTML =
+            "<strong>Selected worksheet:</strong> " +
+            escapeHTML(name) +
+            "<br>Rows: " + rows.length +
+            "<br>Columns: " + maxColumns;
+    }
+}
+
+async function convertPDF(){
+
+    if(processing || !workbook){
+        return;
+    }
+
+    resetOutput();
+
+    processing = true;
+    setProcessing(true);
+
+    const convertBtn =
+        document.getElementById("convertBtn");
+
+    convertBtn.textContent = "Converting...";
+
+    showProgress(0,"Preparing workbook...");
+
+    try{
+
+        const {jsPDF} = window.jspdf;
+
+        const pdf = new jsPDF({
+            orientation:orientation.value,
+            unit:"pt",
+            format:pageSize.value
+        });
+
+        const selectedNames =
+            sheetSelect.value === "all"
+                ? workbook.SheetNames
+                : [
+                    workbook.SheetNames[
+                        Number(sheetSelect.value)
+                    ]
+                ];
+
+        let addedContent = false;
+
+        for(let i=0;i<selectedNames.length;i++){
+
+            const name = selectedNames[i];
+            const sheet = workbook.Sheets[name];
+
+            showProgress(
+                Math.round((i / selectedNames.length) * 90),
+                "Processing worksheet " +
+                (i + 1) +
+                " of " +
+                selectedNames.length
+            );
+
+            const rows =
+                XLSX.utils.sheet_to_json(
+                    sheet,
+                    {
+                        header:1,
+                        defval:"",
+                        raw:false
+                    }
+                );
+
+            while(
+                rows.length &&
+                rows[rows.length - 1].every(
+                    cell => String(cell).trim() === ""
+                )
+            ){
+                rows.pop();
+            }
+
+            if(addedContent){
+                pdf.addPage();
+            }
+
+            pdf.setFontSize(14);
+            pdf.text(
+                sanitizeText(name),
+                40,
+                38
+            );
+
+            if(rows.length === 0){
+
+                pdf.setFontSize(10);
+                pdf.text(
+                    "This worksheet is empty.",
+                    40,
+                    62
+                );
+
+            }else{
+
+                const columnCount =
+                    Math.max(
+                        ...rows.map(row => row.length),
+                        1
+                    );
+
+                const normalizedRows =
+                    rows.map(row => {
+
+                        const output = [];
+
+                        for(let c=0;c<columnCount;c++){
+                            output.push(
+                                sanitizeText(
+                                    row[c] == null
+                                        ? ""
+                                        : String(row[c])
+                                )
+                            );
+                        }
+
+                        return output;
+                    });
+
+                const head =
+                    normalizedRows.length
+                        ? [normalizedRows[0]]
+                        : [];
+
+                const body =
+                    normalizedRows.length > 1
+                        ? normalizedRows.slice(1)
+                        : [];
+
+                pdf.autoTable({
+                    startY:52,
+                    head,
+                    body,
+                    theme:"grid",
+                    styles:{
+                        fontSize:Number(fontSize.value),
+                        cellPadding:3,
+                        overflow:"linebreak",
+                        valign:"middle"
+                    },
+                    headStyles:{
+                        fontStyle:"bold"
+                    },
+                    margin:{
+                        left:30,
+                        right:30,
+                        bottom:30
+                    },
+                    horizontalPageBreak:true,
+                    horizontalPageBreakRepeat:0,
+                    showHead:"everyPage"
+                });
+            }
+
+            addedContent = true;
+
+            await allowBrowserPaint();
+        }
+
+        generatedPDF = pdf;
+
+        generatedName =
+            createOutputName(selectedFile.name);
+
+        showProgress(100,"Conversion completed.");
+
+        document.getElementById("downloadBtn").disabled =
+            false;
+
+        document.getElementById("info").innerHTML =
+            "Excel converted to PDF successfully." +
+            "<br>Worksheets: " +
+            selectedNames.length +
+            "<br>PDF Pages: " +
+            pdf.getNumberOfPages();
+
+        convertBtn.textContent = "Converted";
+
+    }catch(error){
+
+        console.error("Excel to PDF error:",error);
+
+        generatedPDF = null;
+
+        hideProgress();
+
+        document.getElementById("info").textContent =
+            "Could not convert this Excel file to PDF.";
+
+        convertBtn.textContent = "Convert to PDF";
+
+    }finally{
+
+        processing = false;
+        setProcessing(false);
+
+        if(!generatedPDF){
+            convertBtn.disabled = !workbook;
+        }
+    }
+}
+
+function downloadPDF(){
+
+    if(!generatedPDF){
+        alert("Please convert the Excel file first.");
+        return;
+    }
+
+    generatedPDF.save(generatedName);
+
+    const success =
+        document.getElementById("downloadSuccess");
+
+    success.style.display = "block";
+    success.textContent =
+        "✓ PDF downloaded successfully.";
+
+    success.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+    });
+
+    clearTimeout(window.excelPdfSuccessTimer);
+
+    window.excelPdfSuccessTimer =
+        setTimeout(() => {
+            success.style.display = "none";
+        },4000);
+}
+
+function resetOutput(){
+
+    generatedPDF = null;
+
+    document.getElementById("downloadBtn").disabled =
+        true;
+
+    const success =
+        document.getElementById("downloadSuccess");
+
+    success.style.display = "none";
+
+    hideProgress();
+
+    const convertBtn =
+        document.getElementById("convertBtn");
+
+    convertBtn.textContent = "Convert to PDF";
+    convertBtn.disabled = !workbook || processing;
+
+    if(workbook && !processing){
+        document.getElementById("info").textContent =
+            "Ready to convert.";
+    }
+}
+
+function clearAll(){
+
+    if(processing){
+        return;
+    }
+
+    workbook = null;
+    selectedFile = null;
+    generatedPDF = null;
+    generatedName = "excel-to-pdf.pdf";
+
+    fileInput.value = "";
+
+    document.getElementById("fileCard").style.display =
+        "none";
+
+    document.getElementById("fileCard").innerHTML = "";
+
+    document.getElementById("sheetBox").style.display =
+        "none";
+
+    document.getElementById("sheetBox").innerHTML = "";
+
+    document.getElementById("info").textContent = "";
+
+    document.getElementById("downloadSuccess").style.display =
+        "none";
+
+    sheetSelect.innerHTML =
+        '<option value="all">All worksheets</option>';
+
+    pageSize.value = "a4";
+    orientation.value = "landscape";
+    fontSize.value = "8";
+
+    setControlsDisabled(true);
+
+    document.getElementById("convertBtn").disabled = true;
+    document.getElementById("convertBtn").textContent =
+        "Convert to PDF";
+
+    document.getElementById("downloadBtn").disabled = true;
+    document.getElementById("resetBtn").disabled = true;
+
+    hideProgress();
+}
+
+function clearWorkbookOnly(){
+
+    workbook = null;
+    selectedFile = null;
+    generatedPDF = null;
+
+    document.getElementById("fileCard").style.display =
+        "none";
+
+    document.getElementById("sheetBox").style.display =
+        "none";
+
+    document.getElementById("downloadBtn").disabled =
+        true;
+
+    setControlsDisabled(true);
+    hideProgress();
+}
+
+function setControlsDisabled(disabled){
+
+    sheetSelect.disabled = disabled;
+    pageSize.disabled = disabled;
+    orientation.disabled = disabled;
+    fontSize.disabled = disabled;
+}
+
+function setProcessing(state){
+
+    fileInput.disabled = state;
+
+    sheetSelect.disabled = state;
+    pageSize.disabled = state;
+    orientation.disabled = state;
+    fontSize.disabled = state;
+
+    document.getElementById("clearBtn").disabled = state;
+    document.getElementById("resetBtn").disabled = state;
+
+    if(state){
+        document.getElementById("downloadBtn").disabled =
+            true;
+    }else if(workbook){
+        setControlsDisabled(false);
+        document.getElementById("resetBtn").disabled =
+            false;
+    }
+}
+
+function showProgress(percent,text){
+
+    document.getElementById("progressWrap").style.display =
+        "block";
+
+    document.getElementById("progressBar").style.width =
+        percent + "%";
+
+    document.getElementById("progressText").textContent =
+        text;
+}
+
+function hideProgress(){
+
+    document.getElementById("progressWrap").style.display =
+        "none";
+
+    document.getElementById("progressBar").style.width =
+        "0%";
+
+    document.getElementById("progressText").textContent =
+        "";
+}
+
+function createOutputName(name){
+
+    const base =
+        name.replace(/\.(xlsx|xls)$/i,"") ||
+        "excel";
+
+    return base + "-to-pdf.pdf";
+}
+
+function sanitizeText(value){
+
+    return String(value)
+        .replace(/\u0000/g,"")
+        .replace(/\r\n/g,"\n")
+        .replace(/\r/g,"\n");
+}
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function formatSize(bytes){
+
+    if(bytes >= 1024 * 1024){
+        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+    if(bytes >= 1024){
+        return Math.round(bytes / 1024) + " KB";
+    }
+
+    return bytes + " B";
+}
+
+function allowBrowserPaint(){
+    return new Promise(resolve => setTimeout(resolve,0));
+}
+</script>
+
+</body>
+</html>

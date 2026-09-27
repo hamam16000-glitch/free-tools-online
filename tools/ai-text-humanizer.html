@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>AI Text Humanizer Online Free - Rewrite Text Naturally</title>
+
+<meta name="description" content="Improve your writing with our AI text humanizer tool. Rewrite text naturally, improve readability and make your content more professional.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../css/style.css">
+
+
+<style>
+
+.humanizer-box{
+
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+
+textarea{
+
+width:100%;
+height:220px;
+padding:15px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:16px;
+resize:vertical;
+box-sizing:border-box;
+margin:10px 0;
+
+}
+
+
+select{
+
+width:100%;
+padding:12px;
+border-radius:10px;
+border:1px solid #ddd;
+margin:10px 0 20px;
+
+}
+
+
+.actions{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+
+}
+
+
+.primary{
+
+grid-column:1/-1;
+
+}
+
+
+button{
+
+background:#2563eb;
+color:white;
+border:0;
+padding:14px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+
+}
+
+
+.stats{
+
+display:flex;
+justify-content:space-around;
+margin:15px 0;
+color:#475569;
+font-weight:bold;
+
+}
+
+
+.success{
+
+display:none;
+padding:12px;
+background:#dcfce7;
+color:#166534;
+border-radius:10px;
+text-align:center;
+margin-top:15px;
+
+}
+
+
+.comparison h3,
+.humanizer-box h3{
+
+margin-top:25px;
+margin-bottom:10px;
+
+}
+
+
+.comparison textarea{
+
+background:#f8fafc;
+
+}
+
+
+@media(max-width:600px){
+
+.actions{
+
+grid-template-columns:1fr;
+
+}
+
+.primary{
+
+grid-column:auto;
+
+}
+
+}
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<h1>AI Text Humanizer</h1>
+
+
+<p class="tool-description">
+Rewrite and improve your text to make it clearer and more natural.
+</p>
+
+
+<div class="humanizer-box">
+
+
+<label>
+Original Text
+</label>
+
+
+<textarea id="inputText" placeholder="Paste your text here..."></textarea>
+
+
+<label>
+Improvement Level
+</label>
+
+
+<select id="level">
+
+<option value="light">
+Light Improvement
+</option>
+
+<option value="medium">
+Medium Improvement
+</option>
+
+<option value="strong">
+Strong Improvement
+</option>
+
+</select>
+
+
+<div class="actions">
+
+
+<button class="primary" onclick="humanizeText()">
+Humanize Text
+</button>
+
+
+<button onclick="copyResult()">
+Copy Improved
+</button>
+
+
+<button onclick="downloadText()">
+Download TXT
+</button>
+
+
+<button onclick="clearText()">
+Clear
+</button>
+
+
+</div>
+
+
+<div class="stats">
+
+<div id="wordCount">
+0 Words
+</div>
+
+<div id="charCount">
+0 Characters
+</div>
+
+<div id="readingTime">
+0 min read
+</div>
+
+</div>
+
+
+<h3>Improved Text</h3>
+
+<textarea id="output" readonly placeholder="Improved text will appear here..."></textarea>
+
+
+<div class="comparison">
+
+<h3>Original Text</h3>
+
+<textarea id="originalPreview" readonly></textarea>
+
+</div>
+
+
+<div id="success" class="success"></div>
+<script>
+
+
+function humanizeText(){
+
+let text=document.getElementById("inputText").value.trim();
+
+let level=document.getElementById("level").value;
+
+
+document.getElementById("originalPreview").value=text;
+
+
+if(!text){
+
+showMessage("Please enter text first.");
+
+return;
+
+}
+
+
+let result=text;
+
+
+// remove extra spaces
+
+result=result.replace(/\\s+/g," ").trim();
+
+
+// improve common words
+
+let replacements={
+
+"utilize":"use",
+
+"utilizes":"uses",
+
+"very important":"essential",
+
+"very good":"effective",
+
+"very bad":"poor",
+
+"a lot of":"many",
+
+"in order to":"to",
+
+"due to the fact that":"because",
+
+"at this point in time":"currently"
+
+};
+
+
+Object.keys(replacements).forEach(word=>{
+
+let regex=new RegExp("\\b"+word+"\\b","gi");
+
+result=result.replace(regex,replacements[word]);
+
+});
+
+
+
+// improve punctuation
+
+result=result
+.replace(/ ,/g,",")
+.replace(/ \./g,".")
+.replace(/\. +/g,". ");
+
+
+
+if(level==="medium" || level==="strong"){
+
+result=result
+.split(". ")
+.map(sentence=>{
+
+sentence=sentence.trim();
+
+if(sentence.length>0){
+
+return sentence.charAt(0).toUpperCase()+sentence.slice(1);
+
+}
+
+return sentence;
+
+})
+.join(". ");
+
+}
+
+
+
+if(level==="strong"){
+
+result=result
+.replace(/I think/gi,"I believe")
+.replace(/but/gi,"however")
+.replace(/also/gi,"additionally");
+
+}
+
+
+
+document.getElementById("output").value=result;
+
+
+updateStats(result);
+
+
+let words=result.split(/\s+/).length;
+
+let minutes=Math.max(1,Math.ceil(words/200));
+
+
+showMessage("Text professionally improved ✓");
+
+
+}
+
+function addSpacing(text){
+
+return text
+.split(". ")
+.map(sentence=>{
+
+return sentence.trim();
+
+})
+.join(". ");
+
+}
+
+
+
+function updateStats(text){
+
+let words=text.trim()
+? text.trim().split(/\s+/).length
+:0;
+
+
+document.getElementById("wordCount").innerHTML=
+words+" Words";
+
+
+document.getElementById("charCount").innerHTML=
+text.length+" Characters";
+
+
+let reading=Math.max(1,Math.ceil(words/200));
+
+
+document.getElementById("readingTime").innerHTML=
+reading+" min read";
+
+
+}
+
+
+
+async function copyResult(){
+
+let text=document.getElementById("output").value;
+
+
+if(!text){
+
+return;
+
+}
+
+
+try{
+
+await navigator.clipboard.writeText(text);
+
+showMessage("Text copied successfully ✓");
+
+
+}catch(e){
+
+showMessage("Copy failed.");
+
+}
+
+}
+
+
+
+function downloadText(){
+
+let text=document.getElementById("output").value;
+
+
+if(!text){
+
+return;
+
+}
+
+
+let blob=new Blob(
+[text],
+{type:"text/plain"}
+);
+
+
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="humanized-text.txt";
+
+a.click();
+
+
+showMessage("TXT file downloaded ✓");
+
+
+}
+
+
+
+function clearText(){
+
+document.getElementById("inputText").value="";
+
+document.getElementById("output").value="";
+
+
+document.getElementById("wordCount").innerHTML="0 Words";
+
+document.getElementById("charCount").innerHTML="0 Characters";
+
+
+showMessage("Cleared ✓");
+
+}
+
+
+
+function showMessage(text){
+
+let box=document.getElementById("success");
+
+box.innerHTML=text;
+
+box.style.display="block";
+
+
+setTimeout(()=>{
+
+box.style.display="none";
+
+},3000);
+
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+
+<h2>
+Frequently Asked Questions
+</h2>
+
+
+<h3>
+What does AI Text Humanizer do?
+</h3>
+
+<p>
+It improves readability and rewrites text in a more natural writing style.
+</p>
+
+
+<h3>
+Is my text stored?
+</h3>
+
+<p>
+No. Your text is processed directly in your browser.
+</p>
+
+
+<h3>
+Can it improve professional writing?
+</h3>
+
+<p>
+Yes. It can help make sentences clearer and more polished.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Advanced YouTube Tag Generator Online Free</title>
+
+<meta name="description" content="Generate optimized YouTube tags, keywords and hashtags for your videos. Create SEO friendly tags instantly with our advanced YouTube tag generator.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../css/style.css">
+
+
+<style>
+
+.tag-box{
+
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+
+input,textarea,select{
+
+width:100%;
+padding:14px;
+margin:10px 0 18px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:16px;
+box-sizing:border-box;
+
+}
+
+
+textarea{
+
+height:170px;
+font-family:monospace;
+
+}
+
+
+.actions{
+
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px;
+}
+
+.actions button{
+
+width:100%;
+
+}
+
+.actions .primary{
+
+grid-column:1/-1;
+
+}
+
+@media(max-width:600px){
+
+.actions{
+
+grid-template-columns:1fr 1fr;
+
+}
+
+.actions .primary{
+
+grid-column:1/-1;
+
+}
+
+}
+
+.stats{
+
+display:flex;
+justify-content:space-around;
+margin:15px 0;
+font-weight:bold;
+color:#475569;
+
+}
+
+
+.success{
+
+display:none;
+margin-top:15px;
+padding:12px;
+border-radius:10px;
+background:#dcfce7;
+color:#166534;
+text-align:center;
+font-weight:bold;
+
+}
+
+
+.hashtags{
+
+color:#2563eb;
+font-weight:bold;
+
+}
+
+
+@media(max-width:600px){
+
+.actions{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<h1>Advanced YouTube Tag Generator</h1>
+
+
+<p class="tool-description">
+Create SEO optimized YouTube tags and hashtags for better video discovery.
+</p>
+
+
+<div class="tag-box">
+
+
+<label>Video Title</label>
+
+<input id="title" placeholder="Example: Flutter App Development Tutorial">
+
+
+<label>Main Keywords</label>
+
+<input id="keywords" placeholder="flutter, dart, firebase">
+
+
+<label>Video Category</label>
+
+<select id="category">
+
+<option value="Technology">Technology</option>
+<option value="Education">Education</option>
+<option value="Gaming">Gaming</option>
+<option value="Business">Business</option>
+<option value="Entertainment">Entertainment</option>
+
+</select>
+
+
+<div class="actions">
+
+<button class="primary" onclick="generateTags()">
+Generate Optimized Tags
+</button>
+
+<button onclick="copyTags()">
+Copy Tags
+</button>
+
+<button onclick="downloadTags()">
+Download TXT
+</button>
+
+<button onclick="clearTags()">
+Clear
+</button>
+
+</div>
+
+
+<div class="stats">
+
+<div id="tagCount">
+0 Tags
+</div>
+
+<div id="charCount">
+0 Characters
+</div>
+
+</div>
+
+
+<textarea id="output" readonly></textarea>
+
+
+<h3>Suggested Hashtags</h3>
+
+<p id="hashtags" class="hashtags"></p>
+
+
+<div id="success" class="success"></div>
+<script>
+
+function generateTags(){
+
+let title=document.getElementById("title").value.trim();
+let keywords=document.getElementById("keywords").value.trim();
+let category=document.getElementById("category").value;
+
+
+if(!title && !keywords){
+showMessage("Enter title or keywords first.");
+return;
+}
+
+
+let tags=[];
+
+
+// title words
+let cleanTitle=title
+.replace(/[^\w\u0600-\u06FF\s]/g," ")
+.toLowerCase();
+
+
+let titleWords=cleanTitle.split(/\s+/).filter(w=>w.length>2);
+
+
+// long tail phrases
+if(title){
+tags.push(title.toLowerCase());
+}
+
+if(titleWords.length){
+tags.push(
+titleWords.join(" ")
+);
+
+if(titleWords.length>1){
+tags.push(titleWords.slice(0,2).join(" "));
+}
+
+if(titleWords.length>2){
+tags.push(titleWords.slice(0,3).join(" "));
+}
+}
+
+
+// keywords combinations
+
+let keys=keywords
+.split(",")
+.map(k=>k.trim().toLowerCase())
+.filter(Boolean);
+
+
+keys.forEach(k=>{
+
+tags.push(k);
+
+if(titleWords.length){
+
+tags.push(k+" "+titleWords[0]);
+
+}
+
+});
+
+
+// category related
+
+let categoryMap={
+
+Technology:[
+"technology",
+"software tutorial",
+"programming tutorial",
+"tech guide"
+],
+
+Education:[
+"online learning",
+"educational tutorial",
+"complete course",
+"study guide"
+],
+
+Gaming:[
+"gaming tutorial",
+"gameplay guide",
+"gaming tips",
+"game review"
+],
+
+Business:[
+"business tips",
+"digital marketing",
+"online business",
+"business strategy"
+],
+
+Entertainment:[
+"viral videos",
+"trending videos",
+"latest entertainment"
+]
+
+};
+
+
+tags=tags.concat(categoryMap[category]);
+
+
+// remove duplicates and repeated words
+
+tags=tags
+.map(t=>t.trim().toLowerCase())
+.filter(t=>t.length>1)
+.filter(t=>{
+
+let words=t.split(" ");
+
+return !words.some((w,i)=>words.indexOf(w)!==i);
+
+});
+
+
+tags=[...new Set(tags)];
+
+
+tags=tags.filter((t,i)=>{
+
+return !tags.some((x,j)=>
+j<i && x.includes(t) && x.length>t.length
+);
+
+});
+
+
+// limit
+
+tags=tags.slice(0,30);
+
+
+let output=tags.join(", ");
+
+document.getElementById("output").value=output;
+
+document.getElementById("tagCount").innerHTML=
+tags.length+" Tags";
+
+document.getElementById("charCount").innerHTML=
+output.length+" Characters";
+
+
+let hashTags=[];
+
+tags.forEach(t=>{
+
+let clean=t
+.replace(/[^a-zA-Z0-9 ]/g,"")
+.trim();
+
+let parts=clean.split(" ");
+
+if(parts.length===1 && clean.length>2){
+
+hashTags.push("#"+clean);
+
+}
+
+});
+
+let preferred=["flutter","dart","firebase","mobileapp","technology","programming"];
+
+preferred.forEach(x=>{
+
+if(!hashTags.includes("#"+x)){
+
+hashTags.push("#"+x);
+
+}
+
+});
+
+
+let hash=[...new Set(hashTags)].slice(0,8).join(" ");
+
+
+document.getElementById("hashtags").innerHTML=hash;
+
+
+showMessage("Optimized tags generated successfully ✓");
+
+}
+
+async function copyTags(){
+
+let text=document.getElementById("output").value;
+
+
+if(!text){
+
+return;
+
+}
+
+
+try{
+
+await navigator.clipboard.writeText(text);
+
+showMessage("Tags copied successfully ✓");
+
+
+}catch(e){
+
+showMessage("Copy failed.");
+
+}
+
+}
+
+
+
+function downloadTags(){
+
+let text=document.getElementById("output").value;
+
+
+if(!text){
+
+return;
+
+}
+
+
+let blob=new Blob(
+[text],
+{type:"text/plain"}
+);
+
+
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="youtube-tags.txt";
+
+a.click();
+
+
+showMessage("TXT file downloaded ✓");
+
+
+}
+
+
+
+function clearTags(){
+
+document.getElementById("title").value="";
+
+document.getElementById("keywords").value="";
+
+document.getElementById("output").value="";
+
+document.getElementById("hashtags").innerHTML="";
+
+document.getElementById("tagCount").innerHTML="0 Tags";
+
+document.getElementById("charCount").innerHTML="0 Characters";
+
+showMessage("Cleared ✓");
+
+}
+
+
+
+function showMessage(text){
+
+let box=document.getElementById("success");
+
+box.innerHTML=text;
+
+box.style.display="block";
+
+
+setTimeout(()=>{
+
+box.style.display="none";
+
+},3000);
+
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+
+<h2>
+Frequently Asked Questions
+</h2>
+
+
+<h3>
+What does this YouTube Tag Generator do?
+</h3>
+
+<p>
+It creates SEO friendly tags and hashtags based on your video title, keywords and category.
+</p>
+
+
+<h3>
+How many tags should I use?
+</h3>
+
+<p>
+Use relevant tags that describe your video content. Avoid unrelated keywords.
+</p>
+
+
+<h3>
+Are my keywords stored?
+</h3>
+
+<p>
+No. All processing happens directly in your browser.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>

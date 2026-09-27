@@ -1,0 +1,12 @@
+.tool-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, auto) !important;
+    gap: 12px !important;
+    align-items: center !important;
+}
+
+.tool-actions button {
+    width: auto !important;
+    min-width: 120px !important;
+    margin: 0 !important;
+}

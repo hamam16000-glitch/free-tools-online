@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rotate PDF Online Free - Rotate PDF Pages</title>
+
+<meta name="description" content="Rotate PDF pages online for free. Rotate all pages or selected pages 90, 180 or 270 degrees directly in your browser without uploading your PDF.">
+
+<meta name="keywords" content="rotate PDF, rotate PDF pages, PDF rotation, rotate selected PDF pages, rotate PDF online free">
+
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rotate PDF Online Free - Rotate PDF Pages">
+<meta property="og:description" content="Rotate all or selected PDF pages directly in your browser without uploading your file.">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+<style>
+.rotate-box{
+    width:100%;
+    max-width:760px;
+    box-sizing:border-box;
+}
+
+.drop-zone{
+    width:100%;
+    padding:26px 16px;
+    border:2px dashed #cbd5e1;
+    border-radius:14px;
+    text-align:center;
+    box-sizing:border-box;
+    transition:.2s ease;
+}
+
+.drop-zone.dragover{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.drop-zone input[type="file"]{
+    display:none;
+}
+
+.file-button{
+    display:inline-block;
+    background:#2563eb;
+    color:white;
+    padding:11px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.drop-title{
+    margin-top:12px;
+    font-weight:600;
+}
+
+.drop-subtitle{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.7;
+}
+
+.file-card{
+    display:none;
+    margin-top:14px;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+}
+
+.file-name{
+    font-weight:600;
+    overflow-wrap:anywhere;
+}
+
+.file-meta{
+    margin-top:5px;
+    font-size:14px;
+    opacity:.72;
+}
+
+.section{
+    margin-top:22px;
+}
+
+.section-title{
+    font-weight:600;
+    margin-bottom:9px;
+}
+
+.mode-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.mode-option,
+.angle-option{
+    position:relative;
+}
+
+.mode-option input,
+.angle-option input{
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+}
+
+.mode-option label,
+.angle-option label{
+    display:block;
+    padding:13px 10px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    cursor:pointer;
+    text-align:center;
+    box-sizing:border-box;
+}
+
+.mode-option input:checked + label,
+.angle-option input:checked + label{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.mode-option input:disabled + label,
+.angle-option input:disabled + label{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.angle-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.angle-name{
+    display:block;
+    font-weight:600;
+}
+
+.angle-description{
+    display:block;
+    margin-top:4px;
+    font-size:12px;
+    opacity:.7;
+}
+
+.range-block{
+    display:none;
+    margin-top:16px;
+}
+
+.range-block label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.range-block input{
+    width:100%;
+    padding:12px;
+    box-sizing:border-box;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.range-help{
+    margin-top:6px;
+    font-size:13px;
+    opacity:.7;
+}
+
+.plan-box{
+    display:none;
+    margin-top:16px;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    line-height:1.55;
+}
+
+.plan-pages{
+    margin-top:6px;
+    font-size:13px;
+    opacity:.75;
+    overflow-wrap:anywhere;
+}
+
+.progress-wrap{
+    display:none;
+    margin-top:16px;
+}
+
+.progress-track{
+    width:100%;
+    height:10px;
+    background:#e5e7eb;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#2563eb;
+    transition:width .15s ease;
+}
+
+.progress-text{
+    margin-top:7px;
+    text-align:center;
+    font-size:13px;
+}
+
+.button-row{
+    display:flex;
+    gap:8px;
+    margin-top:18px;
+}
+
+.button-row button{
+    flex:1;
+    min-width:0;
+    margin:0;
+}
+
+.tool-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+    margin-top:18px;
+}
+
+.tool-actions button{
+    width:100%;
+    min-width:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+.download-success{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+#info{
+    margin-top:15px;
+    line-height:1.5;
+}
+
+.privacy-note{
+    margin-top:15px;
+    padding:11px 12px;
+    border-radius:10px;
+    background:#f8fafc;
+    font-size:13px;
+    line-height:1.5;
+}
+
+@media(max-width:600px){
+    .rotate-box{
+        padding:0 12px;
+    }
+
+    .drop-zone{
+        padding:20px 12px;
+    }
+
+    .file-button{
+        padding:10px 14px;
+        font-size:14px;
+    }
+
+    .mode-grid,
+    .angle-grid{
+        grid-template-columns:1fr;
+    }
+
+    .mode-option label,
+    .angle-option label{
+        text-align:left;
+    }
+
+    .button-row button{
+        padding:12px 3px;
+        font-size:14px;
+    }
+
+    #info{
+        text-align:center;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Rotate PDF Online</h1>
+
+<p>
+Rotate all or selected PDF pages without reducing the original document quality.
+</p>
+
+<div class="rotate-box">
+
+<h2>Rotate PDF Pages</h2>
+
+<div id="dropZone" class="drop-zone">
+
+<label for="pdfFile" class="file-button">
+Choose PDF File
+</label>
+
+<input
+    type="file"
+    id="pdfFile"
+    accept="application/pdf,.pdf"
+>
+
+<div class="drop-title">
+or drag and drop a PDF here
+</div>
+
+<div class="drop-subtitle">
+PDF only - Maximum file size: 50 MB
+</div>
+
+</div>
+
+<div id="fileCard" class="file-card">
+<div id="fileName" class="file-name"></div>
+<div id="fileMeta" class="file-meta"></div>
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Pages to rotate
+</div>
+
+<div class="mode-grid">
+
+<div class="mode-option">
+<input
+    type="radio"
+    id="modeAll"
+    name="pageMode"
+    value="all"
+    checked
+    disabled
+>
+<label for="modeAll">
+All Pages
+</label>
+</div>
+
+<div class="mode-option">
+<input
+    type="radio"
+    id="modeCustom"
+    name="pageMode"
+    value="custom"
+    disabled
+>
+<label for="modeCustom">
+Custom Pages
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div id="rangeBlock" class="range-block">
+
+<label for="pageRange">
+Page range
+</label>
+
+<input
+    type="text"
+    id="pageRange"
+    inputmode="numeric"
+    autocomplete="off"
+    spellcheck="false"
+    placeholder="Example: 1-3, 5, 8-10"
+    disabled
+>
+
+<div class="range-help">
+Use commas and ranges. Example: 1-3, 5, 8-10
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+Rotation
+</div>
+
+<div class="angle-grid">
+
+<div class="angle-option">
+<input
+    type="radio"
+    id="rotateRight"
+    name="rotationAngle"
+    value="90"
+    checked
+    disabled
+>
+<label for="rotateRight">
+<span class="angle-name">90° Right</span>
+<span class="angle-description">Clockwise</span>
+</label>
+</div>
+
+<div class="angle-option">
+<input
+    type="radio"
+    id="rotateLeft"
+    name="rotationAngle"
+    value="270"
+    disabled
+>
+<label for="rotateLeft">
+<span class="angle-name">90° Left</span>
+<span class="angle-description">Counterclockwise</span>
+</label>
+</div>
+
+<div class="angle-option">
+<input
+    type="radio"
+    id="rotate180"
+    name="rotationAngle"
+    value="180"
+    disabled
+>
+<label for="rotate180">
+<span class="angle-name">180°</span>
+<span class="angle-description">Turn upside down</span>
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div id="planBox" class="plan-box">
+<div id="planSummary"></div>
+<div id="planPages" class="plan-pages"></div>
+</div>
+
+<div id="progressWrap" class="progress-wrap">
+<div class="progress-track">
+<div id="progressBar" class="progress-bar"></div>
+</div>
+<div id="progressText" class="progress-text"></div>
+</div>
+
+<div class="tool-actions">
+
+<button id="rotateBtn" onclick="rotatePDF()" disabled>
+Rotate PDF
+</button>
+
+<button id="downloadBtn" onclick="downloadPDF()" disabled>
+Download
+</button>
+
+<button id="clearBtn" onclick="clearAll()">
+Clear
+</button>
+
+</div>
+
+<div id="downloadSuccess"
+     class="download-success"
+     role="status"
+     aria-live="polite">
+✓ PDF downloaded successfully.
+</div>
+
+<div id="info" aria-live="polite"></div>
+
+<div class="privacy-note">
+Your PDF is processed locally in your browser and is not uploaded to our server.
+</div>
+
+</div>
+
+<section>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Can I rotate only selected PDF pages?</h3>
+<p>
+Yes. Choose Custom Pages and enter pages such as 1-3, 5, 8-10.
+</p>
+
+<h3>Does rotating reduce PDF quality?</h3>
+<p>
+No. The original PDF page content is preserved and only the page rotation setting is changed.
+</p>
+
+<h3>Which rotation angles are supported?</h3>
+<p>
+You can rotate pages 90 degrees clockwise, 90 degrees counterclockwise, or 180 degrees.
+</p>
+
+<h3>Are my PDF files uploaded?</h3>
+<p>
+No. Processing takes place locally in your browser.
+</p>
+
+</section>
+
+<script>
+let originalFile = null;
+let pageCount = 0;
+let rotatedPDF = null;
+let rotatedFileName = "";
+let downloadURL = null;
+let processing = false;
+
+const maxFileSize = 50 * 1024 * 1024;
+
+const pdfInput = document.getElementById("pdfFile");
+const dropZone = document.getElementById("dropZone");
+const pageRange = document.getElementById("pageRange");
+
+pdfInput.addEventListener("change", event => {
+    const file = event.target.files[0];
+
+    if(file){
+        loadPDF(file);
+    }
+});
+
+dropZone.addEventListener("dragover", event => {
+    event.preventDefault();
+
+    if(!processing){
+        dropZone.classList.add("dragover");
+    }
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+});
+
+dropZone.addEventListener("drop", event => {
+    event.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    if(processing){
+        return;
+    }
+
+    const file = event.dataTransfer.files[0];
+
+    if(file){
+        loadPDF(file);
+    }
+});
+
+document
+    .querySelectorAll('input[name="pageMode"]')
+    .forEach(input => {
+        input.addEventListener("change", () => {
+            invalidateOutput();
+
+            const custom =
+                getPageMode() === "custom";
+
+            document.getElementById("rangeBlock").style.display =
+                custom ? "block" : "none";
+
+            pageRange.disabled =
+                processing || !originalFile || !custom;
+
+            updatePlan();
+        });
+    });
+
+document
+    .querySelectorAll('input[name="rotationAngle"]')
+    .forEach(input => {
+        input.addEventListener("change", () => {
+            invalidateOutput();
+            updatePlan();
+        });
+    });
+
+pageRange.addEventListener("input", () => {
+    invalidateOutput();
+    updatePlan();
+});
+
+async function loadPDF(file){
+    if(processing){
+        return;
+    }
+
+    invalidateOutput();
+
+    const isPDF =
+        file.type === "application/pdf" ||
+        /\.pdf$/i.test(file.name);
+
+    if(!isPDF){
+        alert("Please select a PDF file only.");
+        resetAll();
+        return;
+    }
+
+    if(file.size > maxFileSize){
+        alert("PDF is too large. Maximum file size is 50 MB.");
+        resetAll();
+        return;
+    }
+
+    document.getElementById("info").textContent =
+        "Reading PDF information...";
+
+    pdfInput.disabled = true;
+
+    try{
+        const bytes = await file.arrayBuffer();
+
+        const pdf =
+            await PDFLib.PDFDocument.load(
+                bytes,
+                {ignoreEncryption:false}
+            );
+
+        pageCount = pdf.getPageCount();
+
+        if(pageCount < 1){
+            throw new Error("PDF contains no pages.");
+        }
+
+        originalFile = file;
+
+        document.getElementById("fileCard").style.display =
+            "block";
+
+        document.getElementById("fileName").textContent =
+            file.name;
+
+        document.getElementById("fileMeta").textContent =
+            formatSize(file.size) +
+            " • " +
+            pageCount +
+            (pageCount === 1 ? " page" : " pages");
+
+        document.getElementById("modeAll").checked = true;
+        document.getElementById("rotateRight").checked = true;
+
+        pageRange.value = "";
+        pageRange.placeholder =
+            "Example: 1-3, 5, " + pageCount;
+
+        document.getElementById("rangeBlock").style.display =
+            "none";
+
+        setControlsDisabled(false);
+
+        updatePlan();
+
+        document.getElementById("info").innerHTML =
+            "Ready to rotate" +
+            "<br>Pages: " + pageCount +
+            "<br>Size: " + formatSize(file.size);
+
+    }catch(error){
+        console.error("PDF read error:", error);
+
+        alert(
+            "Could not read this PDF. It may be damaged, encrypted, or unsupported."
+        );
+
+        resetAll();
+
+    }finally{
+        pdfInput.disabled = false;
+    }
+}
+
+function getPageMode(){
+    const selected =
+        document.querySelector(
+            'input[name="pageMode"]:checked'
+        );
+
+    return selected ? selected.value : "all";
+}
+
+function getRotationAmount(){
+    const selected =
+        document.querySelector(
+            'input[name="rotationAngle"]:checked'
+        );
+
+    return selected
+        ? Number(selected.value)
+        : 90;
+}
+
+function getSelectedPages(){
+    if(!originalFile || pageCount < 1){
+        return [];
+    }
+
+    if(getPageMode() === "all"){
+        return Array.from(
+            {length:pageCount},
+            (_, index) => index + 1
+        );
+    }
+
+    return parsePageRange(pageRange.value);
+}
+
+function parsePageRange(value){
+    const text = value.trim();
+
+    if(!text){
+        return [];
+    }
+
+    const pages = new Set();
+
+    for(const rawPart of text.split(",")){
+        const part = rawPart.trim();
+
+        if(!part){
+            continue;
+        }
+
+        if(/^\d+$/.test(part)){
+            const page = Number(part);
+
+            if(page < 1 || page > pageCount){
+                return [];
+            }
+
+            pages.add(page);
+            continue;
+        }
+
+        const match =
+            part.match(/^(\d+)\s*-\s*(\d+)$/);
+
+        if(!match){
+            return [];
+        }
+
+        const start = Number(match[1]);
+        const end = Number(match[2]);
+
+        if(
+            start < 1 ||
+            end < 1 ||
+            start > pageCount ||
+            end > pageCount ||
+            start > end
+        ){
+            return [];
+        }
+
+        for(let page = start; page <= end; page++){
+            pages.add(page);
+        }
+    }
+
+    return Array.from(pages).sort((a,b) => a - b);
+}
+
+function updatePlan(){
+    if(!originalFile){
+        hidePlan();
+        return;
+    }
+
+    const pages = getSelectedPages();
+    const rotateBtn =
+        document.getElementById("rotateBtn");
+
+    if(pages.length === 0){
+        rotateBtn.disabled = true;
+
+        document.getElementById("planBox").style.display =
+            "block";
+
+        document.getElementById("planSummary").textContent =
+            "Enter a valid page range between 1 and " +
+            pageCount +
+            ".";
+
+        document.getElementById("planPages").textContent =
+            "";
+
+        document.getElementById("info").innerHTML =
+            "Enter valid pages to continue" +
+            "<br>Available pages: 1-" +
+            pageCount;
+
+        return;
+    }
+
+    const angle = getRotationAmount();
+
+    document.getElementById("planBox").style.display =
+        "block";
+
+    document.getElementById("planSummary").textContent =
+        "Rotate " +
+        pages.length +
+        (pages.length === 1 ? " page" : " pages") +
+        " by " +
+        formatRotation(angle);
+
+    const previewLimit = 20;
+
+    const preview =
+        pages.slice(0, previewLimit).join(", ");
+
+    document.getElementById("planPages").textContent =
+        "Pages: " +
+        preview +
+        (
+            pages.length > previewLimit
+                ? " ... +" +
+                  (pages.length - previewLimit) +
+                  " more"
+                : ""
+        );
+
+    rotateBtn.disabled = false;
+
+    if(!processing){
+        document.getElementById("info").innerHTML =
+            "Ready to rotate" +
+            "<br>Pages: " + pageCount +
+            "<br>Size: " +
+            formatSize(originalFile.size);
+    }
+}
+
+async function rotatePDF(){
+    if(
+        !originalFile ||
+        processing
+    ){
+        return;
+    }
+
+    const selectedPages =
+        getSelectedPages();
+
+    if(selectedPages.length === 0){
+        alert("Please select valid PDF pages.");
+        return;
+    }
+
+    invalidateOutput();
+
+    processing = true;
+    setProcessingState(true);
+
+    const rotateBtn =
+        document.getElementById("rotateBtn");
+
+    rotateBtn.disabled = true;
+    rotateBtn.textContent = "Rotating...";
+
+    showProgress(
+        0,
+        "Reading PDF..."
+    );
+
+    try{
+        const bytes =
+            await originalFile.arrayBuffer();
+
+        const pdf =
+            await PDFLib.PDFDocument.load(
+                bytes,
+                {ignoreEncryption:false}
+            );
+
+        const pages = pdf.getPages();
+        const amount =
+            getRotationAmount();
+
+        for(
+            let index = 0;
+            index < selectedPages.length;
+            index++
+        ){
+            const pageNumber =
+                selectedPages[index];
+
+            const page =
+                pages[pageNumber - 1];
+
+            const currentRotation =
+                normalizeRotation(
+                    page.getRotation().angle
+                );
+
+            const newRotation =
+                normalizeRotation(
+                    currentRotation + amount
+                );
+
+            page.setRotation(
+                PDFLib.degrees(newRotation)
+            );
+
+            const percent =
+                Math.round(
+                    ((index + 1) /
+                    selectedPages.length) *
+                    90
+                );
+
+            showProgress(
+                percent,
+                "Rotating page " +
+                pageNumber +
+                " (" +
+                (index + 1) +
+                " of " +
+                selectedPages.length +
+                ")"
+            );
+
+            await allowBrowserPaint();
+        }
+
+        showProgress(
+            95,
+            "Creating PDF..."
+        );
+
+        const output =
+            await pdf.save();
+
+        rotatedPDF =
+            new Blob(
+                [output],
+                {type:"application/pdf"}
+            );
+
+        const baseName =
+            originalFile.name.replace(
+                /\.pdf$/i,
+                ""
+            ) || "document";
+
+        rotatedFileName =
+            baseName + "-rotated.pdf";
+
+        document.getElementById("downloadBtn").disabled =
+            false;
+
+        rotateBtn.disabled = true;
+        rotateBtn.textContent = "Rotated";
+
+        showProgress(
+            100,
+            "Completed"
+        );
+
+        document.getElementById("info").innerHTML =
+            "Rotation Successful" +
+            "<br>Rotated Pages: " +
+            selectedPages.length +
+            "<br>Rotation: " +
+            formatRotation(amount) +
+            "<br>Output Size: " +
+            formatSize(rotatedPDF.size);
+
+    }catch(error){
+        console.error("PDF rotation error:", error);
+
+        rotatedPDF = null;
+
+        document.getElementById("downloadBtn").disabled =
+            true;
+
+        rotateBtn.disabled = false;
+        rotateBtn.textContent = "Rotate PDF";
+
+        hideProgress();
+
+        document.getElementById("info").innerHTML =
+            "Could not rotate this PDF.<br>" +
+            "The file may be damaged, encrypted, or unsupported.";
+
+    }finally{
+        processing = false;
+        setProcessingState(false);
+    }
+}
+
+function normalizeRotation(angle){
+    return ((angle % 360) + 360) % 360;
+}
+
+function formatRotation(angle){
+    if(angle === 90){
+        return "90° Right";
+    }
+
+    if(angle === 270){
+        return "90° Left";
+    }
+
+    return "180°";
+}
+
+function downloadPDF(){
+    if(!rotatedPDF){
+        alert("Please rotate the PDF first.");
+        return;
+    }
+
+    revokeDownloadURL();
+
+    downloadURL =
+        URL.createObjectURL(rotatedPDF);
+
+    const link =
+        document.createElement("a");
+
+    link.href = downloadURL;
+    link.download = rotatedFileName;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    const successBox =
+        document.getElementById("downloadSuccess");
+
+    successBox.style.display = "block";
+
+    clearTimeout(window.rotatePDFSuccessTimer);
+
+    window.rotatePDFSuccessTimer =
+        setTimeout(() => {
+            successBox.style.display = "none";
+        },4000);
+
+    setTimeout(
+        revokeDownloadURL,
+        1500
+    );
+}
+
+function invalidateOutput(){
+    document.getElementById("downloadSuccess").style.display =
+        "none";
+
+    rotatedPDF = null;
+    rotatedFileName = "";
+
+    revokeDownloadURL();
+
+    document.getElementById("downloadBtn").disabled =
+        true;
+
+    const rotateBtn =
+        document.getElementById("rotateBtn");
+
+    if(
+        originalFile &&
+        !processing
+    ){
+        rotateBtn.textContent = "Rotate PDF";
+    }
+
+    hideProgress();
+}
+
+function setControlsDisabled(disabled){
+    document
+        .querySelectorAll(
+            'input[name="pageMode"], input[name="rotationAngle"]'
+        )
+        .forEach(input => {
+            input.disabled = disabled;
+        });
+
+    pageRange.disabled =
+        disabled ||
+        getPageMode() !== "custom";
+}
+
+function setProcessingState(isProcessing){
+    pdfInput.disabled = isProcessing;
+
+    document
+        .querySelectorAll(
+            'input[name="pageMode"], input[name="rotationAngle"]'
+        )
+        .forEach(input => {
+            input.disabled = isProcessing;
+        });
+
+    pageRange.disabled =
+        isProcessing ||
+        getPageMode() !== "custom";
+
+    document.getElementById("clearBtn").disabled =
+        isProcessing;
+}
+
+function showProgress(percent, message){
+    document.getElementById("progressWrap").style.display =
+        "block";
+
+    document.getElementById("progressBar").style.width =
+        percent + "%";
+
+    document.getElementById("progressText").textContent =
+        message;
+}
+
+function hideProgress(){
+    document.getElementById("progressWrap").style.display =
+        "none";
+
+    document.getElementById("progressBar").style.width =
+        "0%";
+
+    document.getElementById("progressText").textContent =
+        "";
+}
+
+function hidePlan(){
+    document.getElementById("planBox").style.display =
+        "none";
+
+    document.getElementById("planSummary").textContent =
+        "";
+
+    document.getElementById("planPages").textContent =
+        "";
+}
+
+function clearAll(){
+    if(processing){
+        return;
+    }
+
+    resetAll();
+}
+
+function resetAll(){
+    document.getElementById("downloadSuccess").style.display =
+        "none";
+
+    originalFile = null;
+    pageCount = 0;
+    rotatedPDF = null;
+    rotatedFileName = "";
+    processing = false;
+
+    revokeDownloadURL();
+
+    pdfInput.value = "";
+
+    document.getElementById("fileCard").style.display =
+        "none";
+
+    document.getElementById("fileName").textContent =
+        "";
+
+    document.getElementById("fileMeta").textContent =
+        "";
+
+    document.getElementById("modeAll").checked = true;
+    document.getElementById("rotateRight").checked = true;
+
+    document.getElementById("rangeBlock").style.display =
+        "none";
+
+    pageRange.value = "";
+
+    setControlsDisabled(true);
+
+    document.getElementById("rotateBtn").disabled = true;
+    document.getElementById("rotateBtn").textContent =
+        "Rotate PDF";
+
+    document.getElementById("downloadBtn").disabled =
+        true;
+
+    document.getElementById("info").textContent =
+        "";
+
+    hidePlan();
+    hideProgress();
+}
+
+function revokeDownloadURL(){
+    if(downloadURL){
+        URL.revokeObjectURL(downloadURL);
+        downloadURL = null;
+    }
+}
+
+function formatSize(bytes){
+    if(bytes >= 1024 * 1024){
+        return (
+            bytes / (1024 * 1024)
+        ).toFixed(2) + " MB";
+    }
+
+    if(bytes >= 1024){
+        return Math.round(bytes / 1024) + " KB";
+    }
+
+    return bytes + " B";
+}
+
+function allowBrowserPaint(){
+    return new Promise(resolve => {
+        setTimeout(resolve, 0);
+    });
+}
+</script>
+
+</body>
+</html>

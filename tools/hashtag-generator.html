@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Hashtag Generator Online Free</title>
+
+<meta name="description" content="Generate trending and niche hashtags for Instagram, TikTok, YouTube and social media platforms.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../css/style.css">
+
+
+<style>
+
+.hashtag-box{
+
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+
+input,select{
+
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+margin:8px 0 18px;
+box-sizing:border-box;
+font-size:16px;
+
+}
+
+
+button{
+
+width:100%;
+padding:14px;
+background:#2563eb;
+color:white;
+border:0;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:12px;
+
+}
+
+
+.output{
+
+background:#f8fafc;
+padding:20px;
+border-radius:15px;
+line-height:1.8;
+font-size:18px;
+
+}
+
+
+.stats{
+
+display:flex;
+justify-content:space-around;
+font-weight:bold;
+margin:20px 0;
+
+}
+
+
+.success{
+
+display:none;
+background:#dcfce7;
+color:#166534;
+padding:12px;
+border-radius:10px;
+text-align:center;
+
+}
+
+
+.category{
+
+background:#eff6ff;
+padding:15px;
+border-radius:12px;
+margin-top:15px;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<h1>Hashtag Generator</h1>
+
+
+<p class="tool-description">
+Generate optimized hashtags for your social media content.
+</p>
+
+
+<div class="hashtag-box">
+
+
+<label>
+Topic / Keyword
+</label>
+
+<input id="topic" placeholder="Example: fitness, travel, technology">
+
+
+<label>
+Platform
+</label>
+
+<select id="platform">
+
+<option value="instagram">Instagram</option>
+
+<option value="tiktok">TikTok</option>
+
+<option value="youtube">YouTube</option>
+
+<option value="x">X (Twitter)</option>
+
+</select>
+
+
+<label>
+Number of Hashtags
+</label>
+
+<select id="amount">
+
+<option value="10">10</option>
+
+<option value="20">20</option>
+
+<option value="30">30</option>
+
+</select>
+
+
+<button onclick="generateHashtags()">
+Generate Hashtags
+</button>
+
+
+<button onclick="copyHashtags()">
+Copy Hashtags
+</button>
+
+
+<button onclick="downloadHashtags()">
+Download TXT
+</button>
+
+
+<button onclick="clearHashtags()">
+Clear
+</button>
+
+
+<div class="stats">
+
+<div id="count">
+0 Hashtags
+</div>
+
+</div>
+
+
+<div id="success" class="success"></div>
+
+
+<div id="output" class="output" style="display:none"></div>
+<script>
+
+function generateHashtags(){
+
+let topic=document.getElementById("topic").value.trim();
+
+let platform=document.getElementById("platform").value;
+
+let amount=parseInt(document.getElementById("amount").value);
+
+
+
+if(!topic){
+
+showMessage("Please enter a topic first.");
+
+return;
+
+}
+
+
+
+let clean=topic
+.toLowerCase()
+.replace(/[^a-z0-9\s]/g,"")
+.trim()
+.replace(/\s+/g,"");
+
+
+
+let base=[
+
+clean,
+
+clean+"tips",
+
+clean+"ideas",
+
+clean+"daily",
+
+clean+"life",
+
+clean+"community",
+
+clean+"guide",
+
+clean+"inspiration",
+
+clean+"trend",
+
+clean+"world",
+
+clean+"online",
+
+clean+"creator",
+
+clean+"2026",
+
+"best"+clean,
+
+"learn"+clean
+
+];
+
+
+
+let popular=[
+
+"viral",
+
+"trending",
+
+"explore",
+
+"fyp",
+
+"contentcreator",
+
+"socialmedia",
+
+"instagood",
+
+"lifestyle"
+
+];
+
+
+
+let niche=[
+
+clean+"expert",
+
+clean+"strategy",
+
+clean+"tutorial",
+
+clean+"solutions",
+
+clean+"resources"
+
+];
+
+
+
+let popularTags=[
+
+"#"+clean,
+
+"#trending",
+
+"#viral",
+
+"#explore",
+
+"#socialmedia",
+
+"#contentcreator"
+
+];
+
+
+let nicheTags=[
+
+"#"+clean+"community",
+
+"#"+clean+"guide",
+
+"#"+clean+"creator",
+
+"#"+clean+"tips",
+
+"#"+clean+"strategy"
+
+];
+
+
+let longTags=[
+
+"#"+clean+"forbeginners",
+
+"#best"+clean+"ideas",
+
+"#"+clean+"motivationdaily",
+
+"#howto"+clean,
+
+"#"+clean+"lifestyle"
+
+];
+
+
+// platform adjustment
+
+if(platform==="tiktok"){
+
+popularTags.push("#fyp","#foryou");
+
+}
+
+
+if(platform==="youtube"){
+
+popularTags.push("#youtube","#shorts");
+
+}
+
+
+if(platform==="x"){
+
+popularTags.push("#thread","#community");
+
+}
+
+
+let tags=[...new Set(
+
+popularTags.concat(nicheTags,longTags)
+
+)];
+
+
+tags=tags.slice(0,amount);
+
+
+
+let output=tags.join(" ");
+
+
+
+let popularOutput=popularTags.join(" ");
+
+let nicheOutput=nicheTags.join(" ");
+
+let longOutput=longTags.join(" ");
+
+
+document.getElementById("output").innerHTML=
+
+`
+
+<div class="category">
+
+<b>🔥 Popular Hashtags</b>
+
+<br><br>
+
+${popularOutput}
+
+</div>
+
+
+<div class="category">
+
+<b>🎯 Niche Hashtags</b>
+
+<br><br>
+
+${nicheOutput}
+
+</div>
+
+
+<div class="category">
+
+<b>📌 Long-tail Hashtags</b>
+
+<br><br>
+
+${longOutput}
+
+</div>
+
+`;
+
+
+
+document.getElementById("output").style.display="block";
+
+
+document.getElementById("count").innerHTML=
+
+tags.length+" Hashtags";
+
+
+showMessage("Hashtags generated successfully ✓");
+
+
+}
+
+
+
+async function copyHashtags(){
+
+let text=document.getElementById("output").innerText;
+
+
+if(!text){
+
+return;
+
+}
+
+
+await navigator.clipboard.writeText(text);
+
+
+showMessage("Copied successfully ✓");
+
+
+}
+
+
+
+function downloadHashtags(){
+
+let text=document.getElementById("output").innerText;
+
+
+if(!text){
+
+return;
+
+}
+
+
+let blob=new Blob(
+
+[text],
+
+{type:"text/plain"}
+
+);
+
+
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="hashtags.txt";
+
+a.click();
+
+
+showMessage("Downloaded ✓");
+
+
+}
+
+
+
+function clearHashtags(){
+
+document.getElementById("topic").value="";
+
+document.getElementById("output").style.display="none";
+
+document.getElementById("count").innerHTML="0 Hashtags";
+
+
+showMessage("Cleared ✓");
+
+}
+
+
+
+function showMessage(text){
+
+let box=document.getElementById("success");
+
+box.innerHTML=text;
+
+box.style.display="block";
+
+
+setTimeout(()=>{
+
+box.style.display="none";
+
+},3000);
+
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+
+<h2>
+Frequently Asked Questions
+</h2>
+
+
+<h3>
+How many hashtags should I use?
+</h3>
+
+<p>
+The best number depends on the platform and your content strategy.
+</p>
+
+
+<h3>
+Can I use these hashtags everywhere?
+</h3>
+
+<p>
+You can customize hashtags based on each social media platform.
+</p>
+
+
+<h3>
+Are generated hashtags stored?
+</h3>
+
+<p>
+No. The tool works locally in your browser.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>

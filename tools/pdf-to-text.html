@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PDF to Text Converter Online Free</title>
+
+<meta name="description" content="Extract text from PDF files online for free. Convert PDF documents to editable text privately in your browser.">
+
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<style>
+.pdf-text-box{
+    width:100%;
+    max-width:850px;
+    box-sizing:border-box;
+}
+
+.drop-zone{
+    width:100%;
+    padding:26px 16px;
+    border:2px dashed #cbd5e1;
+    border-radius:14px;
+    text-align:center;
+    box-sizing:border-box;
+    transition:.2s ease;
+}
+
+.drop-zone.dragover{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.drop-zone input[type="file"]{
+    display:none;
+}
+
+.file-button{
+    display:inline-block;
+    padding:11px 18px;
+    background:#2563eb;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.drop-title{
+    margin-top:12px;
+    font-weight:600;
+}
+
+.drop-subtitle{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.7;
+}
+
+.file-card{
+    display:none;
+    margin-top:15px;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    line-height:1.6;
+    word-break:break-word;
+}
+
+.progress-wrap{
+    display:none;
+    margin-top:16px;
+}
+
+.progress-track{
+    width:100%;
+    height:10px;
+    border-radius:999px;
+    overflow:hidden;
+    background:#e5e7eb;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#2563eb;
+    transition:width .15s ease;
+}
+
+.progress-text{
+    margin-top:7px;
+    text-align:center;
+    font-size:13px;
+}
+
+.output-label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:7px;
+    font-weight:600;
+}
+
+#output{
+    width:100%;
+    min-height:320px;
+    padding:12px;
+    box-sizing:border-box;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    resize:vertical;
+    font-family:monospace;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.tool-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+    margin-top:18px;
+}
+
+.tool-actions button{
+    width:100%;
+    min-width:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+#status{
+    margin-top:15px;
+    text-align:center;
+    line-height:1.5;
+}
+
+.success-box{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+.error-box{
+    color:#b91c1c;
+    font-weight:600;
+}
+
+.privacy-note{
+    margin-top:15px;
+    padding:11px 12px;
+    border-radius:10px;
+    background:#f8fafc;
+    font-size:13px;
+    line-height:1.5;
+}
+
+@media(max-width:600px){
+    .pdf-text-box{
+        padding:0 12px;
+    }
+
+    .drop-zone{
+        padding:20px 12px;
+    }
+
+    .tool-actions button{
+        padding:12px 6px;
+        font-size:14px;
+    }
+
+    #output{
+        min-height:280px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>PDF to Text Converter</h1>
+
+<p>
+Extract editable text from PDF documents directly in your browser.
+</p>
+
+<div class="pdf-text-box">
+
+<h2>Extract Text from PDF</h2>
+
+<div id="dropZone" class="drop-zone">
+
+<label for="pdfFile" class="file-button">
+Choose PDF File
+</label>
+
+<input
+    type="file"
+    id="pdfFile"
+    accept="application/pdf,.pdf"
+>
+
+<div class="drop-title">
+or drag and drop a PDF here
+</div>
+
+<div class="drop-subtitle">
+PDF • Maximum 25 MB
+</div>
+
+</div>
+
+<div id="fileCard" class="file-card"></div>
+
+<div id="progressWrap" class="progress-wrap">
+<div class="progress-track">
+<div id="progressBar" class="progress-bar"></div>
+</div>
+<div id="progressText" class="progress-text"></div>
+</div>
+
+<label for="output" class="output-label">
+Extracted Text
+</label>
+
+<textarea
+    id="output"
+    placeholder="Extracted text will appear here..."
+    spellcheck="false"
+></textarea>
+
+<div class="tool-actions">
+
+<button id="extractBtn" onclick="extractText()" disabled>
+Extract Text
+</button>
+
+<button id="copyBtn" onclick="copyText()" disabled>
+Copy Text
+</button>
+
+<button id="downloadBtn" onclick="downloadText()" disabled>
+Download TXT
+</button>
+
+<button id="clearBtn" onclick="clearAll()">
+Clear
+</button>
+
+</div>
+
+<div id="successBox"
+     class="success-box"
+     role="status"
+     aria-live="polite">
+</div>
+
+<div id="status" aria-live="polite"></div>
+
+<div class="privacy-note">
+Your PDF is processed locally in your browser and is not uploaded to our server.
+</div>
+
+</div>
+
+<section>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Can I extract text from multiple PDF pages?</h3>
+<p>Yes. The tool extracts readable text from all pages in the selected PDF.</p>
+
+<h3>Can I edit the extracted text?</h3>
+<p>Yes. The extracted text can be edited directly before copying or downloading it.</p>
+
+<h3>Can I download the extracted text?</h3>
+<p>Yes. You can save the extracted content as a TXT file.</p>
+
+<h3>Are my PDF files uploaded?</h3>
+<p>No. PDF processing happens locally in your browser.</p>
+
+</section>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+let selectedFile = null;
+let loadedPDF = null;
+let processing = false;
+
+const maxFileSize = 25 * 1024 * 1024;
+
+const fileInput = document.getElementById("pdfFile");
+const dropZone = document.getElementById("dropZone");
+const output = document.getElementById("output");
+
+fileInput.addEventListener("change", async event => {
+    const file = event.target.files[0];
+    event.target.value = "";
+
+    if(file){
+        await loadPDF(file);
+    }
+});
+
+dropZone.addEventListener("dragover", event => {
+    event.preventDefault();
+
+    if(!processing){
+        dropZone.classList.add("dragover");
+    }
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+});
+
+dropZone.addEventListener("drop", async event => {
+    event.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    if(processing){
+        return;
+    }
+
+    const file = event.dataTransfer.files[0];
+
+    if(file){
+        await loadPDF(file);
+    }
+});
+
+output.addEventListener("input", updateOutputButtons);
+
+async function loadPDF(file){
+
+    if(processing){
+        return;
+    }
+
+    if(
+        file.type !== "application/pdf" &&
+        !/\.pdf$/i.test(file.name)
+    ){
+        showError("Please choose a PDF file.");
+        return;
+    }
+
+    if(file.size > maxFileSize){
+        showError("The PDF file must be 25 MB or smaller.");
+        return;
+    }
+
+    resetDocument();
+
+    selectedFile = file;
+
+    document.getElementById("status").textContent =
+        "Reading PDF...";
+
+    try{
+
+        const bytes =
+            new Uint8Array(await file.arrayBuffer());
+
+        loadedPDF =
+            await pdfjsLib.getDocument({
+                data:bytes
+            }).promise;
+
+        const card =
+            document.getElementById("fileCard");
+
+        card.style.display = "block";
+
+        card.innerHTML =
+            "<strong>" +
+            escapeHTML(file.name) +
+            "</strong>" +
+            "<br>File Size: " +
+            formatSize(file.size) +
+            "<br>Pages: " +
+            loadedPDF.numPages;
+
+        document.getElementById("extractBtn").disabled =
+            false;
+
+        document.getElementById("status").textContent =
+            "Ready to extract text.";
+
+    }catch(error){
+
+        console.error("PDF load error:",error);
+
+        loadedPDF = null;
+        selectedFile = null;
+
+        document.getElementById("fileCard").style.display =
+            "none";
+
+        showError(
+            "Could not read this PDF. The file may be damaged or password protected."
+        );
+    }
+}
+
+async function extractText(){
+
+    if(processing || !loadedPDF){
+        return;
+    }
+
+    processing = true;
+    setProcessing(true);
+
+    output.value = "";
+    hideSuccess();
+
+    const extractBtn =
+        document.getElementById("extractBtn");
+
+    extractBtn.textContent = "Extracting...";
+
+    let pages = [];
+
+    try{
+
+        for(
+            let pageNumber = 1;
+            pageNumber <= loadedPDF.numPages;
+            pageNumber++
+        ){
+
+            const percent =
+                Math.round(
+                    ((pageNumber - 1) /
+                    loadedPDF.numPages) * 100
+                );
+
+            showProgress(
+                percent,
+                "Extracting page " +
+                pageNumber +
+                " of " +
+                loadedPDF.numPages
+            );
+
+            const page =
+                await loadedPDF.getPage(pageNumber);
+
+            const content =
+                await page.getTextContent();
+
+            const pageText =
+                buildPageText(content.items);
+
+            pages.push(pageText);
+
+            await allowBrowserPaint();
+        }
+
+        output.value =
+            pages.join("\n\n");
+
+        showProgress(
+            100,
+            "Extraction completed."
+        );
+
+        document.getElementById("status").innerHTML =
+            "Text extracted successfully." +
+            "<br>Pages: " +
+            loadedPDF.numPages +
+            "<br>Characters: " +
+            output.value.length;
+
+        updateOutputButtons();
+
+        extractBtn.textContent = "Extract Again";
+
+    }catch(error){
+
+        console.error("PDF text extraction error:",error);
+
+        hideProgress();
+
+        showError(
+            "Could not extract text from this PDF."
+        );
+
+        extractBtn.textContent = "Extract Text";
+
+    }finally{
+
+        processing = false;
+        setProcessing(false);
+    }
+}
+
+function buildPageText(items){
+
+    if(!items || !items.length){
+        return "";
+    }
+
+    let lines = [];
+    let currentLine = [];
+    let lastY = null;
+
+    items.forEach(item => {
+
+        const text =
+            item.str == null
+                ? ""
+                : String(item.str);
+
+        const y =
+            item.transform &&
+            item.transform.length > 5
+                ? item.transform[5]
+                : null;
+
+        if(
+            lastY !== null &&
+            y !== null &&
+            Math.abs(y - lastY) > 3 &&
+            currentLine.length
+        ){
+            lines.push(
+                currentLine.join(" ")
+                    .replace(/\s+/g," ")
+                    .trim()
+            );
+
+            currentLine = [];
+        }
+
+        if(text.trim()){
+            currentLine.push(text.trim());
+        }
+
+        if(y !== null){
+            lastY = y;
+        }
+    });
+
+    if(currentLine.length){
+        lines.push(
+            currentLine.join(" ")
+                .replace(/\s+/g," ")
+                .trim()
+        );
+    }
+
+    return lines.join("\n");
+}
+
+async function copyText(){
+
+    const text = output.value;
+
+    if(!text.trim()){
+        return;
+    }
+
+    try{
+
+        if(
+            navigator.clipboard &&
+            window.isSecureContext
+        ){
+            await navigator.clipboard.writeText(text);
+
+        }else{
+
+            output.focus();
+            output.select();
+
+            document.execCommand("copy");
+        }
+
+        showSuccess(
+            "✓ Text copied successfully."
+        );
+
+    }catch(error){
+
+        console.error("Copy error:",error);
+
+        showError(
+            "Could not copy the text."
+        );
+    }
+}
+
+function downloadText(){
+
+    const text = output.value;
+
+    if(!text.trim()){
+        return;
+    }
+
+    const blob =
+        new Blob(
+            [text],
+            {
+                type:"text/plain;charset=utf-8"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+    link.download =
+        createTextFileName();
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    },1500);
+
+    showSuccess(
+        "✓ TXT file downloaded successfully."
+    );
+}
+
+function updateOutputButtons(){
+
+    const hasText =
+        output.value.trim().length > 0;
+
+    document.getElementById("copyBtn").disabled =
+        !hasText || processing;
+
+    document.getElementById("downloadBtn").disabled =
+        !hasText || processing;
+}
+
+function setProcessing(state){
+
+    fileInput.disabled = state;
+
+    document.getElementById("clearBtn").disabled =
+        state;
+
+    document.getElementById("extractBtn").disabled =
+        state || !loadedPDF;
+
+    document.getElementById("copyBtn").disabled =
+        state || !output.value.trim();
+
+    document.getElementById("downloadBtn").disabled =
+        state || !output.value.trim();
+}
+
+function resetDocument(){
+
+    loadedPDF = null;
+    selectedFile = null;
+
+    output.value = "";
+
+    document.getElementById("fileCard").style.display =
+        "none";
+
+    document.getElementById("fileCard").innerHTML = "";
+
+    document.getElementById("extractBtn").disabled =
+        true;
+
+    document.getElementById("extractBtn").textContent =
+        "Extract Text";
+
+    document.getElementById("copyBtn").disabled =
+        true;
+
+    document.getElementById("downloadBtn").disabled =
+        true;
+
+    document.getElementById("status").textContent = "";
+
+    hideProgress();
+    hideSuccess();
+}
+
+function clearAll(){
+
+    if(processing){
+        return;
+    }
+
+    resetDocument();
+
+    fileInput.value = "";
+}
+
+function showProgress(percent,message){
+
+    document.getElementById("progressWrap").style.display =
+        "block";
+
+    document.getElementById("progressBar").style.width =
+        percent + "%";
+
+    document.getElementById("progressText").textContent =
+        message;
+}
+
+function hideProgress(){
+
+    document.getElementById("progressWrap").style.display =
+        "none";
+
+    document.getElementById("progressBar").style.width =
+        "0%";
+
+    document.getElementById("progressText").textContent =
+        "";
+}
+
+function showSuccess(message){
+
+    const box =
+        document.getElementById("successBox");
+
+    box.textContent = message;
+    box.style.display = "block";
+
+    clearTimeout(window.pdfTextSuccessTimer);
+
+    window.pdfTextSuccessTimer =
+        setTimeout(() => {
+            box.style.display = "none";
+        },4000);
+}
+
+function hideSuccess(){
+
+    document.getElementById("successBox").style.display =
+        "none";
+}
+
+function showError(message){
+
+    document.getElementById("status").innerHTML =
+        '<span class="error-box">' +
+        escapeHTML(message) +
+        "</span>";
+}
+
+function createTextFileName(){
+
+    if(!selectedFile){
+        return "extracted-text.txt";
+    }
+
+    const base =
+        selectedFile.name.replace(/\.pdf$/i,"") ||
+        "document";
+
+    return base + "-text.txt";
+}
+
+function formatSize(bytes){
+
+    if(bytes >= 1024 * 1024){
+        return (
+            bytes / (1024 * 1024)
+        ).toFixed(2) + " MB";
+    }
+
+    if(bytes >= 1024){
+        return Math.round(bytes / 1024) + " KB";
+    }
+
+    return bytes + " B";
+}
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function allowBrowserPaint(){
+    return new Promise(resolve => setTimeout(resolve,0));
+}
+</script>
+
+</body>
+</html>

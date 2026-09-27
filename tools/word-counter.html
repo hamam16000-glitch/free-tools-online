@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Word Counter Online Free - Count Words, Characters & Reading Time</title>
+
+<meta name="description" content="Free online word counter tool to count words, characters, sentences, paragraphs and reading time instantly.">
+
+<meta name="keywords" content="word counter, online word count, character counter, reading time calculator">
+
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+
+<body>
+
+
+<h1>Word Counter Online</h1>
+
+<p class="tool-description">
+Count words, characters, sentences, paragraphs and reading time with our free online word counter tool.
+</p>
+
+<div class="tool-box">
+
+<textarea id="text" rows="10" cols="50" 
+placeholder="Type your text here"
+oninput="countText()"></textarea>
+
+
+<br><br>
+
+
+<div class="tool-actions">
+
+<button onclick="copyResult()">
+Copy Result
+</button>
+
+
+<button onclick="clearText()">
+Clear
+</button>
+
+</div>
+
+
+
+<h3 id="result" class="result-box">
+
+Words: 0
+
+</h3>
+
+
+
+
+<section>
+
+<h2>Word Counter Statistics</h2>
+
+<div id="stats"></div>
+
+</section>
+
+
+
+
+<section class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+
+<h3>What is a word counter?</h3>
+
+<p>
+A word counter is an online tool that calculates the number of words in a text.
+</p>
+
+
+<h3>Why use a word counter?</h3>
+
+<p>
+It helps writers, students and professionals check text length for articles, essays and online content.
+</p>
+
+
+<h3>Does this tool save my text?</h3>
+
+<p>
+No. Your text is processed directly in your browser and is not stored.
+</p>
+
+
+</section>
+
+
+
+
+
+<script>
+
+
+function countText(){
+
+
+let text = document.getElementById("text").value;
+
+
+let words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+
+
+let characters = text.length;
+
+
+let charactersNoSpaces = text.replace(/\s/g,"").length;
+
+
+let sentences = text.split(/[.!?]+/).filter(Boolean).length;
+
+
+let paragraphs = text.trim() === "" ? 0 : text.split(/\n+/).length;
+
+
+let readingTime = Math.ceil(words / 200);
+
+
+
+document.getElementById("result").innerHTML =
+
+"Words: " + words +
+"<br>Characters: " + characters +
+"<br>Characters without spaces: " + charactersNoSpaces +
+"<br>Sentences: " + sentences +
+"<br>Paragraphs: " + paragraphs +
+"<br>Reading Time: " + readingTime + " min";
+
+
+}
+
+
+
+
+
+function clearText(){
+
+document.getElementById("text").value="";
+
+countText();
+
+}
+
+
+
+
+function copyResult(){
+
+let result = document.getElementById("result").innerText;
+
+navigator.clipboard.writeText(result);
+
+}
+
+
+
+
+
+</script>
+
+
+
+<script id="word-counter-copy-fix">
+function copyResult(){
+    var result = document.getElementById("result").innerText;
+
+    function success(){
+        var old = document.getElementById("copySuccess");
+        if(old) old.remove();
+
+        var msg = document.createElement("div");
+        msg.id = "copySuccess";
+        msg.textContent = "Copied successfully.";
+        msg.style.cssText =
+            "margin:15px 0;padding:12px;text-align:center;" +
+            "font-weight:bold;color:#166534;background:#e8f7ee;" +
+            "border:1px solid #9ad5ad;border-radius:8px;";
+
+        document.getElementById("result").before(msg);
+
+        setTimeout(function(){
+            if(msg) msg.remove();
+        },3500);
+    }
+
+    function fallback(){
+        var temp = document.createElement("textarea");
+        temp.value = result;
+        temp.style.position = "fixed";
+        temp.style.opacity = "0";
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        temp.remove();
+        success();
+    }
+
+    if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(result)
+        .then(success)
+        .catch(fallback);
+    }else{
+        fallback();
+    }
+}
+</script>
+
+</body>
+
+</html>

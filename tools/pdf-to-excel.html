@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>PDF To Excel Converter Online Free</title>
+
+<meta name="description" content="Convert PDF files to Excel spreadsheets online for free. Extract PDF tables and data into editable Excel files.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+margin:0;
+}
+
+h1,p{
+text-align:center;
+}
+
+.converter-box{
+max-width:700px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.upload-area{
+border:2px dashed #2563eb;
+padding:30px;
+text-align:center;
+border-radius:12px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin:10px;
+}
+
+#status{
+text-align:center;
+margin:15px;
+font-weight:bold;
+}
+
+
+#pdfFile{
+    display:none;
+}
+
+.custom-file-picker{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    box-sizing:border-box;
+}
+
+.custom-file-button{
+    display:inline-block;
+    padding:12px 16px;
+    background:#2563eb;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+#fileName{
+    flex:1;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.download-success{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>PDF To Excel Converter</h1>
+
+<p>
+Extract PDF data and convert it into an Excel file online.
+</p>
+
+<div class="converter-box">
+
+<div class="upload-area">
+
+<div class="custom-file-picker">
+<label for="pdfFile" class="custom-file-button">
+Choose PDF File
+</label>
+
+<span id="fileName">No file selected</span>
+
+<input type="file"
+       id="pdfFile"
+       accept="application/pdf,.pdf">
+</div>
+
+</div><button onclick="convertExcel()">Convert To Excel</button>
+
+<button onclick="downloadExcel()">Download Excel</button>
+
+<div id="downloadSuccess"
+     class="download-success"
+     role="status"
+     aria-live="polite">
+File downloaded successfully.
+</div>
+
+<div id="status"></div>
+
+</div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
+<script>
+
+let excelBlob=null;
+
+document.getElementById("pdfFile").addEventListener("change", function(){
+    const file = this.files[0];
+
+    document.getElementById("fileName").textContent =
+        file ? file.name : "No file selected";
+
+    document.getElementById("downloadSuccess").style.display =
+        "none";
+});
+
+
+async function convertExcel(){
+
+let file=document.getElementById("pdfFile").files[0];
+
+if(!file){
+alert("Please select PDF file");
+return;
+}
+
+
+let status=document.getElementById("status");
+
+status.innerHTML="Extracting PDF data...";
+
+
+let buffer=await file.arrayBuffer();
+
+
+let pdf=await pdfjsLib.getDocument({
+data:buffer
+}).promise;
+
+
+let rows=[];
+
+
+for(let i=1;i<=pdf.numPages;i++){
+
+let page=await pdf.getPage(i);
+
+let content=await page.getTextContent();
+
+
+content.items.forEach(item=>{
+
+rows.push([item.str]);
+
+});
+
+}
+
+
+let sheet=XLSX.utils.aoa_to_sheet(rows);
+
+let workbook=XLSX.utils.book_new();
+
+XLSX.utils.book_append_sheet(
+workbook,
+sheet,
+"PDF Data"
+);
+
+
+let excel=XLSX.write(workbook,{
+bookType:"xlsx",
+type:"array"
+});
+
+
+excelBlob=new Blob(
+[excel],
+{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+);
+
+
+status.innerHTML="Excel Created Successfully";
+
+
+}function downloadExcel(){
+
+if(!excelBlob){
+    alert("Convert PDF first");
+    return;
+}
+
+const url = URL.createObjectURL(excelBlob);
+
+const a = document.createElement("a");
+a.href = url;
+a.download = "converted-file.xlsx";
+
+document.body.appendChild(a);
+a.click();
+a.remove();
+
+const successBox =
+    document.getElementById("downloadSuccess");
+
+successBox.style.display = "block";
+
+clearTimeout(window.pdfExcelSuccessTimer);
+
+window.pdfExcelSuccessTimer =
+    setTimeout(() => {
+        successBox.style.display = "none";
+    },4000);
+
+setTimeout(() => {
+    URL.revokeObjectURL(url);
+},1500);
+
+}
+
+</script>
+
+
+<div class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Can I convert PDF to Excel online?</h3>
+<p>Yes, this tool extracts PDF data and creates an Excel spreadsheet.</p>
+
+<h3>Are my files uploaded?</h3>
+<p>No, files are processed directly in your browser.</p>
+
+<h3>Can I edit the Excel file?</h3>
+<p>Yes, the generated XLSX file can be edited with Excel or spreadsheet apps.</p>
+
+</div>
+
+
+</body>
+</html>

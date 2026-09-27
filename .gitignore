@@ -1,0 +1,25 @@
+# Backups
+backups/
+archive/
+archive-backups/
+backup-button-row/
+
+# Temporary files
+*.bak
+*.tmp
+*.log
+
+# Development scripts
+*.py
+
+# Development notes
+*.txt
+
+# Generated backups
+index-backup-*.html
+
+# CSS backups
+css/*backup*
+
+# Tool backup files
+tools/*.backup*

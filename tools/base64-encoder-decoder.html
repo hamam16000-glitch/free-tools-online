@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Base64 Encoder Decoder Online Free</title>
+
+<meta name="description" content="Encode and decode Base64 text online for free. Convert text to Base64 and decode Base64 strings instantly.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+margin:0;
+}
+
+h1,p{
+text-align:center;
+}
+
+.tool-box{
+max-width:800px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+textarea{
+width:100%;
+height:250px;
+padding:15px;
+box-sizing:border-box;
+font-family:monospace;
+border-radius:10px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin:10px;
+}
+
+#status{
+text-align:center;
+font-weight:bold;
+margin:15px;
+}
+
+
+.tool-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+    margin-top:18px;
+}
+
+.tool-actions button{
+    width:100%;
+    min-width:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+.copy-success{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+@media(max-width:520px){
+    .tool-actions{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .tool-actions button{
+        padding:12px 6px;
+        font-size:15px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Base64 Encoder & Decoder</h1>
+
+<p class="tool-description">
+Encode and decode Base64 strings online.
+</p>
+
+<div class="tool-box">
+
+<textarea id="inputText" placeholder="Enter text or Base64 string here..."></textarea>
+
+<div class="tool-actions">
+
+<button onclick="encodeBase64()">Encode Base64</button>
+
+<button onclick="decodeBase64()">Decode Base64</button>
+
+<button onclick="copyResult()">Copy</button>
+
+<button onclick="clearText()">Clear</button>
+
+</div>
+
+
+<div id="copySuccess"
+     class="copy-success"
+     role="status"
+     aria-live="polite">
+Copied successfully.
+</div>
+
+<div id="status"></div>
+
+
+<script>
+
+
+function encodeBase64(){
+
+let text=document.getElementById("inputText").value;
+
+try{
+
+let result=btoa(unescape(encodeURIComponent(text)));
+
+document.getElementById("inputText").value=result;
+
+document.getElementById("status").innerHTML=
+"Encoded Successfully";
+
+}
+
+catch(e){
+
+document.getElementById("status").innerHTML=
+"Encoding Error";
+
+}
+
+}
+
+
+
+function decodeBase64(){
+
+let text=document.getElementById("inputText").value;
+
+try{
+
+let result=decodeURIComponent(
+escape(atob(text))
+);
+
+
+document.getElementById("inputText").value=result;
+
+document.getElementById("status").innerHTML=
+"Decoded Successfully";
+
+}
+
+catch(e){
+
+document.getElementById("status").innerHTML=
+"Invalid Base64";
+
+}
+
+}async function copyResult(){
+
+    const output =
+        document.getElementById("inputText");
+
+    if(!output.value){
+        return;
+    }
+
+    try{
+        if(
+            navigator.clipboard &&
+            window.isSecureContext
+        ){
+            await navigator.clipboard.writeText(
+                output.value
+            );
+        }else{
+            output.focus();
+            output.select();
+
+            const copied =
+                document.execCommand("copy");
+
+            if(!copied){
+                throw new Error("Copy failed");
+            }
+        }
+
+        const successBox =
+            document.getElementById("copySuccess");
+
+        successBox.style.display = "block";
+
+        clearTimeout(
+            window.base64CopyTimer
+        );
+
+        window.base64CopyTimer =
+            setTimeout(() => {
+                successBox.style.display =
+                    "none";
+            },3000);
+
+    }catch(error){
+        document.getElementById("status").textContent =
+            "Could not copy text.";
+    }
+}
+
+
+
+function clearText(){
+
+document.getElementById("inputText").value="";
+
+document.getElementById("status").innerHTML="";
+
+const copySuccess =
+    document.getElementById("copySuccess");
+
+if(copySuccess){
+    copySuccess.style.display="none";
+}
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is Base64 encoding?</h3>
+<p>Base64 converts text or data into a readable encoded format.</p>
+
+<h3>Can I decode Base64 online?</h3>
+<p>Yes, this tool can decode Base64 strings instantly.</p>
+
+<h3>Is my data uploaded?</h3>
+<p>No, all processing happens directly in your browser.</p>
+
+</div>
+
+
+</div>
+
+
+</body>
+</html>

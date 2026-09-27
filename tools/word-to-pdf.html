@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Word To PDF Converter Online Free</title>
+
+<meta name="description" content="Convert Word documents to PDF online for free. Turn DOC and DOCX files into PDF files quickly in your browser.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+margin:0;
+}
+
+h1,p{
+text-align:center;
+}
+
+.converter-box{
+max-width:700px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.upload-area{
+border:2px dashed #2563eb;
+padding:30px;
+text-align:center;
+border-radius:12px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin:10px;
+}
+
+
+#wordFile{
+    display:none;
+}
+
+.custom-file-picker{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    box-sizing:border-box;
+}
+
+.custom-file-button{
+    display:inline-block;
+    padding:12px 16px;
+    background:#2563eb;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+#fileName{
+    flex:1;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.download-success{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+.conversion-note{
+    margin-top:12px;
+    font-size:13px;
+    line-height:1.5;
+    opacity:.75;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Word To PDF Converter</h1>
+
+<p>
+Convert DOCX text into a PDF document online.
+</p>
+
+<div class="converter-box">
+
+<div class="upload-area">
+
+<div class="custom-file-picker">
+<label for="wordFile" class="custom-file-button">
+Choose DOCX File
+</label>
+
+<span id="fileName">No file selected</span>
+
+<input type="file"
+       id="wordFile"
+       accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+</div>
+
+<div class="conversion-note">
+DOCX files only. Text is converted to PDF; complex Word formatting may not be preserved.
+</div>
+
+</div><button onclick="convertToPDF()">Convert To PDF</button>
+
+<button onclick="downloadPDF()">Download PDF</button>
+
+<div id="downloadSuccess"
+     class="download-success"
+     role="status"
+     aria-live="polite">
+PDF downloaded successfully.
+</div>
+
+<div id="status"></div>
+
+</div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+
+<script>
+
+let pdfBlob=null;
+let outputFileName="converted-file.pdf";
+
+const wordInput =
+    document.getElementById("wordFile");
+
+wordInput.addEventListener("change", function(){
+    const file = this.files[0];
+
+    document.getElementById("fileName").textContent =
+        file ? file.name : "No file selected";
+
+    document.getElementById("downloadSuccess").style.display =
+        "none";
+
+    pdfBlob = null;
+
+    document.getElementById("status").textContent =
+        "";
+});
+
+async function convertToPDF(){
+
+    const file =
+        wordInput.files[0];
+
+    if(!file){
+        alert("Please select a DOCX file");
+        return;
+    }
+
+    if(!/\.docx$/i.test(file.name)){
+        alert("This browser tool supports DOCX files only.");
+        return;
+    }
+
+    const status =
+        document.getElementById("status");
+
+    status.textContent =
+        "Reading DOCX document...";
+
+    pdfBlob = null;
+
+    try{
+        const arrayBuffer =
+            await file.arrayBuffer();
+
+        const result =
+            await mammoth.extractRawText({
+                arrayBuffer:arrayBuffer
+            });
+
+        const text =
+            (result.value || "")
+            .replace(/\r/g,"")
+            .trim();
+
+        if(!text){
+            throw new Error(
+                "No readable text was found in this DOCX file."
+            );
+        }
+
+        status.textContent =
+            "Creating PDF...";
+
+        const pdfDoc =
+            await PDFLib.PDFDocument.create();
+
+        const font =
+            await pdfDoc.embedFont(
+                PDFLib.StandardFonts.Helvetica
+            );
+
+        const pageWidth = 595.28;
+        const pageHeight = 841.89;
+
+        const margin = 50;
+        const fontSize = 11;
+        const lineHeight = 16;
+        const maxWidth =
+            pageWidth - (margin * 2);
+
+        const paragraphs =
+            text.split(/\n+/);
+
+        const lines = [];
+
+        for(const paragraph of paragraphs){
+
+            const words =
+                paragraph
+                .replace(/\s+/g," ")
+                .trim()
+                .split(" ")
+                .filter(Boolean);
+
+            if(words.length === 0){
+                lines.push("");
+                continue;
+            }
+
+            let currentLine = "";
+
+            for(const word of words){
+                const candidate =
+                    currentLine
+                    ? currentLine + " " + word
+                    : word;
+
+                const width =
+                    font.widthOfTextAtSize(
+                        candidate,
+                        fontSize
+                    );
+
+                if(
+                    width <= maxWidth ||
+                    !currentLine
+                ){
+                    currentLine = candidate;
+                }else{
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+
+            if(currentLine){
+                lines.push(currentLine);
+            }
+
+            lines.push("");
+        }
+
+        const usableHeight =
+            pageHeight - (margin * 2);
+
+        const linesPerPage =
+            Math.max(
+                1,
+                Math.floor(
+                    usableHeight / lineHeight
+                )
+            );
+
+        for(
+            let startLine = 0;
+            startLine < lines.length;
+            startLine += linesPerPage
+        ){
+            const page =
+                pdfDoc.addPage([
+                    pageWidth,
+                    pageHeight
+                ]);
+
+            let y =
+                pageHeight - margin;
+
+            const pageLines =
+                lines.slice(
+                    startLine,
+                    startLine + linesPerPage
+                );
+
+            for(const line of pageLines){
+                if(line){
+                    page.drawText(line,{
+                        x:margin,
+                        y:y,
+                        size:fontSize,
+                        font:font,
+                        maxWidth:maxWidth
+                    });
+                }
+
+                y -= lineHeight;
+            }
+        }
+
+        const pdfBytes =
+            await pdfDoc.save();
+
+        pdfBlob =
+            new Blob(
+                [pdfBytes],
+                {type:"application/pdf"}
+            );
+
+        const baseName =
+            file.name.replace(/\.docx$/i,"") ||
+            "document";
+
+        outputFileName =
+            baseName + ".pdf";
+
+        status.innerHTML =
+            "PDF Created Successfully" +
+            "<br>Pages: " +
+            pdfDoc.getPageCount() +
+            "<br>PDF Size: " +
+            formatSize(pdfBlob.size);
+
+    }catch(error){
+        console.error(
+            "DOCX to PDF error:",
+            error
+        );
+
+        pdfBlob = null;
+
+        status.textContent =
+            "Could not convert this DOCX file. " +
+            (error.message || "Please try another file.");
+    }
+}
+
+function downloadPDF(){
+
+    if(!pdfBlob){
+        alert("Convert DOCX first");
+        return;
+    }
+
+    const url =
+        URL.createObjectURL(pdfBlob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+    a.download = outputFileName;
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    const successBox =
+        document.getElementById("downloadSuccess");
+
+    successBox.style.display =
+        "block";
+
+    clearTimeout(
+        window.wordPDFSuccessTimer
+    );
+
+    window.wordPDFSuccessTimer =
+        setTimeout(() => {
+            successBox.style.display =
+                "none";
+        },4000);
+
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    },1500);
+}
+
+function formatSize(bytes){
+    if(bytes >= 1024 * 1024){
+        return (
+            bytes / (1024 * 1024)
+        ).toFixed(2) + " MB";
+    }
+
+    if(bytes >= 1024){
+        return Math.round(
+            bytes / 1024
+        ) + " KB";
+    }
+
+    return bytes + " B";
+}
+
+</script>
+
+
+<div class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Can I convert Word to PDF online?</h3>
+<p>Yes. This tool extracts text from DOCX documents and creates a PDF file directly in your browser.</p>
+
+<h3>Are my files uploaded?</h3>
+<p>No, files are processed directly in your browser.</p>
+
+<h3>Is the PDF file downloadable?</h3>
+<p>Yes, you can download the generated PDF instantly.</p>
+
+</div>
+
+
+</body>
+</html>

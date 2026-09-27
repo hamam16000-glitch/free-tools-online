@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image to Text OCR Online - Extract Text from Images Free</title>
+
+<meta name="description" content="Extract editable text from JPG, PNG and WebP images online using OCR. Fast, private and easy to use directly in your browser.">
+<meta name="keywords" content="image to text, OCR online, extract text from image, JPG to text, PNG to text, image text extractor">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Image to Text OCR Online">
+<meta property="og:description" content="Extract editable text from images directly in your browser.">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.ocr-box{
+    width:100%;
+    max-width:980px;
+    box-sizing:border-box;
+}
+
+.drop-zone{
+    width:100%;
+    padding:28px 16px;
+    border:2px dashed #cbd5e1;
+    border-radius:14px;
+    text-align:center;
+    box-sizing:border-box;
+    transition:.2s ease;
+}
+
+.drop-zone.dragover{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.drop-zone input[type="file"]{
+    display:none;
+}
+
+.file-button{
+    display:inline-block;
+    padding:11px 18px;
+    border-radius:8px;
+    background:#2563eb;
+    color:#fff;
+    cursor:pointer;
+}
+
+.drop-title{
+    margin-top:12px;
+    font-weight:600;
+}
+
+.drop-subtitle{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.7;
+}
+
+.file-card{
+    display:none;
+    margin-top:14px;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+}
+
+.file-name{
+    font-weight:600;
+    overflow-wrap:anywhere;
+}
+
+.file-meta{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.72;
+}
+
+.preview-box{
+    display:none;
+    margin-top:18px;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+}
+
+.preview-wrap{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:10px;
+    min-height:120px;
+    padding:10px;
+    background:#f8fafc;
+    border-radius:9px;
+}
+
+#imagePreview{
+    display:block;
+    max-width:100%;
+    max-height:460px;
+    object-fit:contain;
+    border-radius:9px;
+}
+
+.progress-box{
+    display:none;
+    margin-top:18px;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+}
+
+.progress-track{
+    width:100%;
+    height:12px;
+    margin-top:10px;
+    background:#e5e7eb;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+#progressBar{
+    width:0%;
+    height:100%;
+    background:#2563eb;
+    transition:width .2s ease;
+}
+
+#progressText{
+    margin-top:8px;
+    font-size:14px;
+}
+
+.output-box{
+    display:none;
+    margin-top:18px;
+}
+
+.output-box label{
+    display:block;
+    margin-bottom:9px;
+    font-weight:600;
+}
+
+#output{
+    display:block;
+    width:100%;
+    min-height:240px;
+    padding:12px;
+    box-sizing:border-box;
+    resize:vertical;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font:inherit;
+    line-height:1.55;
+    background:#fff;
+}
+
+.tool-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+    margin-top:18px;
+}
+
+.tool-actions button{
+    width:100%;
+    min-width:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+#status{
+    margin-top:14px;
+    line-height:1.5;
+    text-align:center;
+}
+
+.success-message{
+    display:none;
+    margin-top:14px;
+    padding:12px 15px;
+    border:1px solid #bbf7d0;
+    border-radius:10px;
+    background:#ecfdf5;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+.error-message{
+    color:#b91c1c;
+    font-weight:600;
+}
+
+.privacy-note{
+    margin-top:15px;
+    padding:11px 12px;
+    border-radius:10px;
+    background:#f8fafc;
+    font-size:13px;
+    line-height:1.5;
+}
+
+@media(max-width:760px){
+    .ocr-box{
+        padding:0 12px;
+    }
+}
+
+@media(max-width:520px){
+    .tool-actions{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .tool-actions button{
+        font-size:15px;
+        padding:12px 6px;
+    }
+
+    #output{
+        min-height:210px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Image to Text OCR</h1>
+
+<p>
+Extract editable text from JPG, PNG and WebP images directly in your browser.
+</p>
+
+<div class="ocr-box">
+
+<h2>Extract Text from Image</h2>
+
+<div id="dropZone" class="drop-zone">
+
+<label for="imageFile" class="file-button">
+Choose Image
+</label>
+
+<input
+    type="file"
+    id="imageFile"
+    accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+>
+
+<div class="drop-title">
+or drag and drop an image here
+</div>
+
+<div class="drop-subtitle">
+JPG, PNG or WebP • Maximum file size: 25 MB
+</div>
+
+</div>
+
+<div id="fileCard" class="file-card">
+<div id="fileName" class="file-name"></div>
+<div id="fileMeta" class="file-meta"></div>
+</div>
+
+<div id="previewBox" class="preview-box">
+
+<strong>Image Preview</strong>
+
+<div class="preview-wrap">
+<img id="imagePreview" alt="Selected image preview">
+</div>
+
+</div>
+
+<div id="progressBox" class="progress-box">
+
+<strong>OCR Progress</strong>
+
+<div class="progress-track">
+<div id="progressBar"></div>
+</div>
+
+<div id="progressText">
+Preparing OCR...
+</div>
+
+</div>
+
+<div id="outputBox" class="output-box">
+
+<label for="output">Extracted Text</label>
+
+<textarea
+    id="output"
+    placeholder="Extracted text will appear here..."
+></textarea>
+
+</div>
+
+<div class="tool-actions">
+
+<button id="extractBtn" onclick="extractText()" disabled>
+Extract Text
+</button>
+
+<button id="copyBtn" onclick="copyText()" disabled>
+Copy Text
+</button>
+
+<button id="downloadBtn" onclick="downloadText()" disabled>
+Download TXT
+</button>
+
+<button id="clearBtn" onclick="clearAll()">
+Clear
+</button>
+
+</div>
+
+<div id="successMessage" class="success-message"></div>
+
+<div id="status" aria-live="polite"></div>
+
+<div class="privacy-note">
+Your image is processed by OCR directly in your browser and is not intentionally uploaded by this tool.
+</div>
+
+</div>
+
+<section>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is OCR?</h3>
+<p>
+OCR (Optical Character Recognition) detects text inside an image and converts it into editable text.
+</p>
+
+<h3>Which image formats are supported?</h3>
+<p>
+You can use JPG, PNG and WebP images.
+</p>
+
+<h3>Can I copy the extracted text?</h3>
+<p>
+Yes. After OCR finishes, you can copy the text or download it as a TXT file.
+</p>
+
+<h3>Does image quality affect OCR accuracy?</h3>
+<p>
+Yes. Clear images with sharp, readable text generally produce better OCR results.
+</p>
+
+<h3>Are my images uploaded?</h3>
+<p>
+The OCR processing runs in your browser using Tesseract.js.
+</p>
+
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+
+<script>
+const maxFileSize = 25 * 1024 * 1024;
+
+let selectedFile = null;
+let previewURL = null;
+let extractedText = "";
+let processing = false;
+
+const input = document.getElementById("imageFile");
+const dropZone = document.getElementById("dropZone");
+const output = document.getElementById("output");
+
+input.addEventListener("change", event => {
+    const file = event.target.files[0];
+
+    if(file){
+        loadImage(file);
+    }
+});
+
+dropZone.addEventListener("dragover", event => {
+    event.preventDefault();
+    dropZone.classList.add("dragover");
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+});
+
+dropZone.addEventListener("drop", event => {
+    event.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    const file = event.dataTransfer.files[0];
+
+    if(file){
+        loadImage(file);
+    }
+});
+
+output.addEventListener("input", () => {
+    extractedText = output.value;
+
+    const hasText = extractedText.trim().length > 0;
+
+    document.getElementById("copyBtn").disabled = !hasText;
+    document.getElementById("downloadBtn").disabled = !hasText;
+});
+
+function loadImage(file){
+    const valid =
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/webp" ||
+        /\.(jpe?g|png|webp)$/i.test(file.name);
+
+    if(!valid){
+        alert("Please choose a JPG, PNG or WebP image.");
+        return;
+    }
+
+    if(file.size > maxFileSize){
+        alert("Image is too large. Maximum file size is 25 MB.");
+        return;
+    }
+
+    clearPreviewURL();
+
+    selectedFile = file;
+    extractedText = "";
+
+    output.value = "";
+
+    document.getElementById("outputBox").style.display = "none";
+    document.getElementById("copyBtn").disabled = true;
+    document.getElementById("downloadBtn").disabled = true;
+
+    hideSuccess();
+
+    previewURL = URL.createObjectURL(file);
+
+    const image = new Image();
+
+    image.onload = () => {
+        document.getElementById("fileCard").style.display = "block";
+
+        document.getElementById("fileName").textContent =
+            file.name;
+
+        document.getElementById("fileMeta").textContent =
+            image.naturalWidth +
+            " × " +
+            image.naturalHeight +
+            " • " +
+            formatSize(file.size) +
+            " • " +
+            sourceFormat(file);
+
+        document.getElementById("imagePreview").src =
+            previewURL;
+
+        document.getElementById("previewBox").style.display =
+            "block";
+
+        document.getElementById("extractBtn").disabled =
+            false;
+
+        document.getElementById("status").textContent =
+            "Image ready for OCR.";
+    };
+
+    image.onerror = () => {
+        alert("Could not read this image.");
+        clearAll();
+    };
+
+    image.src = previewURL;
+}
+
+async function extractText(){
+    if(!selectedFile || processing){
+        return;
+    }
+
+    if(typeof Tesseract === "undefined"){
+        document.getElementById("status").innerHTML =
+            '<span class="error-message">OCR library could not be loaded. Check your internet connection and try again.</span>';
+
+        return;
+    }
+
+    processing = true;
+
+    document.getElementById("extractBtn").disabled = true;
+    document.getElementById("copyBtn").disabled = true;
+    document.getElementById("downloadBtn").disabled = true;
+
+    hideSuccess();
+
+    const progressBox =
+        document.getElementById("progressBox");
+
+    const progressBar =
+        document.getElementById("progressBar");
+
+    const progressText =
+        document.getElementById("progressText");
+
+    progressBox.style.display = "block";
+    progressBar.style.width = "0%";
+
+    progressText.textContent =
+        "Preparing OCR...";
+
+    document.getElementById("status").textContent =
+        "Extracting text. Please wait...";
+
+    try{
+        const result = await Tesseract.recognize(
+            selectedFile,
+            "eng",
+            {
+                logger: message => {
+                    if(
+                        typeof message.progress === "number"
+                    ){
+                        const percent =
+                            Math.max(
+                                0,
+                                Math.min(
+                                    100,
+                                    Math.round(
+                                        message.progress * 100
+                                    )
+                                )
+                            );
+
+                        progressBar.style.width =
+                            percent + "%";
+
+                        const stage =
+                            message.status
+                            ? message.status
+                                .replace(/_/g, " ")
+                            : "Processing";
+
+                        progressText.textContent =
+                            stage +
+                            " • " +
+                            percent +
+                            "%";
+                    }else if(message.status){
+                        progressText.textContent =
+                            message.status.replace(/_/g, " ");
+                    }
+                }
+            }
+        );
+
+        extractedText =
+            result &&
+            result.data &&
+            typeof result.data.text === "string"
+            ? result.data.text
+            : "";
+
+        output.value = extractedText;
+
+        document.getElementById("outputBox").style.display =
+            "block";
+
+        progressBar.style.width = "100%";
+        progressText.textContent =
+            "OCR completed • 100%";
+
+        const hasText =
+            extractedText.trim().length > 0;
+
+        document.getElementById("copyBtn").disabled =
+            !hasText;
+
+        document.getElementById("downloadBtn").disabled =
+            !hasText;
+
+        if(hasText){
+            document.getElementById("status").textContent =
+                "Text extracted successfully.";
+        }else{
+            document.getElementById("status").textContent =
+                "OCR completed, but no readable text was detected.";
+        }
+
+    }catch(error){
+        console.error("OCR error:", error);
+
+        document.getElementById("status").innerHTML =
+            '<span class="error-message">OCR failed. Please try another clear image or check your internet connection.</span>';
+
+        progressText.textContent =
+            "OCR failed.";
+
+    }finally{
+        processing = false;
+
+        document.getElementById("extractBtn").disabled =
+            !selectedFile;
+    }
+}
+
+async function copyText(){
+    const text = output.value;
+
+    if(!text.trim()){
+        return;
+    }
+
+    try{
+        await navigator.clipboard.writeText(text);
+
+        showSuccess(
+            "✓ Text copied successfully."
+        );
+
+    }catch(error){
+        output.focus();
+        output.select();
+
+        const copied =
+            document.execCommand("copy");
+
+        if(copied){
+            showSuccess(
+                "✓ Text copied successfully."
+            );
+        }else{
+            alert("Could not copy the text.");
+        }
+    }
+}
+
+function downloadText(){
+    const text = output.value;
+
+    if(!text.trim()){
+        return;
+    }
+
+    const blob = new Blob(
+        [text],
+        {
+            type:"text/plain;charset=utf-8"
+        }
+    );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    const baseName =
+        selectedFile
+        ? selectedFile.name.replace(
+            /\.(jpe?g|png|webp)$/i,
+            ""
+        )
+        : "extracted-text";
+
+    link.download =
+        baseName + "-text.txt";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 1000);
+
+    showSuccess(
+        "✓ TXT file downloaded successfully."
+    );
+}
+
+function showSuccess(message){
+    const box =
+        document.getElementById("successMessage");
+
+    box.textContent = message;
+    box.style.display = "block";
+
+    clearTimeout(window.ocrSuccessTimer);
+
+    window.ocrSuccessTimer = setTimeout(() => {
+        box.style.display = "none";
+    }, 4000);
+}
+
+function hideSuccess(){
+    const box =
+        document.getElementById("successMessage");
+
+    box.style.display = "none";
+}
+
+function clearPreviewURL(){
+    if(previewURL){
+        URL.revokeObjectURL(previewURL);
+        previewURL = null;
+    }
+}
+
+function clearAll(){
+    clearPreviewURL();
+
+    selectedFile = null;
+    extractedText = "";
+    processing = false;
+
+    input.value = "";
+    output.value = "";
+
+    document.getElementById("fileCard").style.display =
+        "none";
+
+    document.getElementById("previewBox").style.display =
+        "none";
+
+    document.getElementById("progressBox").style.display =
+        "none";
+
+    document.getElementById("outputBox").style.display =
+        "none";
+
+    document.getElementById("imagePreview").removeAttribute(
+        "src"
+    );
+
+    document.getElementById("progressBar").style.width =
+        "0%";
+
+    document.getElementById("progressText").textContent =
+        "Preparing OCR...";
+
+    document.getElementById("extractBtn").disabled =
+        true;
+
+    document.getElementById("copyBtn").disabled =
+        true;
+
+    document.getElementById("downloadBtn").disabled =
+        true;
+
+    document.getElementById("status").textContent =
+        "";
+
+    hideSuccess();
+}
+
+function sourceFormat(file){
+    if(
+        file.type === "image/png" ||
+        /\.png$/i.test(file.name)
+    ){
+        return "PNG";
+    }
+
+    if(
+        file.type === "image/webp" ||
+        /\.webp$/i.test(file.name)
+    ){
+        return "WebP";
+    }
+
+    return "JPG";
+}
+
+function formatSize(bytes){
+    if(bytes >= 1024 * 1024){
+        return (
+            bytes / (1024 * 1024)
+        ).toFixed(2) + " MB";
+    }
+
+    if(bytes >= 1024){
+        return (
+            bytes / 1024
+        ).toFixed(1) + " KB";
+    }
+
+    return bytes + " B";
+}
+</script>
+
+</body>
+</html>

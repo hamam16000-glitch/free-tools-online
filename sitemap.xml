@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<url><loc>http://127.0.0.1:8080/index.html</loc></url>
+<url><loc>http://127.0.0.1:8080/about.html</loc></url>
+<url><loc>http://127.0.0.1:8080/privacy.html</loc></url>
+
+<url><loc>http://127.0.0.1:8080/tools/word-counter.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/character-counter.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/case-converter.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/lorem-ipsum-generator.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/remove-duplicate-lines.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/text-sorter.html</loc></url>
+
+<url><loc>http://127.0.0.1:8080/tools/image-compressor.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/image-resizer.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/image-converter.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/image-cropper.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/image-rotate-flip.html</loc></url>
+
+<url><loc>http://127.0.0.1:8080/tools/pdf-compressor.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/merge-pdf.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/split-pdf.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/pdf-to-jpg.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/images-to-pdf.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/rotate-pdf.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/pdf-pages.html</loc></url>
+
+<url><loc>http://127.0.0.1:8080/tools/password-generator.html</loc></url>
+<url><loc>http://127.0.0.1:8080/tools/qr-generator.html</loc></url>
+
+</urlset>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Merge PDF Online Free - Combine PDF Files</title>
+
+<meta name="description" content="Merge PDF files online for free. Combine multiple PDF documents into one PDF directly in your browser. Fast, private and easy to use.">
+
+<meta name="keywords" content="merge PDF, combine PDF, merge PDF online, combine PDF files, free PDF merger">
+
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Merge PDF Online Free - Combine PDF Files">
+<meta property="og:description" content="Combine multiple PDF files into one PDF directly in your browser. Your files stay on your device.">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+<style>
+.merge-box{
+    width:100%;
+    max-width:700px;
+    box-sizing:border-box;
+}
+
+.merge-box input[type="file"]{
+    display:none;
+}
+
+.pdf-file-picker{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    box-sizing:border-box;
+}
+
+.pdf-file-button{
+    background:#2563eb;
+    color:white;
+    padding:11px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+#filePickerText{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.file-hint{
+    margin-top:8px;
+    font-size:13px;
+    opacity:0.7;
+}
+
+.file-list{
+    margin-top:16px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.file-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    box-sizing:border-box;
+}
+
+.file-details{
+    flex:1;
+    min-width:0;
+}
+
+.file-name{
+    font-weight:600;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.file-meta{
+    margin-top:3px;
+    font-size:13px;
+    opacity:0.7;
+}
+
+.file-actions{
+    display:flex;
+    gap:5px;
+    flex-shrink:0;
+}
+
+.file-actions button{
+    min-width:0;
+    width:36px;
+    height:36px;
+    margin:0;
+    padding:0;
+}
+
+.merge-button-row{
+    display:flex;
+    flex-wrap:nowrap;
+    width:100%;
+    gap:8px;
+    margin-top:18px;
+}
+
+.merge-button-row button{
+    flex:1;
+    width:auto;
+    min-width:0;
+    margin:0;
+}
+
+.drop-zone{
+    transition:.2s ease;
+}
+
+.drop-zone.dragover,
+.pdf-file-picker.dragover{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.tool-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+    margin-top:18px;
+}
+
+.tool-actions button{
+    width:100%;
+    min-width:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+.progress-wrap{
+    display:none;
+    margin-top:16px;
+}
+
+.progress-track{
+    width:100%;
+    height:10px;
+    background:#e5e7eb;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#2563eb;
+    transition:width .15s ease;
+}
+
+.progress-text{
+    margin-top:7px;
+    text-align:center;
+    font-size:13px;
+}
+
+.download-success{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+#info{
+    margin-top:15px;
+    line-height:1.5;
+}
+
+@media (max-width:600px){
+    .merge-box{
+        padding:0 12px;
+    }
+
+    .pdf-file-picker{
+        padding:10px;
+    }
+
+    .pdf-file-button{
+        padding:10px 12px;
+        font-size:14px;
+    }
+
+    .file-item{
+        padding:9px;
+    }
+
+    .file-actions{
+        gap:3px;
+    }
+
+    .file-actions button{
+        width:32px;
+        height:32px;
+        font-size:13px;
+    }
+
+    .merge-button-row button{
+        min-width:0;
+        padding:12px 3px;
+        margin:0;
+        font-size:14px;
+    }
+
+    #info{
+        text-align:center;
+        width:100%;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Merge PDF Online</h1>
+
+<p>
+Combine multiple PDF files into one document for free directly in your browser.
+</p>
+
+<div class="merge-box">
+
+<h2>Merge Your PDF Files</h2>
+
+<div class="pdf-file-picker" id="dropZone">
+<label for="pdfFiles" class="pdf-file-button">Choose PDF Files</label>
+<span id="filePickerText">No files selected</span>
+<input type="file" id="pdfFiles" accept="application/pdf,.pdf" multiple>
+</div>
+
+<div class="file-hint">
+PDF files only - Maximum size: 50 MB per file. Files are merged in the order shown below.
+</div>
+
+<div id="fileList" class="file-list"></div>
+
+<div class="tool-actions">
+
+<button id="mergeBtn" onclick="mergePDFs()" disabled>
+Merge PDF
+</button>
+
+<button id="downloadBtn" onclick="downloadPDF()" disabled>
+Download
+</button>
+
+<button onclick="clearPDFs()">
+Clear
+</button>
+
+</div>
+
+<div id="progressWrap" class="progress-wrap">
+    <div class="progress-track">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <div id="progressText" class="progress-text"></div>
+</div>
+
+<div id="downloadSuccess"
+     class="download-success"
+     role="status"
+     aria-live="polite">
+✓ PDF downloaded successfully.
+</div>
+
+<div id="info" aria-live="polite"></div>
+
+</div>
+
+<section>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>How do I merge PDF files?</h3>
+<p>
+Choose two or more PDF files, arrange them in the order you want, then select Merge PDF.
+</p>
+
+<h3>Can I change the PDF order?</h3>
+<p>
+Yes. Use the up and down buttons next to each selected file before merging.
+</p>
+
+<h3>Are my PDF files uploaded?</h3>
+<p>
+No. Your PDF files are processed locally in your browser and are not uploaded to our server.
+</p>
+
+<h3>Will the merged PDF keep the original quality?</h3>
+<p>
+Yes. Pages are copied directly into the new PDF without converting them to images.
+</p>
+
+</section>
+
+<script>
+let selectedFiles = [];
+let mergedPDF = null;
+let mergedFileName = "merged.pdf";
+let objectURL = null;
+
+const maxFileSize = 50 * 1024 * 1024;
+
+document.getElementById("pdfFiles").addEventListener("change", selectPDFs);
+
+const dropZone = document.getElementById("dropZone");
+
+dropZone.addEventListener("dragover", event => {
+    event.preventDefault();
+    dropZone.classList.add("dragover");
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+});
+
+dropZone.addEventListener("drop", event => {
+    event.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    const files = Array.from(event.dataTransfer.files || []);
+
+    if(files.length){
+        addPDFFiles(files);
+    }
+});
+
+async function selectPDFs(event){
+    const incomingFiles =
+        Array.from(event.target.files || []);
+
+    event.target.value = "";
+
+    await addPDFFiles(incomingFiles);
+}
+
+async function addPDFFiles(incomingFiles){
+    if(incomingFiles.length === 0){
+        return;
+    }
+
+    mergedPDF = null;
+    resetDownload();
+    hideDownloadSuccess();
+
+    let rejected = [];
+    let acceptedCount = 0;
+
+    document.getElementById("info").textContent =
+        "Reading PDF files...";
+
+    for(const file of incomingFiles){
+        const isPDF =
+            file.type === "application/pdf" ||
+            /\.pdf$/i.test(file.name);
+
+        if(!isPDF){
+            rejected.push(
+                file.name + " - not a PDF file"
+            );
+            continue;
+        }
+
+        if(file.size > maxFileSize){
+            rejected.push(
+                file.name + " - larger than 50 MB"
+            );
+            continue;
+        }
+
+        try{
+            const bytes =
+                await file.arrayBuffer();
+
+            const pdf =
+                await PDFLib.PDFDocument.load(
+                    bytes,
+                    {ignoreEncryption:false}
+                );
+
+            selectedFiles.push({
+                file:file,
+                pages:pdf.getPageCount()
+            });
+
+            acceptedCount++;
+
+        }catch(error){
+            console.error("PDF read error:", error);
+
+            rejected.push(
+                file.name + " - could not be read"
+            );
+        }
+    }
+
+    renderFileList();
+    updateState();
+
+    if(rejected.length > 0){
+        alert(
+            "Some files were not added:\n\n" +
+            rejected.join("\n")
+        );
+    }
+
+    if(
+        acceptedCount === 0 &&
+        selectedFiles.length === 0
+    ){
+        document.getElementById("info").textContent =
+            "";
+    }
+}
+
+function renderFileList(){
+    const list = document.getElementById("fileList");
+    list.innerHTML = "";
+
+    selectedFiles.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "file-item";
+
+        const details = document.createElement("div");
+        details.className = "file-details";
+
+        const name = document.createElement("div");
+        name.className = "file-name";
+        name.textContent = (index + 1) + ". " + item.file.name;
+
+        const meta = document.createElement("div");
+        meta.className = "file-meta";
+        meta.textContent =
+            formatSize(item.file.size) +
+            " • " +
+            item.pages +
+            (item.pages === 1 ? " page" : " pages");
+
+        details.appendChild(name);
+        details.appendChild(meta);
+
+        const actions = document.createElement("div");
+        actions.className = "file-actions";
+
+        const upBtn = document.createElement("button");
+        upBtn.type = "button";
+        upBtn.textContent = "↑";
+        upBtn.title = "Move up";
+        upBtn.disabled = index === 0;
+        upBtn.onclick = () => moveFile(index, -1);
+
+        const downBtn = document.createElement("button");
+        downBtn.type = "button";
+        downBtn.textContent = "↓";
+        downBtn.title = "Move down";
+        downBtn.disabled = index === selectedFiles.length - 1;
+        downBtn.onclick = () => moveFile(index, 1);
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.textContent = "×";
+        removeBtn.title = "Remove";
+        removeBtn.onclick = () => removeFile(index);
+
+        actions.appendChild(upBtn);
+        actions.appendChild(downBtn);
+        actions.appendChild(removeBtn);
+
+        row.appendChild(details);
+        row.appendChild(actions);
+
+        list.appendChild(row);
+    });
+}
+
+function moveFile(index, direction){
+    const newIndex = index + direction;
+
+    if(newIndex < 0 || newIndex >= selectedFiles.length){
+        return;
+    }
+
+    const temp = selectedFiles[index];
+    selectedFiles[index] = selectedFiles[newIndex];
+    selectedFiles[newIndex] = temp;
+
+    mergedPDF = null;
+    resetDownload();
+    renderFileList();
+    updateState();
+}
+
+function removeFile(index){
+    selectedFiles.splice(index, 1);
+
+    mergedPDF = null;
+    resetDownload();
+    renderFileList();
+    updateState();
+}
+
+function updateState(){
+    const mergeBtn = document.getElementById("mergeBtn");
+    const pickerText = document.getElementById("filePickerText");
+    const info = document.getElementById("info");
+
+    if(selectedFiles.length === 0){
+        pickerText.textContent = "No files selected";
+        mergeBtn.disabled = true;
+        mergeBtn.textContent = "Merge PDF";
+        info.textContent = "";
+        return;
+    }
+
+    pickerText.textContent =
+        selectedFiles.length +
+        (selectedFiles.length === 1 ? " file selected" : " files selected");
+
+    mergeBtn.disabled = selectedFiles.length < 2;
+    mergeBtn.textContent = "Merge PDF";
+
+    const totalPages = selectedFiles.reduce(
+        (sum, item) => sum + item.pages,
+        0
+    );
+
+    const totalSize = selectedFiles.reduce(
+        (sum, item) => sum + item.file.size,
+        0
+    );
+
+    info.innerHTML =
+        "Files: " + selectedFiles.length +
+        "<br>Total Size: " + formatSize(totalSize) +
+        "<br>Total Pages: " + totalPages;
+
+    if(selectedFiles.length === 1){
+        info.innerHTML += "<br>Please add at least one more PDF.";
+    }
+}
+
+async function mergePDFs(){
+    if(selectedFiles.length < 2){
+        alert("Please select at least two PDF files");
+        return;
+    }
+
+    const btn = document.getElementById("mergeBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    btn.disabled = true;
+    btn.textContent = "Merging...";
+    downloadBtn.disabled = true;
+
+    mergedPDF = null;
+    revokeObjectURL();
+
+    try{
+        const outputPDF = await PDFLib.PDFDocument.create();
+        let totalPages = 0;
+
+        for(let i = 0; i < selectedFiles.length; i++){
+            const percent =
+                Math.round(
+                    (i / selectedFiles.length) * 85
+                );
+
+            showProgress(
+                percent,
+                "Merging file " +
+                (i + 1) +
+                " of " +
+                selectedFiles.length
+            );
+
+            document.getElementById("info").textContent =
+                "Merging PDF files...";
+
+            const bytes = await selectedFiles[i].file.arrayBuffer();
+
+            const sourcePDF = await PDFLib.PDFDocument.load(bytes, {
+                ignoreEncryption: false
+            });
+
+            const pageIndices = sourcePDF.getPageIndices();
+
+            const copiedPages = await outputPDF.copyPages(
+                sourcePDF,
+                pageIndices
+            );
+
+            copiedPages.forEach(page => {
+                outputPDF.addPage(page);
+            });
+
+            totalPages += copiedPages.length;
+        }
+
+        showProgress(
+            90,
+            "Creating merged PDF..."
+        );
+
+        document.getElementById("info").textContent =
+            "Creating merged PDF...";
+
+        const outputBytes = await outputPDF.save();
+
+        mergedPDF = new Blob(
+            [outputBytes],
+            {type:"application/pdf"}
+        );
+
+        mergedFileName = createMergedFileName();
+
+        const originalSize = selectedFiles.reduce(
+            (sum, item) => sum + item.file.size,
+            0
+        );
+
+        document.getElementById("info").innerHTML =
+            "Merged Successfully" +
+            "<br>Files: " + selectedFiles.length +
+            "<br>Pages: " + totalPages +
+            "<br>Original Total: " + formatSize(originalSize) +
+            "<br>Merged Size: " + formatSize(mergedPDF.size);
+
+        btn.disabled = true;
+        btn.textContent = "Merged";
+        downloadBtn.disabled = false;
+
+        showProgress(
+            100,
+            "Completed"
+        );
+
+    }catch(error){
+        console.error("PDF merge error:", error);
+
+        mergedPDF = null;
+        downloadBtn.disabled = true;
+
+        document.getElementById("info").innerHTML =
+            "Could not merge these PDF files.<br>" +
+            "One of the files may be damaged, encrypted, or unsupported.";
+
+        btn.disabled = false;
+        btn.textContent = "Merge PDF";
+    }
+}
+
+function createMergedFileName(){
+    if(selectedFiles.length === 0){
+        return "merged.pdf";
+    }
+
+    let baseName = selectedFiles[0].file.name.replace(/\.pdf$/i, "");
+
+    if(!baseName){
+        baseName = "document";
+    }
+
+    return baseName + "-merged.pdf";
+}
+
+function downloadPDF(){
+    if(!mergedPDF){
+        alert("Please merge PDF files first");
+        return;
+    }
+
+    revokeObjectURL();
+
+    objectURL =
+        URL.createObjectURL(mergedPDF);
+
+    const link =
+        document.createElement("a");
+
+    link.href = objectURL;
+    link.download = mergedFileName;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    const box =
+        document.getElementById("downloadSuccess");
+
+    box.style.display = "block";
+
+    clearTimeout(window.mergePDFSuccessTimer);
+
+    window.mergePDFSuccessTimer =
+        setTimeout(() => {
+            box.style.display = "none";
+        },4000);
+
+    setTimeout(
+        revokeObjectURL,
+        1500
+    );
+}
+
+function clearPDFs(){
+    hideDownloadSuccess();
+    hideProgress();
+
+    selectedFiles = [];
+    mergedPDF = null;
+    mergedFileName = "merged.pdf";
+
+    revokeObjectURL();
+
+    document.getElementById("pdfFiles").value = "";
+    document.getElementById("filePickerText").textContent =
+        "No files selected";
+    document.getElementById("fileList").innerHTML = "";
+    document.getElementById("info").textContent = "";
+
+    const btn = document.getElementById("mergeBtn");
+    btn.disabled = true;
+    btn.textContent = "Merge PDF";
+
+    document.getElementById("downloadBtn").disabled = true;
+}
+
+function resetDownload(){
+    hideDownloadSuccess();
+    hideProgress();
+
+    mergedPDF = null;
+    document.getElementById("downloadBtn").disabled = true;
+
+    const btn = document.getElementById("mergeBtn");
+    btn.textContent = "Merge PDF";
+}
+
+function showProgress(percent, message){
+    document.getElementById("progressWrap").style.display =
+        "block";
+
+    document.getElementById("progressBar").style.width =
+        percent + "%";
+
+    document.getElementById("progressText").textContent =
+        message;
+}
+
+function hideProgress(){
+    document.getElementById("progressWrap").style.display =
+        "none";
+
+    document.getElementById("progressBar").style.width =
+        "0%";
+
+    document.getElementById("progressText").textContent =
+        "";
+}
+
+function hideDownloadSuccess(){
+    const box =
+        document.getElementById("downloadSuccess");
+
+    if(box){
+        box.style.display = "none";
+    }
+}
+
+function revokeObjectURL(){
+    if(objectURL){
+        URL.revokeObjectURL(objectURL);
+        objectURL = null;
+    }
+}
+
+function formatSize(bytes){
+    if(bytes >= 1024 * 1024){
+        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+    if(bytes >= 1024){
+        return Math.round(bytes / 1024) + " KB";
+    }
+
+    return bytes + " B";
+}
+</script>
+
+</body>
+</html>

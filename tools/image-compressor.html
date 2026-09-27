@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image Compressor Online Free - Compress JPG PNG WebP Images</title>
+
+<meta name="description" content="Compress JPG, PNG and WebP images online for free. Reduce image size while keeping quality. Change format and optimize images directly in your browser.">
+
+<meta name="keywords" content="image compressor, jpg compressor, png compressor, webp compressor, reduce image size, optimize images">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+
+/* Image Compressor page only */
+
+.compressor-page{
+    width:92%;
+    max-width:760px;
+    margin:40px auto;
+}
+
+.compressor-header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.compressor-header h1{
+    margin-bottom:12px;
+}
+
+.compressor-header p{
+    max-width:650px;
+    margin:0 auto;
+    line-height:1.6;
+}
+
+.compressor-card{
+    background:#fff;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+}
+
+.compressor-field{
+    margin-bottom:24px;
+}
+
+.compressor-field > label{
+    display:block;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.compressor-upload{
+    position:relative;
+    width:100%;
+    min-height:58px;
+    border:2px dashed #cbd5e1;
+    border-radius:14px;
+    overflow:hidden;
+    background:#f8fafc;
+}
+
+.compressor-upload-text{
+    min-height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+    font-weight:600;
+    color:#2563eb;
+    pointer-events:none;
+}
+
+#upload{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    opacity:0 !important;
+    cursor:pointer !important;
+    z-index:5 !important;
+    margin:0 !important;
+    padding:0 !important;
+}
+
+#format{
+    width:100%;
+    min-height:50px;
+    padding:0 14px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    background:#fff;
+    font-size:16px;
+}
+
+.quality-row{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+#quality{
+    flex:1;
+}
+
+#qualityValue{
+    min-width:52px;
+    font-weight:700;
+    text-align:center;
+}
+
+.compressor-actions{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:28px;
+}
+
+.compressor-actions button{
+    min-height:50px;
+    border:0;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+}
+
+.compressor-actions button:first-child{
+    background:#2563eb;
+    color:#fff;
+}
+
+.compressor-actions button:nth-child(2){
+    background:#0f172a;
+    color:#fff;
+}
+
+.compressor-actions button:nth-child(3){
+    background:#e5e7eb;
+    color:#111827;
+}
+
+#downloadStatus{
+    display:none;
+    margin:18px 0 0;
+    padding:12px 15px;
+    border-radius:10px;
+    background:#ecfdf5;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+#info{
+    text-align:center;
+    line-height:1.45;
+    margin:25px 0 18px;
+}
+
+#preview{
+    display:block;
+    max-width:100%;
+    width:auto;
+    max-height:520px;
+    height:auto;
+    object-fit:contain;
+    margin:20px auto 0;
+    border-radius:14px;
+    border:1px solid #e5e7eb;
+}
+
+.compressor-faq{
+    margin-top:35px;
+    padding-top:25px;
+    border-top:1px solid #e5e7eb;
+}
+
+.compressor-faq h2{
+    margin-bottom:22px;
+}
+
+.compressor-faq h3{
+    margin:20px 0 7px;
+}
+
+.compressor-faq p{
+    line-height:1.6;
+}
+
+@media(max-width:600px){
+
+    .compressor-page{
+        width:94%;
+        margin:20px auto;
+    }
+
+    .compressor-card{
+        padding:20px 16px;
+        border-radius:16px;
+    }
+
+    .compressor-actions{
+        grid-template-columns:1fr;
+    }
+
+    .compressor-actions button{
+        width:100%;
+    }
+
+    .compressor-header h1{
+        font-size:28px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<main class="compressor-page">
+
+<header class="compressor-header">
+<h1>Image Compressor Online</h1>
+<p>
+Compress JPG, PNG and WebP images while maintaining high quality.
+Your images stay private and are processed directly in your browser.
+</p>
+</header>
+
+<div class="compressor-card">
+
+<div class="compressor-field">
+<label>Choose an Image</label>
+
+<div class="compressor-upload">
+<div class="compressor-upload-text" id="fileText">Choose Image</div>
+<input type="file" id="upload" accept="image/*">
+</div>
+</div>
+
+<div class="compressor-field">
+<label for="format">Output Format</label>
+
+<select id="format">
+<option value="image/jpeg">JPG</option>
+<option value="image/png">PNG</option>
+<option value="image/webp">WebP</option>
+</select>
+</div>
+
+<div class="compressor-field">
+<label for="quality">Image Quality</label>
+
+<div class="quality-row">
+<input
+type="range"
+id="quality"
+min="10"
+max="100"
+value="80"
+oninput="showQuality()"
+>
+<span id="qualityValue">80%</span>
+</div>
+</div>
+
+<div class="compressor-actions">
+<button type="button" onclick="compressImage()">Compress Image</button>
+<button type="button" onclick="downloadImage()">Download</button>
+<button type="button" onclick="clearImage()">Clear</button>
+</div>
+
+<div id="downloadStatus">Image downloaded successfully.</div>
+
+<h3 id="info">No image selected</h3>
+
+<img id="preview" alt="Compressed image preview">
+
+<section class="compressor-faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is an image compressor?</h3>
+<p>
+An image compressor reduces image file size to make images faster for websites, apps and sharing.
+</p>
+
+<h3>Does this tool support PNG and WebP?</h3>
+<p>
+Yes. You can compress and convert images between JPG, PNG and WebP formats.
+</p>
+
+<h3>Are my images uploaded?</h3>
+<p>
+No. Images are processed locally in your browser and are never uploaded or stored.
+</p>
+
+<h3>Why should I compress images?</h3>
+<p>
+Smaller images improve website speed, save storage space and provide faster loading experiences.
+</p>
+
+</section>
+
+</div>
+</main>
+
+<script>
+
+
+let compressedImage = "";
+
+let originalSize = 0;
+
+let originalWidth = 0;
+
+let originalHeight = 0;
+
+
+
+
+function showQuality(){
+
+document.getElementById("qualityValue").innerHTML =
+document.getElementById("quality").value + "%";
+
+}
+
+
+
+
+function compressImage(){
+
+
+let file =
+document.getElementById("upload").files[0];
+
+
+
+if(!file){
+
+alert("Please select an image");
+
+return;
+
+}
+
+
+
+originalSize=file.size;
+
+
+
+let reader=new FileReader();
+
+
+
+reader.onload=function(e){
+
+
+let img=new Image();
+
+
+
+img.onload=function(){
+
+
+originalWidth=img.width;
+
+originalHeight=img.height;
+
+
+
+let canvas=document.createElement("canvas");
+
+let ctx=canvas.getContext("2d");
+
+
+
+canvas.width=img.width;
+
+canvas.height=img.height;
+
+
+
+ctx.drawImage(
+img,
+0,
+0
+);
+
+
+
+let format=
+document.getElementById("format").value;
+
+
+
+let quality=
+document.getElementById("quality").value / 100;
+
+
+
+compressedImage =
+canvas.toDataURL(
+format,
+quality
+);
+
+
+
+let newSize =
+Math.round(
+compressedImage.length * 0.75
+);
+
+
+
+let saved =
+Math.round(
+(1 - newSize/originalSize) * 100
+);
+
+
+
+document.getElementById("preview").src =
+compressedImage;
+
+
+
+document.getElementById("info").innerHTML =
+
+"Original Size: "
++ Math.round(originalSize/1024)
++ " KB"
+
++
+
+"<br>Original Dimensions: "
++ originalWidth
++ " x "
++ originalHeight
+
++
+
+"<br>New Size: "
++ Math.round(newSize/1024)
++ " KB"
+
++
+
+"<br>Saved: "
++ saved
++ "%";
+
+
+
+}
+
+
+
+img.src=e.target.result;
+
+
+}
+
+
+
+reader.readAsDataURL(file);
+
+
+}
+
+
+
+
+function downloadImage(){
+
+
+if(!compressedImage){
+
+return;
+
+}
+
+
+
+let format =
+document.getElementById("format").value;
+
+
+
+let extension =
+format.split("/")[1];
+
+
+
+let link=document.createElement("a");
+
+link.href=compressedImage;
+
+link.download=
+"compressed-image."
++ extension;
+
+
+link.click();
+
+let status = document.getElementById("downloadStatus");
+status.style.display = "block";
+status.innerHTML = "Image downloaded successfully.";
+
+setTimeout(function(){
+    status.style.display = "none";
+}, 3000);
+
+
+
+}
+
+
+
+
+
+function clearImage(){
+
+
+compressedImage="";
+
+
+document.getElementById("upload").value="";
+
+
+document.getElementById("preview").src="";
+
+
+document.getElementById("info").innerHTML=
+"No image selected";
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

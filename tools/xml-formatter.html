@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>XML Formatter & Validator Online Free</title>
+
+<meta name="description" content="Format and validate XML code online for free. Beautify XML documents and check XML syntax errors instantly.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/tool-template.css">
+
+</head>
+
+<body>
+
+<h1>XML Formatter & Validator</h1>
+
+<p class="tool-description">
+Beautify and validate XML code online.
+</p>
+
+
+<div class="tool-box">
+
+<textarea id="xmlInput" placeholder="Paste XML code here..."></textarea>
+
+<div class="tool-actions">
+
+<button onclick="formatXML()">Format XML</button>
+
+<button onclick="validateXML()">Validate XML</button>
+
+<button onclick="copyXML()">Copy</button>
+
+<button onclick="clearXML()">Clear</button>
+
+</div>
+
+
+<div id="status"></div>
+
+
+<script>
+
+
+function formatXML(){
+
+let xml=document.getElementById("xmlInput").value;
+
+let status=document.getElementById("status");
+
+
+try{
+
+let formatted="";
+let indent="";
+
+
+xml.replace(/(>)(<)(\/*)/g,"$1\n$2$3")
+.split("\n")
+.forEach(function(node){
+
+if(node.match(/^<\/\w/)){
+indent=indent.substring(2);
+}
+
+formatted+=indent+node+"\n";
+
+if(node.match(/^<\w[^>]*[^\/]>.*$/)){
+indent+="  ";
+}
+
+});
+
+
+document.getElementById("xmlInput").value=formatted;
+
+status.innerHTML="XML Formatted Successfully";
+
+}
+
+catch(e){
+
+status.innerHTML="XML Format Error";
+
+}
+
+}
+
+
+
+function validateXML(){
+
+let xml=document.getElementById("xmlInput").value;
+
+let parser=new DOMParser();
+
+let result=parser.parseFromString(xml,"text/xml");
+
+
+if(result.getElementsByTagName("parsererror").length){
+
+document.getElementById("status").innerHTML=
+"Invalid XML ERROR";
+
+}else{
+
+document.getElementById("status").innerHTML=
+"Valid XML OK";
+
+}
+
+}function copyXML(){
+
+let output=document.getElementById("xmlInput");
+
+output.select();
+
+document.execCommand("copy");
+
+alert("XML copied successfully");
+
+}
+
+
+
+function clearXML(){
+
+document.getElementById("xmlInput").value="";
+
+document.getElementById("status").innerHTML="";
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is XML Formatter?</h3>
+
+<p>
+XML Formatter organizes XML code and makes it easier to read.
+</p>
+
+
+<h3>Can I validate XML online?</h3>
+
+<p>
+Yes, this tool checks XML syntax errors directly in your browser.
+</p>
+
+
+<h3>Is my XML uploaded?</h3>
+
+<p>
+No, XML data is processed locally in your browser.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+</html>

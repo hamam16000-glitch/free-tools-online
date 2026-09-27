@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Sitemap Generator Online Free</title>
+
+<meta name="description" content="Generate XML sitemap files online for your website. Create SEO friendly sitemap quickly and download it for free.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../css/style.css">
+
+
+<style>
+
+.sitemap-box{
+
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+
+textarea,input,select{
+
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+margin:8px 0 18px;
+box-sizing:border-box;
+font-size:16px;
+
+}
+
+
+button{
+
+width:100%;
+padding:14px;
+background:#2563eb;
+color:white;
+border:0;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:12px;
+
+}
+
+
+.result{
+
+background:#f8fafc;
+padding:20px;
+border-radius:15px;
+white-space:pre;
+overflow:auto;
+font-family:monospace;
+font-size:14px;
+line-height:1.6;
+
+}
+
+
+.stats{
+
+display:flex;
+justify-content:space-around;
+font-weight:bold;
+margin:20px 0;
+
+}
+
+
+.success{
+
+display:none;
+background:#dcfce7;
+color:#166534;
+padding:12px;
+border-radius:10px;
+text-align:center;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<h1>Sitemap Generator</h1>
+
+
+<p class="tool-description">
+Create SEO friendly XML sitemap files for your website.
+</p>
+
+
+<div class="sitemap-box">
+
+
+<label>
+Website URL
+</label>
+
+<input id="siteUrl" placeholder="https://example.com">
+
+
+<label>
+Website Pages (one URL per line)
+</label>
+
+<textarea id="pages" rows="8" placeholder="/&#10;/about&#10;/contact"></textarea>
+
+
+<label>
+Change Frequency
+</label>
+
+<select id="frequency">
+
+<option value="weekly">Weekly</option>
+
+<option value="daily">Daily</option>
+
+<option value="monthly">Monthly</option>
+
+</select>
+
+
+<button onclick="generateSitemap()">
+Generate Sitemap
+</button>
+
+
+<button onclick="copySitemap()">
+Copy XML
+</button>
+
+
+<button onclick="downloadSitemap()">
+Download sitemap.xml
+</button>
+
+
+<button onclick="clearSitemap()">
+Clear
+</button>
+
+
+<div class="stats">
+
+<div id="pageCount">
+0 Pages
+</div>
+
+</div>
+
+
+<div id="success" class="success"></div>
+
+
+<div id="output" class="result" style="display:none"></div>
+<script>
+
+function generateSitemap(){
+
+let base=document.getElementById("siteUrl").value.trim();
+
+let pages=document.getElementById("pages").value.trim();
+
+let freq=document.getElementById("frequency").value;
+
+
+if(!base || !pages){
+
+showMessage("Please enter website URL and pages.");
+
+return;
+
+}
+
+
+let urls=pages.split("\n")
+.map(p=>p.trim())
+.filter(Boolean);
+
+
+
+let xml=`<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+`;
+
+
+urls.forEach(page=>{
+
+
+let url;
+
+
+if(page.startsWith("http")){
+
+url=page;
+
+}
+
+else{
+
+url=base.replace(/\/$/,"")+"/"+page.replace(/^\//,"");
+
+}
+
+
+
+xml+=`
+
+<url>
+
+<loc>${url}</loc>
+
+<lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+
+<changefreq>${freq}</changefreq>
+
+<priority>0.8</priority>
+
+</url>
+
+`;
+
+
+});
+
+
+xml+=`
+
+</urlset>`;
+
+
+document.getElementById("output").innerText=xml;
+
+
+document.getElementById("output").style.display="block";
+
+
+document.getElementById("pageCount").innerHTML=
+urls.length+" Pages";
+
+
+showMessage("Sitemap generated successfully ✓");
+
+
+}
+
+
+
+async function copySitemap(){
+
+let text=document.getElementById("output").innerText;
+
+
+if(!text){
+
+return;
+
+}
+
+
+await navigator.clipboard.writeText(text);
+
+
+showMessage("XML copied successfully ✓");
+
+
+}
+
+
+
+function downloadSitemap(){
+
+let text=document.getElementById("output").innerText;
+
+
+if(!text){
+
+return;
+
+}
+
+
+let blob=new Blob(
+[text],
+{type:"application/xml"}
+);
+
+
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="sitemap.xml";
+
+a.click();
+
+
+showMessage("sitemap.xml downloaded ✓");
+
+
+}
+
+
+
+function clearSitemap(){
+
+document.getElementById("siteUrl").value="";
+
+document.getElementById("pages").value="";
+
+document.getElementById("output").style.display="none";
+
+
+document.getElementById("pageCount").innerHTML="0 Pages";
+
+
+showMessage("Cleared ✓");
+
+}
+
+
+
+function showMessage(text){
+
+let box=document.getElementById("success");
+
+box.innerHTML=text;
+
+box.style.display="block";
+
+
+setTimeout(()=>{
+
+box.style.display="none";
+
+},3000);
+
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+
+<h2>
+Frequently Asked Questions
+</h2>
+
+
+<h3>
+What is a sitemap?
+</h3>
+
+<p>
+A sitemap helps search engines discover and index website pages.
+</p>
+
+
+<h3>
+Can I upload this sitemap to Google Search Console?
+</h3>
+
+<p>
+Yes. Download the XML file and submit it to your search engine tools.
+</p>
+
+
+<h3>
+Is my website data stored?
+</h3>
+
+<p>
+No. Everything runs directly in your browser.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Favicon Generator Online Free - Create Website Icons</title>
+<meta name="description" content="Create high-quality favicon icons online from PNG, JPG, or WebP images.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.favicon-card{
+    max-width:800px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+
+.favicon-upload-area{
+    border:2px dashed #2563eb;
+    padding:30px 20px;
+    text-align:center;
+    border-radius:15px;
+    background:#f8fbff;
+    transition:border-color .2s ease, background .2s ease;
+}
+
+.favicon-upload-area.is-dragging{
+    border-color:#1d4ed8;
+    background:#eff6ff;
+}
+
+.favicon-file-input{
+    position:absolute !important;
+    width:1px !important;
+    height:1px !important;
+    padding:0 !important;
+    margin:-1px !important;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0 !important;
+}
+
+.favicon-upload-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:52px;
+    padding:14px 32px;
+    border-radius:12px;
+    background:#2563eb;
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+}
+
+.favicon-upload-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-1px);
+}
+
+.favicon-upload-note{
+    margin:14px 0 0;
+    font-size:14px;
+    color:#64748b;
+}
+
+.favicon-file-meta{
+    margin:12px 0 0;
+    font-size:14px;
+    font-weight:700;
+    color:#334155;
+    overflow-wrap:anywhere;
+}
+
+.favicon-preview-section{
+    display:none;
+    margin-top:26px;
+    text-align:center;
+}
+
+.favicon-preview-section.is-visible{
+    display:block;
+}
+
+.favicon-preview-section h3{
+    margin:0 0 15px;
+    color:#111827;
+}
+
+.favicon-preview-surface{
+    width:min(280px, 100%);
+    aspect-ratio:1 / 1;
+    margin:0 auto;
+    overflow:hidden;
+    border:1px solid #cbd5e1;
+    border-radius:18px;
+    background-color:#fff;
+    background-image:
+        linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(-45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #e2e8f0 75%),
+        linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+    background-position:0 0, 0 8px, 8px -8px, -8px 0;
+    background-size:16px 16px;
+}
+
+#faviconPreviewCanvas{
+    display:block;
+    width:100%;
+    height:100%;
+    touch-action:none;
+}
+
+#faviconPreviewCanvas.is-movable{
+    cursor:grab;
+}
+
+#faviconPreviewCanvas.is-dragging{
+    cursor:grabbing;
+}
+
+.favicon-preview-note{
+    margin:12px auto 0;
+    max-width:520px;
+    font-size:14px;
+    color:#64748b;
+}
+
+.favicon-editor{
+    max-width:560px;
+    margin:22px auto 0;
+    padding:18px;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    background:#f8fafc;
+}
+
+.favicon-editor-title{
+    margin:0 0 12px;
+    font-size:16px;
+    font-weight:700;
+    color:#111827;
+}
+
+.favicon-mode-buttons{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:10px;
+}
+
+.favicon-mode-button{
+    margin:0 !important;
+    padding:12px 14px !important;
+    border:1px solid #cbd5e1 !important;
+    border-radius:10px !important;
+    background:#fff !important;
+    color:#334155 !important;
+    font-size:15px !important;
+    font-weight:700;
+}
+
+.favicon-mode-button.is-active{
+    border-color:#2563eb !important;
+    background:#eff6ff !important;
+    color:#1d4ed8 !important;
+}
+
+.favicon-zoom-control{
+    margin-top:18px;
+}
+
+.favicon-zoom-label{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:8px;
+    font-size:15px;
+    font-weight:700;
+    color:#334155;
+}
+
+#faviconZoom{
+    display:block;
+    width:100% !important;
+    max-width:none !important;
+    height:7px;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:999px;
+    accent-color:#2563eb;
+    cursor:pointer;
+}
+
+#faviconZoom:disabled{
+    cursor:not-allowed;
+    opacity:.45;
+}
+
+.favicon-editor-actions{
+    display:flex;
+    justify-content:center;
+    margin-top:15px;
+}
+
+#faviconResetCrop{
+    margin:0 !important;
+    padding:10px 18px !important;
+    border:1px solid #cbd5e1 !important;
+    background:#fff !important;
+    color:#334155 !important;
+    font-size:14px !important;
+}
+
+#faviconResetCrop:disabled{
+    cursor:not-allowed;
+    opacity:.45;
+}
+
+.favicon-controls{
+    display:flex;
+    justify-content:center;
+    margin-top:25px;
+}
+
+#faviconGenerateButton{
+    min-width:210px;
+    padding:15px 30px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+#faviconGenerateButton:hover:not(:disabled){
+    background:#1d4ed8;
+}
+
+#faviconGenerateButton:disabled{
+    cursor:not-allowed;
+    opacity:.55;
+}
+
+.favicon-status{
+    min-height:25px;
+    margin-top:14px;
+    text-align:center;
+    font-weight:700;
+}
+
+.favicon-status.is-info{color:#1d4ed8;}
+.favicon-status.is-success{color:#15803d;}
+.favicon-status.is-error{color:#b91c1c;}
+.favicon-status.is-warning{color:#a16207;}
+
+.favicon-download-section{
+    display:none;
+    margin-top:26px;
+}
+
+.favicon-download-section.is-visible{
+    display:block;
+}
+
+.favicon-download-section h3{
+    margin:0 0 14px;
+    text-align:center;
+    color:#111827;
+}
+
+.favicon-size-preview-section{
+    display:none;
+    margin-top:28px;
+}
+
+.favicon-size-preview-section.is-visible{
+    display:block;
+}
+
+.favicon-size-preview-section h3{
+    margin:0 0 8px;
+    text-align:center;
+    color:#111827;
+}
+
+.favicon-size-preview-note{
+    margin:0 0 16px;
+    text-align:center;
+    font-size:14px;
+    color:#64748b;
+}
+
+.favicon-size-previews{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:10px;
+}
+
+.favicon-size-card{
+    min-width:0;
+    padding:12px 8px;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    background:#f8fafc;
+    text-align:center;
+}
+
+.favicon-size-stage{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:190px;
+    overflow:hidden;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    background-color:#fff;
+    background-image:
+        linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(-45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #e2e8f0 75%),
+        linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+    background-position:0 0, 0 6px, 6px -6px, -6px 0;
+    background-size:12px 12px;
+}
+
+.favicon-size-stage img{
+    display:block;
+    max-width:none !important;
+    max-height:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+}
+
+.favicon-size-label{
+    margin-top:9px;
+    font-size:14px;
+    font-weight:700;
+    color:#334155;
+}
+
+.favicon-downloads{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:12px;
+}
+
+.favicon-download-link{
+    display:flex !important;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:0 !important;
+    padding:16px 18px !important;
+    border-radius:12px !important;
+    background:#2563eb !important;
+    color:#fff !important;
+    box-shadow:none !important;
+    font-size:16px !important;
+    font-weight:700 !important;
+    text-decoration:none !important;
+    transform:none !important;
+}
+
+.favicon-download-link:hover{
+    background:#1d4ed8 !important;
+    transform:none !important;
+}
+
+.favicon-download-link.is-downloaded{
+    background:#15803d !important;
+}
+
+.favicon-download-state{
+    flex:0 0 auto;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+@media(max-width:600px){
+    .favicon-card{
+        padding:20px;
+    }
+
+    .favicon-downloads{
+        grid-template-columns:1fr;
+    }
+
+    .favicon-size-previews{
+        grid-template-columns:1fr;
+    }
+
+    .favicon-size-stage{
+        height:190px;
+    }
+
+    .favicon-upload-btn,
+    #faviconGenerateButton{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+<h1>Favicon Generator</h1>
+<p>Create professional favicon icons for your website instantly.</p>
+
+<main class="favicon-card">
+    <section id="faviconDropArea" class="favicon-upload-area" aria-label="Image upload area">
+        <label class="favicon-upload-btn" for="faviconUpload">Upload Image</label>
+        <input
+            id="faviconUpload"
+            class="favicon-file-input"
+            type="file"
+            accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp"
+        >
+        <p class="favicon-upload-note">PNG, JPG, or WebP • Maximum file size: 20 MB</p>
+        <p id="faviconFileMeta" class="favicon-file-meta" hidden></p>
+    </section>
+
+    <section id="faviconPreviewSection" class="favicon-preview-section">
+        <h3>Preview</h3>
+        <div id="faviconPreviewSurface" class="favicon-preview-surface">
+            <canvas id="faviconPreviewCanvas" aria-label="Uploaded image preview"></canvas>
+        </div>
+        <p id="faviconPreviewNote" class="favicon-preview-note">Drag the image to position it, then use Zoom to keep the important subject clear in small icons.</p>
+
+        <div class="favicon-editor">
+            <p class="favicon-editor-title">Image layout</p>
+            <div class="favicon-mode-buttons" role="group" aria-label="Image layout mode">
+                <button id="faviconCropMode" class="favicon-mode-button is-active" type="button" data-mode="cover" aria-pressed="true">Crop to square</button>
+                <button id="faviconFitMode" class="favicon-mode-button" type="button" data-mode="contain" aria-pressed="false">Fit full image</button>
+            </div>
+
+            <div class="favicon-zoom-control">
+                <label class="favicon-zoom-label" for="faviconZoom">
+                    <span>Zoom</span>
+                    <output id="faviconZoomValue" for="faviconZoom">1.00×</output>
+                </label>
+                <input id="faviconZoom" type="range" min="1" max="4" step="0.01" value="1">
+            </div>
+
+            <div class="favicon-editor-actions">
+                <button id="faviconResetCrop" type="button">Reset position</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="favicon-controls">
+        <button id="faviconGenerateButton" type="button" disabled>Generate Favicon</button>
+    </div>
+
+    <div id="faviconStatus" class="favicon-status" role="status" aria-live="polite"></div>
+
+    <section id="faviconSizePreviewSection" class="favicon-size-preview-section">
+        <h3>Actual-size preview</h3>
+        <p class="favicon-size-preview-note">These are shown at their real website sizes. Small favicons are not intended to be opened fullscreen.</p>
+        <div id="faviconSizePreviews" class="favicon-size-previews"></div>
+    </section>
+
+    <section id="faviconCodeSection" class="favicon-section">
+
+<h3>HTML Embed Code</h3>
+
+<pre id="faviconCodeOutput"></pre>
+
+<button id="copyFaviconCode">
+Copy HTML Code
+</button>
+
+<script>
+
+document.getElementById("copyFaviconCode")
+.addEventListener("click", async ()=>{
+
+let code=document.getElementById("faviconCodeOutput").textContent;
+
+
+if(!code){
+
+return;
+
+}
+
+
+await navigator.clipboard.writeText(code);
+
+
+});
+
+</script>
+
+</section>
+
+
+<section id="faviconDownloadSection" class="favicon-download-section">
+        <h3>Download icons</h3>
+        <div id="faviconDownloads" class="favicon-downloads"></div>
+    </section>
+</main>
+
+<script>
+(() => {
+    "use strict";
+
+    const OUTPUT_SIZES = [16, 32, 48, 180, 192, 512];
+    const ACTUAL_PREVIEW_SIZES = [16, 32, 48, 180];
+    const DOWNLOAD_ORDER = [512, 192, 180, 48, 32, 16];
+    const ICO_SIZES = [16, 32, 48];
+    const MAX_FILE_SIZE = 20 * 1024 * 1024;
+    const MAX_WORKING_SIZE = 2048;
+    const CONTENT_SCALE = 0.92;
+    const ALLOWED_TYPES = new Set(["image/png", "image/jpeg", "image/jpg", "image/webp"]);
+    const ALLOWED_EXTENSION = /\.(png|jpe?g|webp)$/i;
+
+    const uploadInput = document.getElementById("faviconUpload");
+    const dropArea = document.getElementById("faviconDropArea");
+    const fileMeta = document.getElementById("faviconFileMeta");
+    const previewSection = document.getElementById("faviconPreviewSection");
+    const previewSurface = document.getElementById("faviconPreviewSurface");
+    const previewCanvas = document.getElementById("faviconPreviewCanvas");
+    const previewNote = document.getElementById("faviconPreviewNote");
+    const cropModeButton = document.getElementById("faviconCropMode");
+    const fitModeButton = document.getElementById("faviconFitMode");
+    const zoomInput = document.getElementById("faviconZoom");
+    const zoomValue = document.getElementById("faviconZoomValue");
+    const resetCropButton = document.getElementById("faviconResetCrop");
+    const generateButton = document.getElementById("faviconGenerateButton");
+    const statusBox = document.getElementById("faviconStatus");
+    const sizePreviewSection = document.getElementById("faviconSizePreviewSection");
+    const sizePreviewsBox = document.getElementById("faviconSizePreviews");
+    const downloadSection = document.getElementById("faviconDownloadSection");
+    const downloadsBox = document.getElementById("faviconDownloads");
+
+    const state = {
+        image: null,
+        objectUrl: null,
+        width: 0,
+        height: 0,
+        mode: "cover",
+        zoom: 1,
+        focusX: 0.5,
+        focusY: 0.5,
+        drag: null,
+        downloadUrls: [],
+        downloadSequence: 0,
+        generating: false,
+        loadRequestId: 0
+    };
+
+    uploadInput.addEventListener("change", () => {
+        const file = uploadInput.files && uploadInput.files[0];
+        if (file) loadFile(file);
+    });
+
+    ["dragenter", "dragover"].forEach(eventName => {
+        dropArea.addEventListener(eventName, event => {
+            event.preventDefault();
+            dropArea.classList.add("is-dragging");
+        });
+    });
+
+    ["dragleave", "drop"].forEach(eventName => {
+        dropArea.addEventListener(eventName, event => {
+            event.preventDefault();
+            dropArea.classList.remove("is-dragging");
+        });
+    });
+
+    dropArea.addEventListener("drop", event => {
+        const file = event.dataTransfer && event.dataTransfer.files[0];
+        if (file) loadFile(file);
+    });
+
+    generateButton.addEventListener("click", generateFavicons);
+
+    cropModeButton.addEventListener("click", () => setEditorMode("cover"));
+    fitModeButton.addEventListener("click", () => setEditorMode("contain"));
+
+    zoomInput.addEventListener("input", () => {
+        state.zoom = Number(zoomInput.value);
+        zoomValue.textContent = `${state.zoom.toFixed(2)}×`;
+        markEditorChanged();
+        renderPreview();
+    });
+
+    resetCropButton.addEventListener("click", () => {
+        state.zoom = 1;
+        state.focusX = 0.5;
+        state.focusY = 0.5;
+        zoomInput.value = "1";
+        zoomValue.textContent = "1.00×";
+        markEditorChanged();
+        renderPreview();
+    });
+
+    previewCanvas.addEventListener("pointerdown", startPreviewDrag);
+    previewCanvas.addEventListener("pointermove", movePreviewDrag);
+    previewCanvas.addEventListener("pointerup", endPreviewDrag);
+    previewCanvas.addEventListener("pointercancel", endPreviewDrag);
+
+    if ("ResizeObserver" in window) {
+        new ResizeObserver(() => {
+            if (state.image) renderPreview();
+        }).observe(previewSurface);
+    } else {
+        window.addEventListener("resize", () => {
+            if (state.image) renderPreview();
+        });
+    }
+
+    window.addEventListener("beforeunload", () => {
+        releaseSourceUrl();
+        releaseDownloadUrls();
+    });
+
+    async function loadFile(file) {
+        const requestId = ++state.loadRequestId;
+        resetGeneratedFiles();
+        generateButton.disabled = true;
+        setStatus("Reading image...", "info");
+
+        if (!isSupportedFile(file)) {
+            resetSource();
+            setStatus("Please choose a PNG, JPG, or WebP image.", "error");
+            return;
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+            resetSource();
+            setStatus("The image is larger than 20 MB.", "error");
+            return;
+        }
+
+        const newUrl = URL.createObjectURL(file);
+        const newImage = new Image();
+        newImage.decoding = "async";
+
+        try {
+            await loadImageElement(newImage, newUrl);
+
+            if (requestId !== state.loadRequestId) {
+                URL.revokeObjectURL(newUrl);
+                return;
+            }
+
+            if (!newImage.naturalWidth || !newImage.naturalHeight) {
+                throw new Error("The image has invalid dimensions.");
+            }
+
+            releaseSourceUrl();
+            state.image = newImage;
+            state.objectUrl = newUrl;
+            state.width = newImage.naturalWidth;
+            state.height = newImage.naturalHeight;
+            state.mode = "cover";
+            state.zoom = 1;
+            state.focusX = 0.5;
+            state.focusY = 0.5;
+            updateEditorControls();
+
+            fileMeta.textContent = `${file.name} • ${state.width}×${state.height}px • ${formatBytes(file.size)}`;
+            fileMeta.hidden = false;
+            previewSection.classList.add("is-visible");
+            generateButton.disabled = false;
+
+            requestAnimationFrame(renderPreview);
+
+            if (Math.min(state.width, state.height) < 180) {
+                setStatus("Image loaded. A source of at least 512×512px is recommended for the sharpest result.", "warning");
+            } else {
+                setStatus("Image ready ✓", "success");
+            }
+        } catch (error) {
+            URL.revokeObjectURL(newUrl);
+            if (requestId !== state.loadRequestId) return;
+            resetSource();
+            setStatus("This image could not be decoded. Please try another PNG, JPG, or WebP file.", "error");
+        }
+    }
+
+    function isSupportedFile(file) {
+        return ALLOWED_TYPES.has((file.type || "").toLowerCase()) || ALLOWED_EXTENSION.test(file.name);
+    }
+
+    function loadImageElement(image, url) {
+        return new Promise((resolve, reject) => {
+            image.onload = () => resolve();
+            image.onerror = () => reject(new Error("Image decoding failed."));
+            image.src = url;
+        });
+    }
+
+    function setEditorMode(mode) {
+        if (!state.image || !["cover", "contain"].includes(mode)) return;
+        state.mode = mode;
+        updateEditorControls();
+        markEditorChanged();
+        renderPreview();
+    }
+
+    function updateEditorControls() {
+        const isCropMode = state.mode === "cover";
+
+        cropModeButton.classList.toggle("is-active", isCropMode);
+        fitModeButton.classList.toggle("is-active", !isCropMode);
+        cropModeButton.setAttribute("aria-pressed", String(isCropMode));
+        fitModeButton.setAttribute("aria-pressed", String(!isCropMode));
+        zoomInput.disabled = !isCropMode;
+        resetCropButton.disabled = !isCropMode;
+        zoomInput.value = String(state.zoom);
+        zoomValue.textContent = `${state.zoom.toFixed(2)}×`;
+        previewCanvas.classList.toggle("is-movable", isCropMode);
+
+        previewNote.textContent = isCropMode
+            ? "Drag the image to position it, then use Zoom to keep the important subject clear in small icons."
+            : "The full image is preserved without stretching. Wide images will have transparent space above and below.";
+    }
+
+    function startPreviewDrag(event) {
+        if (!state.image || state.mode !== "cover") return;
+
+        state.drag = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            focusX: state.focusX,
+            focusY: state.focusY
+        };
+
+        previewCanvas.setPointerCapture(event.pointerId);
+        previewCanvas.classList.add("is-dragging");
+        event.preventDefault();
+    }
+
+    function movePreviewDrag(event) {
+        if (!state.drag || state.drag.pointerId !== event.pointerId) return;
+
+        const rect = previewCanvas.getBoundingClientRect();
+        const crop = getSquareCrop();
+        const availableX = Math.max(0, state.width - crop.size);
+        const availableY = Math.max(0, state.height - crop.size);
+        const deltaX = event.clientX - state.drag.startX;
+        const deltaY = event.clientY - state.drag.startY;
+
+        if (availableX > 0) {
+            state.focusX = clamp(
+                state.drag.focusX - (deltaX * crop.size) / (rect.width * availableX),
+                0,
+                1
+            );
+        }
+
+        if (availableY > 0) {
+            state.focusY = clamp(
+                state.drag.focusY - (deltaY * crop.size) / (rect.height * availableY),
+                0,
+                1
+            );
+        }
+
+        markEditorChanged();
+        renderPreview();
+        event.preventDefault();
+    }
+
+    function endPreviewDrag(event) {
+        if (!state.drag || state.drag.pointerId !== event.pointerId) return;
+
+        if (previewCanvas.hasPointerCapture(event.pointerId)) {
+            previewCanvas.releasePointerCapture(event.pointerId);
+        }
+
+        state.drag = null;
+        previewCanvas.classList.remove("is-dragging");
+    }
+
+    function markEditorChanged() {
+        if (downloadSection.classList.contains("is-visible")) {
+            resetGeneratedFiles();
+            setStatus("Image adjusted. Generate the icons again.", "info");
+        }
+    }
+
+    function renderPreview() {
+        if (!state.image) return;
+
+        const cssSize = Math.max(1, Math.round(previewSurface.getBoundingClientRect().width));
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 3);
+        const backingSize = Math.max(1, Math.round(cssSize * pixelRatio));
+
+        if (previewCanvas.width !== backingSize || previewCanvas.height !== backingSize) {
+            previewCanvas.width = backingSize;
+            previewCanvas.height = backingSize;
+        }
+
+        const context = previewCanvas.getContext("2d", { alpha: true });
+        context.clearRect(0, 0, backingSize, backingSize);
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = "high";
+
+        drawEditedImage(context, backingSize);
+    }
+
+    async function generateFavicons() {
+        if (!state.image || state.generating) {
+            if (!state.image) setStatus("Please upload an image first.", "error");
+            return;
+        }
+
+        state.generating = true;
+        generateButton.disabled = true;
+        generateButton.textContent = "Generating...";
+        resetGeneratedFiles();
+        setStatus("Generating high-quality icons...", "info");
+
+        try {
+            const generated = new Map();
+
+            for (const size of OUTPUT_SIZES) {
+                const canvas = createIconCanvas(size);
+                const blob = await canvasToBlob(canvas, "image/png");
+                generated.set(size, blob);
+            }
+
+            const icoEntries = ICO_SIZES.map(size => ({
+                size,
+                blob: generated.get(size)
+            }));
+            const icoBlob = await createIcoBlob(icoEntries);
+
+            addDownloadLink(icoBlob, "favicon.ico", "favicon.ico");
+
+            for (const size of DOWNLOAD_ORDER) {
+                const iconUrl = addDownloadLink(
+                    generated.get(size),
+                    `favicon-${size}x${size}.png`,
+                    `${size}×${size} PNG`
+                );
+
+                if (ACTUAL_PREVIEW_SIZES.includes(size)) {
+                    addActualSizePreview(iconUrl, size);
+                }
+            }
+
+            sizePreviewSection.classList.add("is-visible");
+            downloadSection.classList.add("is-visible");
+            
+
+const faviconCode = `
+
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
+
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png">
+
+`;
+
+document.getElementById("faviconCodeOutput").textContent = faviconCode;
+
+
+document.getElementById("faviconCodeSection").classList.add("is-visible");
+
+
+setStatus("Generated Successfully ✓", "success");
+        } catch (error) {
+            resetGeneratedFiles();
+            setStatus("Generation failed. Please try a different image.", "error");
+        } finally {
+            state.generating = false;
+            generateButton.disabled = !state.image;
+            generateButton.textContent = "Generate Favicon";
+        }
+    }
+
+    function createIconCanvas(targetSize) {
+        const sourceLongestSide = state.mode === "cover"
+            ? Math.round(getSquareCrop().size)
+            : Math.max(state.width, state.height);
+        const workingSize = Math.min(
+            MAX_WORKING_SIZE,
+            Math.max(targetSize, sourceLongestSide)
+        );
+
+        let currentCanvas = document.createElement("canvas");
+        currentCanvas.width = workingSize;
+        currentCanvas.height = workingSize;
+
+        const currentContext = currentCanvas.getContext("2d", { alpha: true });
+        currentContext.clearRect(0, 0, workingSize, workingSize);
+        currentContext.imageSmoothingEnabled = true;
+        currentContext.imageSmoothingQuality = "high";
+
+        drawEditedImage(currentContext, workingSize);
+
+        while (currentCanvas.width > targetSize * 2) {
+            const nextSize = Math.max(targetSize, Math.floor(currentCanvas.width / 2));
+            currentCanvas = resizeCanvas(currentCanvas, nextSize);
+        }
+
+        if (currentCanvas.width !== targetSize) {
+            currentCanvas = resizeCanvas(currentCanvas, targetSize);
+        }
+
+        if (targetSize <= 48) {
+            sharpenSmallIcon(currentCanvas, targetSize === 16 ? 0.24 : 0.16);
+        }
+
+        return currentCanvas;
+    }
+
+    function resizeCanvas(sourceCanvas, size) {
+        const outputCanvas = document.createElement("canvas");
+        outputCanvas.width = size;
+        outputCanvas.height = size;
+
+        const context = outputCanvas.getContext("2d", { alpha: true });
+        context.clearRect(0, 0, size, size);
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = "high";
+        context.drawImage(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, 0, 0, size, size);
+
+        return outputCanvas;
+    }
+
+    function drawContainedImage(context, image, sourceWidth, sourceHeight, boxSize, contentScale) {
+        const availableSize = boxSize * contentScale;
+        const scale = Math.min(availableSize / sourceWidth, availableSize / sourceHeight);
+        const width = sourceWidth * scale;
+        const height = sourceHeight * scale;
+        const x = (boxSize - width) / 2;
+        const y = (boxSize - height) / 2;
+
+        context.drawImage(image, 0, 0, sourceWidth, sourceHeight, x, y, width, height);
+    }
+
+    function drawEditedImage(context, boxSize) {
+        context.clearRect(0, 0, boxSize, boxSize);
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = "high";
+
+        if (state.mode === "contain") {
+            drawContainedImage(
+                context,
+                state.image,
+                state.width,
+                state.height,
+                boxSize,
+                CONTENT_SCALE
+            );
+            return;
+        }
+
+        const crop = getSquareCrop();
+        context.drawImage(
+            state.image,
+            crop.x,
+            crop.y,
+            crop.size,
+            crop.size,
+            0,
+            0,
+            boxSize,
+            boxSize
+        );
+    }
+
+    function getSquareCrop() {
+        const baseSize = Math.min(state.width, state.height);
+        const cropSize = baseSize / state.zoom;
+        const availableX = Math.max(0, state.width - cropSize);
+        const availableY = Math.max(0, state.height - cropSize);
+
+        return {
+            x: availableX * state.focusX,
+            y: availableY * state.focusY,
+            size: cropSize
+        };
+    }
+
+    function sharpenSmallIcon(canvas, amount) {
+        const context = canvas.getContext("2d", { alpha: true });
+        const width = canvas.width;
+        const height = canvas.height;
+        const imageData = context.getImageData(0, 0, width, height);
+        const source = imageData.data;
+        const output = new Uint8ClampedArray(source);
+
+        for (let y = 1; y < height - 1; y += 1) {
+            for (let x = 1; x < width - 1; x += 1) {
+                const index = (y * width + x) * 4;
+                if (source[index + 3] === 0) continue;
+
+                for (let channel = 0; channel < 3; channel += 1) {
+                    let total = 0;
+                    let count = 0;
+
+                    for (let offsetY = -1; offsetY <= 1; offsetY += 1) {
+                        for (let offsetX = -1; offsetX <= 1; offsetX += 1) {
+                            const neighbour = ((y + offsetY) * width + (x + offsetX)) * 4;
+                            if (source[neighbour + 3] === 0) continue;
+                            total += source[neighbour + channel];
+                            count += 1;
+                        }
+                    }
+
+                    const blurred = count ? total / count : source[index + channel];
+                    output[index + channel] = clamp(
+                        Math.round(source[index + channel] + amount * (source[index + channel] - blurred)),
+                        0,
+                        255
+                    );
+                }
+            }
+        }
+
+        imageData.data.set(output);
+        context.putImageData(imageData, 0, 0);
+    }
+
+    function clamp(value, minimum, maximum) {
+        return Math.min(maximum, Math.max(minimum, value));
+    }
+
+    function canvasToBlob(canvas, mimeType) {
+        return new Promise((resolve, reject) => {
+            canvas.toBlob(blob => {
+                if (blob) resolve(blob);
+                else reject(new Error("Canvas export failed."));
+            }, mimeType);
+        });
+    }
+
+    async function createIcoBlob(entries) {
+        const buffers = await Promise.all(entries.map(entry => entry.blob.arrayBuffer()));
+        const directorySize = 6 + entries.length * 16;
+        const directory = new ArrayBuffer(directorySize);
+        const view = new DataView(directory);
+
+        view.setUint16(0, 0, true);
+        view.setUint16(2, 1, true);
+        view.setUint16(4, entries.length, true);
+
+        let imageOffset = directorySize;
+
+        entries.forEach((entry, index) => {
+            const entryOffset = 6 + index * 16;
+            const imageLength = buffers[index].byteLength;
+
+            view.setUint8(entryOffset, entry.size === 256 ? 0 : entry.size);
+            view.setUint8(entryOffset + 1, entry.size === 256 ? 0 : entry.size);
+            view.setUint8(entryOffset + 2, 0);
+            view.setUint8(entryOffset + 3, 0);
+            view.setUint16(entryOffset + 4, 1, true);
+            view.setUint16(entryOffset + 6, 32, true);
+            view.setUint32(entryOffset + 8, imageLength, true);
+            view.setUint32(entryOffset + 12, imageOffset, true);
+
+            imageOffset += imageLength;
+        });
+
+        return new Blob([directory, ...buffers], { type: "image/x-icon" });
+    }
+
+    function addDownloadLink(blob, fileName, label) {
+        const url = URL.createObjectURL(blob);
+        state.downloadUrls.push(url);
+
+        const link = document.createElement("a");
+        link.className = "favicon-download-link";
+        link.href = url;
+
+        const prepareNextDownload = () => {
+            link.download = createUniqueDownloadName(fileName);
+        };
+        prepareNextDownload();
+
+        const name = document.createElement("span");
+        name.textContent = `↓ Download ${label}`;
+
+        const downloadState = document.createElement("span");
+        downloadState.className = "favicon-download-state";
+
+        link.append(name, downloadState);
+
+        link.addEventListener("click", () => {
+            const downloadedFileName = link.download;
+            link.classList.add("is-downloaded");
+            downloadState.textContent = "Downloaded ✓";
+            setStatus(`Downloaded ✓ ${downloadedFileName}`, "success");
+            window.setTimeout(prepareNextDownload, 0);
+        });
+
+        downloadsBox.appendChild(link);
+        return url;
+    }
+
+    function createUniqueDownloadName(fileName) {
+        const dotIndex = fileName.lastIndexOf(".");
+        const baseName = dotIndex > 0 ? fileName.slice(0, dotIndex) : fileName;
+        const extension = dotIndex > 0 ? fileName.slice(dotIndex) : "";
+        const now = new Date();
+        const pad = (value, length = 2) => String(value).padStart(length, "0");
+
+        const timestamp = [
+            now.getFullYear(),
+            pad(now.getMonth() + 1),
+            pad(now.getDate())
+        ].join("") + "-" + [
+            pad(now.getHours()),
+            pad(now.getMinutes()),
+            pad(now.getSeconds()),
+            pad(now.getMilliseconds(), 3)
+        ].join("");
+
+        state.downloadSequence += 1;
+        return `${baseName}-${timestamp}-${pad(state.downloadSequence, 2)}${extension}`;
+    }
+
+    function addActualSizePreview(url, size) {
+        const card = document.createElement("div");
+        card.className = "favicon-size-card";
+
+        const stage = document.createElement("div");
+        stage.className = "favicon-size-stage";
+
+        const image = document.createElement("img");
+        image.src = url;
+        image.alt = `${size} by ${size} favicon preview`;
+        image.width = size;
+        image.height = size;
+        image.style.width = `${size}px`;
+        image.style.height = `${size}px`;
+
+        const label = document.createElement("div");
+        label.className = "favicon-size-label";
+        label.textContent = `${size}×${size}`;
+
+        stage.appendChild(image);
+        card.append(stage, label);
+        sizePreviewsBox.appendChild(card);
+    }
+
+    function resetGeneratedFiles() {
+        releaseDownloadUrls();
+        downloadsBox.replaceChildren();
+        sizePreviewsBox.replaceChildren();
+        sizePreviewSection.classList.remove("is-visible");
+        downloadSection.classList.remove("is-visible");
+    }
+
+    function resetSource() {
+        releaseSourceUrl();
+        state.image = null;
+        state.width = 0;
+        state.height = 0;
+        state.mode = "cover";
+        state.zoom = 1;
+        state.focusX = 0.5;
+        state.focusY = 0.5;
+        state.drag = null;
+        fileMeta.hidden = true;
+        fileMeta.textContent = "";
+        previewSection.classList.remove("is-visible");
+        previewCanvas.classList.remove("is-dragging", "is-movable");
+        generateButton.disabled = true;
+        previewCanvas.width = 1;
+        previewCanvas.height = 1;
+    }
+
+    function releaseSourceUrl() {
+        if (state.objectUrl) {
+            URL.revokeObjectURL(state.objectUrl);
+            state.objectUrl = null;
+        }
+    }
+
+    function releaseDownloadUrls() {
+        state.downloadUrls.forEach(url => URL.revokeObjectURL(url));
+        state.downloadUrls = [];
+    }
+
+    function setStatus(message, type) {
+        statusBox.textContent = message;
+        statusBox.className = `favicon-status is-${type}`;
+    }
+
+    function formatBytes(bytes) {
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+})();
+</script>
+</body>
+</html>

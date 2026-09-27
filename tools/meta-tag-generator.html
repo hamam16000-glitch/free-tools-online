@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Meta Tag Generator Advanced Free</title>
+
+<meta name="description" content="Generate SEO meta tags, Open Graph tags and Twitter cards online for free.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../css/style.css">
+
+
+<style>
+
+.meta-box{
+
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+
+input,textarea,select{
+
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+margin:8px 0 18px;
+box-sizing:border-box;
+font-size:16px;
+
+}
+
+
+button{
+
+width:100%;
+padding:14px;
+background:#2563eb;
+color:white;
+border:0;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:12px;
+
+}
+
+
+.preview{
+
+background:#f8fafc;
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+
+}
+
+
+.code{
+
+background:#111827;
+color:#e5e7eb;
+padding:20px;
+border-radius:15px;
+white-space:pre-wrap;
+overflow:auto;
+font-family:monospace;
+
+}
+
+
+.success{
+
+display:none;
+background:#dcfce7;
+color:#166534;
+padding:12px;
+border-radius:10px;
+text-align:center;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>Meta Tag Generator</h1>
+
+
+<p class="tool-description">
+Create SEO optimized meta tags for your website.
+</p>
+
+
+<div class="meta-box">
+
+
+<label>
+Page Title
+</label>
+
+<input id="title" placeholder="Example: Free Tools Online">
+
+
+<label>
+Meta Description
+</label>
+
+<textarea id="description" rows="4" placeholder="Describe your page..."></textarea>
+
+
+<label>
+Keywords
+</label>
+
+<input id="keywords" placeholder="SEO, tools, generator">
+
+
+<label>
+Author
+</label>
+
+<input id="author" placeholder="Your name or company">
+
+
+<label>
+Canonical URL
+</label>
+
+<input id="url" placeholder="https://example.com/page">
+
+
+<label>
+OG Image URL
+</label>
+
+<input id="ogImage" placeholder="https://example.com/image.jpg">
+
+
+<label>
+Twitter Image URL
+</label>
+
+<input id="twitterImage" placeholder="https://example.com/twitter.jpg">
+
+
+<label>
+Language
+</label>
+
+<input id="language" placeholder="en">
+
+
+<label>
+Theme Color
+</label>
+
+<input id="themeColor" placeholder="#2563eb">
+
+
+<label>
+Robots
+</label>
+
+<select id="robots">
+
+<option value="index, follow">
+Index, Follow
+</option>
+
+<option value="noindex, nofollow">
+No Index, No Follow
+</option>
+
+</select>
+
+
+<button onclick="generateMeta()">
+Generate Meta Tags
+</button>
+
+
+<button onclick="copyMeta()">
+Copy HTML
+</button>
+
+
+<button onclick="downloadMeta()">
+Download HTML
+</button>
+
+
+<button onclick="clearMeta()">
+Clear
+</button>
+
+
+<div id="success" class="success"></div>
+
+
+<div id="preview" class="preview" style="display:none"></div>
+
+
+<div id="googlePreview" class="preview" style="display:none"></div>
+
+
+<div id="seoScore" class="preview" style="display:none"></div>
+
+
+<div id="output" class="code" style="display:none"></div>
+<script>
+
+
+function generateMeta(){
+
+let title=document.getElementById("title").value.trim();
+
+let description=document.getElementById("description").value.trim();
+
+let keywords=document.getElementById("keywords").value.trim();
+
+let author=document.getElementById("author").value.trim();
+
+let url=document.getElementById("url").value.trim();
+
+let ogImage=document.getElementById("ogImage").value.trim();
+
+let twitterImage=document.getElementById("twitterImage").value.trim();
+
+let language=document.getElementById("language").value.trim() || "en";
+
+let themeColor=document.getElementById("themeColor").value.trim() || "#2563eb";
+
+let robots=document.getElementById("robots").value;
+
+
+
+if(!title || !description){
+
+showMessage("Please enter title and description.");
+
+return;
+
+}
+
+
+
+let html=`
+
+<title>${title}</title>
+
+<meta name="description" content="${description}">
+
+<meta name="keywords" content="${keywords}">
+
+<meta name="author" content="${author}">
+
+<meta name="robots" content="${robots}">
+
+<meta name="language" content="${language}">
+
+<meta name="theme-color" content="${themeColor}">
+
+<link rel="canonical" href="${url}">
+
+<meta property="og:image" content="${ogImage}">
+
+<meta name="twitter:image" content="${twitterImage}">
+
+
+<!-- Open Graph -->
+
+<meta property="og:title" content="${title}">
+
+<meta property="og:description" content="${description}">
+
+<meta property="og:url" content="${url}">
+
+<meta property="og:type" content="website">
+
+
+<!-- Twitter Card -->
+
+<meta name="twitter:card" content="summary">
+
+<meta name="twitter:title" content="${title}">
+
+<meta name="twitter:description" content="${description}">
+
+`;
+
+
+
+document.getElementById("output").innerText=html;
+
+document.getElementById("output").style.display="block";
+
+
+
+document.getElementById("preview").innerHTML=
+
+`
+
+<h3>${title}</h3>
+
+<p>${description}</p>
+
+<small>${url}</small>
+
+`;
+
+
+
+document.getElementById("preview").style.display="block";
+
+
+document.getElementById("googlePreview").innerHTML=
+
+`
+
+<h3 style="color:#1a0dab">
+${title}
+</h3>
+
+<p style="color:#008000">
+${url}
+</p>
+
+<p>
+${description}
+</p>
+
+`;
+
+document.getElementById("googlePreview").style.display="block";
+
+
+let titleScore = title.length <= 60 ? "🟢 Title length is good" : "🔴 Title is too long";
+
+let descScore = description.length <= 160 ? "🟢 Description length is good" : "🔴 Description is too long";
+
+
+document.getElementById("seoScore").innerHTML=
+
+`
+
+<h3>SEO Check</h3>
+
+<p>${titleScore} (${title.length}/60)</p>
+
+<p>${descScore} (${description.length}/160)</p>
+
+<p>✅ Meta tags ready for search engines</p>
+
+`;
+
+document.getElementById("seoScore").style.display="block";
+
+
+showMessage("Meta tags generated successfully ✓");
+
+
+}
+
+
+
+async function copyMeta(){
+
+let text=document.getElementById("output").innerText;
+
+
+if(!text){
+
+return;
+
+}
+
+
+await navigator.clipboard.writeText(text);
+
+
+showMessage("HTML copied successfully ✓");
+
+
+}
+
+
+
+function downloadMeta(){
+
+let text=document.getElementById("output").innerText;
+
+
+if(!text){
+
+return;
+
+}
+
+
+let blob=new Blob(
+
+[text],
+
+{type:"text/html"}
+
+);
+
+
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="meta-tags.html";
+
+a.click();
+
+
+showMessage("HTML downloaded ✓");
+
+
+}
+
+
+
+function clearMeta(){
+
+document.querySelectorAll("input,textarea").forEach(e=>{
+
+e.value="";
+
+});
+
+
+document.getElementById("output").style.display="none";
+
+document.getElementById("preview").style.display="none";
+
+
+showMessage("Cleared ✓");
+
+}
+
+
+
+function showMessage(text){
+
+let box=document.getElementById("success");
+
+box.innerHTML=text;
+
+box.style.display="block";
+
+
+setTimeout(()=>{
+
+box.style.display="none";
+
+},3000);
+
+
+}
+
+
+</script>
+
+
+
+<div class="faq">
+
+
+<h2>
+Frequently Asked Questions
+</h2>
+
+
+<h3>
+Why are meta tags important?
+</h3>
+
+<p>
+Meta tags help search engines understand your page content.
+</p>
+
+
+<h3>
+Does this generate Open Graph tags?
+</h3>
+
+<p>
+Yes. It creates tags for social media sharing.
+</p>
+
+
+<h3>
+Is my data stored?
+</h3>
+
+<p>
+No. Everything runs in your browser.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>

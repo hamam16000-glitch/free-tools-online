@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>CSS Formatter & Minifier Online Free</title>
+
+<meta name="description" content="Format, beautify and minify CSS code online for free. Clean and optimize your CSS files easily.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+<h1>CSS Formatter & Minifier</h1>
+
+<p class="tool-description">
+Beautify and compress CSS code online.
+</p>
+
+<div class="tool-box">
+
+<textarea id="cssInput" placeholder="Paste CSS code here..."></textarea>
+
+<div class="tool-actions">
+
+<button onclick="formatCSS()">
+Format CSS
+</button>
+
+<button onclick="minifyCSS()">
+Minify CSS
+</button>
+
+<button onclick="copyCSS()">
+Copy
+</button>
+
+<button onclick="clearCSS()">
+Clear
+</button>
+
+</div>
+
+
+<div id="status"></div>
+
+
+<script>
+
+
+function formatCSS(){
+
+let input=document.getElementById("cssInput").value;
+
+let status=document.getElementById("status");
+
+
+let result=input
+.replace(/\s*{\s*/g," {\n    ")
+.replace(/;\s*/g,";\n    ")
+.replace(/\s*}\s*/g,"\n}\n");
+
+
+document.getElementById("cssInput").value=result;
+
+status.innerHTML="CSS Formatted Successfully";
+
+}
+
+
+
+function minifyCSS(){
+
+let input=document.getElementById("cssInput").value;
+
+
+let result=input
+.replace(/\/\*[\s\S]*?\*\//g,"")
+.replace(/\s+/g," ")
+.replace(/\s*([{}:;,])\s*/g,"$1")
+.trim();
+
+
+document.getElementById("cssInput").value=result;
+
+
+document.getElementById("status").innerHTML=
+"CSS Minified Successfully";
+
+}function copyCSS(){
+
+let output=document.getElementById("cssInput");
+
+output.select();
+
+document.execCommand("copy");
+
+alert("CSS copied successfully");
+
+}
+
+
+
+function clearCSS(){
+
+document.getElementById("cssInput").value="";
+
+document.getElementById("status").innerHTML="";
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is CSS Formatter?</h3>
+<p>CSS Formatter organizes CSS code and makes it easier to read and edit.</p>
+
+<h3>Can I minify CSS online?</h3>
+<p>Yes, this tool removes unnecessary spaces and compresses CSS files.</p>
+
+<h3>Is my CSS uploaded?</h3>
+<p>No, all CSS processing happens directly in your browser.</p>
+
+</div>
+
+
+</div>
+
+
+</body>
+</html>

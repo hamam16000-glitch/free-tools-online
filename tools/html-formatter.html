@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>HTML Formatter & Minifier Online Free</title>
+
+<meta name="description" content="Format, beautify and minify HTML code online for free. Make your HTML clean and optimized.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+<h1>HTML Formatter & Minifier</h1>
+
+<p class="tool-description">
+Beautify and compress HTML code online.
+</p>
+
+<div class="tool-box">
+
+<textarea id="htmlInput" placeholder="Paste HTML code here..."></textarea>
+<div class="tool-actions">
+
+<button onclick="formatHTML()">Format HTML</button>
+
+<button onclick="minifyHTML()">Minify HTML</button>
+
+<button onclick="copyHTML()">Copy</button>
+
+<button onclick="clearHTML()">Clear</button>
+
+</div>
+
+
+<div id="status"></div>
+
+
+<script>
+
+
+function formatHTML(){
+
+let input=document.getElementById("htmlInput").value;
+
+let status=document.getElementById("status");
+
+
+let formatted=input
+.replace(/>\s*</g,"><")
+.replace(/></g,">\n<");
+
+
+let lines=formatted.split("\n");
+
+let indent=0;
+
+let result="";
+
+
+lines.forEach(line=>{
+
+if(line.match(/^<\/\w/)){
+indent--;
+}
+
+result+="    ".repeat(indent)+line+"\n";
+
+
+if(line.match(/^<\w[^>]*[^\/]>$/) && !line.includes("</")){
+indent++;
+}
+
+});
+
+
+document.getElementById("htmlInput").value=result;
+
+status.innerHTML="HTML Formatted Successfully";
+
+
+}
+
+
+
+function minifyHTML(){
+
+let input=document.getElementById("htmlInput").value;
+
+let result=input
+.replace(/\n/g,"")
+.replace(/\s+/g," ")
+.replace(/>\s+</g,"><")
+.trim();
+
+
+document.getElementById("htmlInput").value=result;
+
+document.getElementById("status").innerHTML=
+"HTML Minified Successfully";
+
+}function copyHTML(){
+
+let output=document.getElementById("htmlInput");
+
+output.select();
+
+document.execCommand("copy");
+
+alert("HTML copied successfully");
+
+}
+
+
+
+function clearHTML(){
+
+document.getElementById("htmlInput").value="";
+
+document.getElementById("status").innerHTML="";
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is HTML Formatter?</h3>
+<p>HTML Formatter cleans and organizes HTML code to make it easier to read.</p>
+
+<h3>Can I minify HTML code?</h3>
+<p>Yes, this tool removes unnecessary spaces and compresses HTML code.</p>
+
+<h3>Is my HTML uploaded?</h3>
+<p>No, all processing happens directly in your browser.</p>
+
+</div>
+
+
+</div>
+
+
+</body>
+</html>

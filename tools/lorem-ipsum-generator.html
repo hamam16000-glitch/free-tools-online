@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorem Ipsum Generator Online Free - Generate Placeholder Text</title>
+<meta name="description" content="Free Lorem Ipsum generator tool to create placeholder text for websites, designs and projects. Generate words or paragraphs instantly.">
+<meta name="keywords" content="lorem ipsum generator, placeholder text generator, dummy text generator, lorem ipsum">
+<link rel="stylesheet" href="../css/style.css">
+
+<style id="lorem-final-ui">
+.tool-actions{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:10px !important;
+    width:100% !important;
+    margin-top:18px !important;
+}
+
+.tool-actions button{
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+}
+
+.tool-actions button:first-child{
+    grid-column:1 / -1;
+}
+
+.copy-success{
+    display:none;
+    margin:12px 0 16px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+@media(max-width:520px){
+    .tool-actions{
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+        gap:10px !important;
+    }
+
+    .tool-actions button{
+        padding:12px 6px !important;
+        font-size:15px !important;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Lorem Ipsum Generator</h1>
+
+<p class="tool-description">
+Generate professional placeholder text for websites, designs and development projects.
+</p>
+
+<div class="tool-box">
+
+<label>
+Number of paragraphs:
+</label>
+
+<input type="number" id="paragraphs" value="3" min="1" max="20">
+
+<div class="tool-actions">
+
+<button onclick="generateLorem()">
+Generate Lorem Ipsum
+</button>
+
+<button onclick="copyText()">
+Copy Result
+</button>
+
+<button onclick="clearText()">
+Clear
+</button>
+
+</div>
+<div id="copySuccess"
+     class="copy-success"
+     role="status"
+     aria-live="polite">
+Copied successfully.
+</div>
+
+
+<h3 class="result-title">Generated Text:</h3>
+
+<textarea id="result" class="result-box" rows="15" readonly></textarea>
+
+</div>
+
+<section class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is Lorem Ipsum?</h3>
+<p>
+Lorem Ipsum is placeholder text commonly used in design, printing and web development.
+</p>
+
+<h3>Why use a Lorem Ipsum generator?</h3>
+<p>
+It helps designers and developers create sample content quickly during projects.
+</p>
+
+<h3>Is generated text saved?</h3>
+<p>
+No. The generated text is created directly in your browser and is not stored.
+</p>
+
+</section>
+
+<script>
+const words = [
+"lorem","ipsum","dolor","sit","amet",
+"consectetur","adipiscing","elit",
+"sed","do","eiusmod","tempor",
+"incididunt","ut","labore","et",
+"dolore","magna","aliqua"
+];
+
+function generateSentence(){
+let sentence="";
+for(let i=0;i<12;i++){
+sentence += words[Math.floor(Math.random()*words.length)] + " ";
+}
+return sentence.charAt(0).toUpperCase()+sentence.slice(1)+". ";
+}
+
+function generateLorem(){
+let count=document.getElementById("paragraphs").value;
+let text="";
+for(let i=0;i<count;i++){
+let paragraph="";
+for(let j=0;j<5;j++){
+paragraph += generateSentence();
+}
+text += paragraph.trim()+"\n\n";
+}
+document.getElementById("result").value=text;
+}
+
+async function copyText(){
+
+    const result = document.getElementById("result");
+
+    if(!result.value.trim()){
+        return;
+    }
+
+    try{
+        if(navigator.clipboard && window.isSecureContext){
+            await navigator.clipboard.writeText(result.value);
+        }else{
+            result.focus();
+            result.select();
+
+            if(!document.execCommand("copy")){
+                throw new Error("Copy failed");
+            }
+
+            result.setSelectionRange(0,0);
+        }
+
+        const box = document.getElementById("copySuccess");
+        box.style.display = "block";
+
+        clearTimeout(window.loremCopyTimer);
+
+        window.loremCopyTimer = setTimeout(() => {
+            box.style.display = "none";
+        }, 3000);
+
+    }catch(error){
+        console.error("Copy error:", error);
+    }
+}
+
+function clearText(){
+    document.getElementById("result").value="";
+
+    const box=document.getElementById("copySuccess");
+    if(box) box.style.display="none";
+}
+</script>
+
+</body>
+</html>

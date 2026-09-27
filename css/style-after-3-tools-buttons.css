@@ -1,0 +1,651 @@
+*{
+    box-sizing:border-box;
+}
+
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f8fafc;
+    margin:0;
+    color:#1e293b;
+}
+
+
+/* Hero */
+
+header{
+    background:white;
+    padding:50px 20px;
+    text-align:center;
+    border-bottom:1px solid #e5e7eb;
+}
+
+
+header h1{
+    font-size:42px;
+    margin:0 0 15px;
+    color:#111827;
+}
+
+
+header p{
+    font-size:18px;
+    color:#64748b;
+    margin:0;
+}
+
+
+
+/* Main container */
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+
+
+/* Sections */
+
+h2{
+    font-size:30px;
+    margin:45px 0 20px;
+    color:#111827;
+}
+
+
+
+/* Tool cards */
+
+a{
+    display:block;
+    background:white;
+    padding:25px;
+    margin:15px 0;
+    border-radius:18px;
+    text-decoration:none;
+    color:#2563eb;
+    font-size:20px;
+    font-weight:700;
+    box-shadow:0 8px 25px rgba(0,0,0,0.06);
+    transition:0.25s;
+}
+
+
+a:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 30px rgba(0,0,0,0.10);
+}
+
+
+
+/* Paragraphs */
+
+p{
+    color:#64748b;
+    line-height:1.7;
+}
+
+
+
+/* Forms */
+
+textarea,
+input{
+    width:90%;
+    max-width:700px;
+    display:block;
+    margin:20px auto;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid #d1d5db;
+    font-size:16px;
+    background:white;
+}
+
+
+
+/* Buttons */
+
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:13px 28px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    margin:5px;
+}
+
+
+button:hover{
+    background:#1d4ed8;
+}
+
+
+
+/* Result box */
+
+#result{
+    background:white;
+    padding:20px;
+    margin:25px auto;
+    width:90%;
+    max-width:700px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.05);
+}
+
+
+
+/* FAQ */
+
+section{
+    background:white;
+    padding:25px;
+    margin-top:40px;
+    border-radius:18px;
+}
+
+
+section h3{
+    color:#2563eb;
+}
+
+
+
+/* Footer */
+
+footer{
+    margin-top:70px;
+    padding:30px 20px;
+    text-align:center;
+    color:#64748b;
+}
+
+
+footer a{
+    display:inline-block;
+    width:auto;
+    padding:10px 20px;
+    margin:5px;
+    font-size:16px;
+}
+
+
+
+/* Mobile */
+
+
+@media(max-width:600px){
+
+.quality-box{
+    flex-wrap:nowrap;
+}
+
+#quality{
+    width:180px;
+}
+
+}
+
+.quality-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+#qualityValue{
+    display:inline-block;
+    min-width:45px;
+}
+
+
+/* Image Compressor */
+
+.quality-box{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:12px;
+    flex-wrap:nowrap;
+}
+
+#quality{
+    width:300px;
+}
+
+#qualityValue{
+    display:inline-block;
+    min-width:45px;
+    font-weight:bold;
+}
+
+#preview{
+    display:block;
+    max-width:400px;
+    width:90%;
+    height:auto;
+    margin:25px auto;
+}
+
+#info{
+    text-align:center;
+}
+
+@media(max-width:600px){
+
+.quality-box{
+    flex-wrap:nowrap;
+}
+
+#quality{
+    width:180px;
+}
+
+}
+
+
+/* Image Resizer Styling */
+
+.resizer-box{
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.resizer-box label{
+    font-weight:bold;
+}
+
+#ratio{
+    vertical-align:middle;
+}
+
+.preview-box{
+    text-align:center;
+}
+
+.preview-box h3{
+    margin-bottom:15px;
+}
+
+#preview{
+    border-radius:12px;
+    border:1px solid #ddd;
+    padding:8px;
+    background:#fff;
+}
+
+
+/* Tool box layout */
+.tool-box{
+    width:100%;
+    max-width:700px;
+    margin:20px auto;
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.06);
+}
+
+
+
+/* Global tool page layout */
+
+body{
+    padding:20px;
+}
+
+body > h1,
+body > p{
+    text-align:center;
+}
+
+.tool-box{
+    width:100%;
+    max-width:850px;
+    margin:25px auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.tool-box h1{
+    font-size:36px;
+}
+
+.tool-box p{
+    font-size:18px;
+    line-height:1.8;
+}
+
+.tool-box button{
+    font-size:16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:600px){
+    
+}
+
+
+/* Fix tool action buttons */
+
+
+
+
+
+
+/* Final button row layout */
+.button-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    justify-content:center;
+}
+
+.button-row button{
+    width:auto;
+    min-width:140px;
+}
+
+@media(max-width:600px){
+    .button-row button{
+        width:100%;
+    }
+}
+
+/* Tool inputs consistency */
+.tool-box input,
+.tool-box textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:16px;
+}
+
+.tool-box textarea{
+    min-height:220px;
+}
+
+.tool-box label{
+    font-size:16px;
+    font-weight:600;
+}
+
+
+.tool-box input[type="number"]{
+    width:100%;
+    max-width:100%;
+    padding:15px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:16px;
+}
+
+
+
+/* Result box style */
+.result-box{
+    background:#fafafa;
+    line-height:1.7;
+    resize:vertical;
+}
+
+
+
+/* Tool Cards */
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+
+.container h2{
+    grid-column:1/-1;
+    margin-top:35px;
+}
+
+
+.tool-card{
+    background:white;
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+
+.tool-card:hover{
+    transform:translateY(-5px);
+}
+
+
+.tool-card a{
+    text-decoration:none;
+    color:inherit;
+}
+
+
+.tool-card h3{
+    margin-top:0;
+    font-size:22px;
+}
+
+
+.tool-card p{
+    color:#555;
+    line-height:1.6;
+}
+
+
+
+/* ===== Modern Tool UI Upgrade ===== */
+
+body{
+    background:#f6f8fc;
+}
+
+
+/* Page title */
+body > h1{
+    font-size:42px;
+    font-weight:800;
+    color:#1f2937;
+    margin-top:45px;
+}
+
+
+/* Description */
+.tool-description{
+    font-size:18px;
+    color:#64748b;
+    max-width:750px;
+    text-align:center;
+    margin:15px auto 40px;
+}
+
+
+/* Main Tool Card */
+.tool-box{
+    max-width:900px;
+    background:#ffffff;
+    padding:40px;
+    border-radius:28px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+
+/* Inputs */
+.tool-box input,
+.tool-box textarea{
+    background:#ffffff;
+    border:2px solid #e5e7eb;
+    border-radius:16px;
+    padding:18px;
+    font-size:17px;
+    transition:.3s;
+}
+
+
+.tool-box input:focus,
+.tool-box textarea:focus{
+    border-color:#2563eb;
+    outline:none;
+}
+
+
+/* Buttons */
+.button-row{
+    margin:25px 0;
+}
+
+
+.button-row button{
+    background:#2563eb;
+    border:none;
+    border-radius:14px;
+    padding:15px 25px;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+
+.button-row button:hover{
+    transform:translateY(-3px);
+}
+
+
+/* Result */
+.result-box{
+    background:#f8fafc;
+    border:2px solid #e5e7eb;
+    border-radius:18px;
+}
+
+
+/* FAQ */
+.faq{
+    max-width:900px;
+    background:white;
+    margin:45px auto;
+    padding:35px 40px;
+    border-radius:28px;
+    box-shadow:0 15px 40px rgba(0,0,0,.07);
+}
+
+
+.faq h2{
+    font-size:32px;
+    color:#111827;
+}
+
+
+.faq h3{
+    font-size:21px;
+    color:#2563eb;
+}
+
+
+.faq p{
+    font-size:17px;
+    color:#64748b;
+}
+
+
+@media(max-width:600px){
+
+body > h1{
+    font-size:32px;
+}
+
+.tool-box{
+    padding:22px;
+}
+
+.faq{
+    padding:25px;
+}
+
+}
+
+
+
+.result-title{
+    font-size:22px;
+    margin:25px 0 15px;
+    color:#1f2937;
+}
+
+
+/* Fix mobile tool buttons */
+@media(max-width:600px){
+
+.button-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px;
+}
+
+.button-row button{
+    width:auto;
+    min-width:140px;
+}
+
+}
+
+
+@media(max-width:600px){
+
+.button-row{
+    flex-direction:row;
+    flex-wrap:wrap;
+}
+
+.button-row button{
+    width:auto !important;
+    min-width:130px;
+}
+
+}
+
+
+@media(max-width:600px){
+
+.button-row{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    justify-content:center !important;
+    gap:10px !important;
+}
+
+.button-row button{
+    width:auto !important;
+    min-width:120px !important;
+    padding:12px 16px !important;
+    font-size:15px !important;
+}
+
+}
+

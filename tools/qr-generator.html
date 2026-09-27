@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Advanced QR Code Generator Online Free</title>
+
+<meta name="description" content="Create advanced QR codes online free for URL, text, WiFi, email, phone and vCard. Download QR codes instantly.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+
+.qr-box{
+
+max-width:850px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+
+input,select,textarea{
+
+width:100%;
+padding:14px;
+margin:10px 0 18px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:16px;
+box-sizing:border-box;
+
+}
+
+
+textarea{
+
+height:100px;
+
+}
+
+
+button{
+
+background:#2563eb;
+color:white;
+border:none;
+padding:14px 22px;
+border-radius:10px;
+cursor:pointer;
+margin:5px;
+font-weight:bold;
+
+}
+
+
+.qr-preview{
+
+text-align:center;
+margin-top:25px;
+
+}
+
+
+.qr-preview img{
+
+max-width:300px;
+border-radius:15px;
+padding:10px;
+background:white;
+
+}
+
+
+.actions{
+
+text-align:center;
+
+}
+
+
+.success{
+
+display:none;
+margin-top:15px;
+padding:12px;
+background:#dcfce7;
+color:#166534;
+border-radius:10px;
+text-align:center;
+font-weight:bold;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>Advanced QR Code Generator</h1>
+
+<p>
+Create QR codes for links, text, WiFi, email, phone and contacts.
+</p>
+
+
+<div class="qr-box">
+
+
+<label>
+QR Type
+</label>
+
+
+<select id="type" onchange="changeType()">
+
+<option value="url">
+Website URL
+</option>
+
+<option value="text">
+Text
+</option>
+
+<option value="wifi">
+WiFi
+</option>
+
+<option value="email">
+Email
+</option>
+
+<option value="phone">
+Phone
+</option>
+
+<option value="vcard">
+vCard Contact
+</option>
+
+</select>
+
+
+<div id="fields">
+
+
+<label>
+Website URL
+</label>
+
+<input id="mainInput" placeholder="https://example.com" value="https://freetoolsonline.com">
+
+
+</div>
+
+
+<label>
+QR Size
+</label>
+
+<select id="size">
+
+<option value="300">
+300x300
+</option>
+
+<option value="500">
+500x500
+</option>
+
+<option value="800">
+800x800
+</option>
+
+</select>
+
+
+<label>
+QR Color
+</label>
+
+<input type="color" id="qrColor" value="#000000" style="height:50px;">
+
+
+<label>
+Background Color
+</label>
+
+<input type="color" id="bgColor" value="#ffffff" style="height:50px;">
+
+<label>
+Error Correction Level
+</label>
+
+<select id="correction">
+<option value="L">Low</option>
+<option value="M" selected>Medium</option>
+<option value="Q">High</option>
+<option value="H">Highest</option>
+</select>
+
+<label>
+Add Logo (Optional)
+</label>
+
+<label style="
+display:inline-block;
+background:#2563eb;
+color:white;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;">
+Choose Logo File
+<input type="file" id="logoInput" accept="image/*" style="display:none;">
+</label>
+
+
+
+
+<div class="actions">
+
+<button onclick="generateQR()">
+Generate QR Code
+</button>
+
+</div>
+
+
+<div class="qr-preview">
+
+<img id="qrImage" style="display:none">
+
+</div>
+
+
+<div class="actions">
+
+<button onclick="downloadQR()">
+Download PNG
+</button>
+
+<button onclick="copyQR()">
+Copy QR
+</button>
+
+<button onclick="clearQR()">
+Clear
+</button>
+
+</div>
+
+
+<div id="success" class="success"></div>
+<script>
+
+let qrURL="";
+let finalQRData="";
+
+
+function changeType(){
+
+let type=document.getElementById("type").value;
+
+let box=document.getElementById("fields");
+
+
+if(type==="url"){
+
+box.innerHTML=`
+<label>Website URL</label>
+<input id="mainInput" placeholder="https://example.com" value="https://freetoolsonline.com">
+`;
+
+}
+
+
+else if(type==="text"){
+
+box.innerHTML=`
+<label>Text</label>
+<textarea id="mainInput" placeholder="Enter text"></textarea>
+`;
+
+}
+
+
+else if(type==="wifi"){
+
+box.innerHTML=`
+
+<label>WiFi Name (SSID)</label>
+<input id="wifiName" placeholder="Network name">
+
+<label>Password</label>
+<input id="wifiPass" placeholder="Password">
+
+<label>Security</label>
+<select id="wifiSecurity">
+<option value="WPA">WPA/WPA2</option>
+<option value="WEP">WEP</option>
+<option value="nopass">No Password</option>
+</select>
+
+`;
+
+}
+
+
+else if(type==="email"){
+
+box.innerHTML=`
+
+<label>Email</label>
+<input id="email" placeholder="email@example.com">
+
+<label>Subject</label>
+<input id="subject" placeholder="Subject">
+
+`;
+
+}
+
+
+else if(type==="phone"){
+
+box.innerHTML=`
+
+<label>Phone Number</label>
+<input id="phone" placeholder="+123456789">
+
+`;
+
+}
+
+
+else if(type==="vcard"){
+
+box.innerHTML=`
+
+<label>Name</label>
+<input id="name" placeholder="Full Name">
+
+<label>Phone</label>
+<input id="vphone" placeholder="Phone">
+
+<label>Email</label>
+<input id="vemail" placeholder="Email">
+
+`;
+
+}
+
+}
+
+
+
+async function generateQR(){
+let type=document.getElementById("type").value;
+let data="";
+
+if(type==="url" || type==="text"){
+data=document.getElementById("mainInput").value;
+}
+
+if(type==="wifi"){
+let name=document.getElementById("wifiName").value;
+let pass=document.getElementById("wifiPass").value;
+let sec=document.getElementById("wifiSecurity").value;
+data=`WIFI:T:${sec};S:${name};P:${pass};;`;
+}
+
+if(type==="email"){
+data=`mailto:${document.getElementById("email").value}?subject=${document.getElementById("subject").value}`;
+}
+
+if(type==="phone"){
+data=`tel:${document.getElementById("phone").value}`;
+}
+
+if(type==="vcard"){
+data=`BEGIN:VCARD
+VERSION:3.0
+FN:${document.getElementById("name").value}
+TEL:${document.getElementById("vphone").value}
+EMAIL:${document.getElementById("vemail").value}
+END:VCARD`;
+}
+
+if(!data)return;
+
+let size=document.getElementById("size").value;
+let color=document.getElementById("qrColor").value.substring(1);
+let bg=document.getElementById("bgColor").value.substring(1);
+
+let url="https://api.qrserver.com/v1/create-qr-code/?size="+size+"x"+size+
+"&color="+color+
+"&bgcolor="+bg+
+"&data="+encodeURIComponent(data);
+
+let qrImg=new Image();
+qrImg.crossOrigin="anonymous";
+
+qrImg.onload=function(){
+
+let canvas=document.createElement("canvas");
+canvas.width=size;
+canvas.height=size;
+
+let ctx=canvas.getContext("2d");
+
+ctx.drawImage(qrImg,0,0,size,size);
+
+let logoFile=document.getElementById("logoInput");
+
+if(logoFile && logoFile.files[0]){
+
+let logo=new Image();
+
+logo.onload=function(){
+
+let logoSize=size*0.22;
+let x=(size-logoSize)/2;
+let y=(size-logoSize)/2;
+
+ctx.fillStyle="white";
+ctx.fillRect(x-10,y-10,logoSize+20,logoSize+20);
+
+ctx.drawImage(logo,x,y,logoSize,logoSize);
+
+finalQRData=canvas.toDataURL("image/png");
+document.getElementById("qrImage").src=finalQRData;
+
+};
+
+logo.src=URL.createObjectURL(logoFile.files[0]);
+
+}else{
+
+finalQRData=canvas.toDataURL("image/png");
+document.getElementById("qrImage").src=finalQRData;
+
+}
+
+document.getElementById("qrImage").style.display="inline-block";
+
+};
+
+qrImg.src=url;
+
+}
+
+function downloadQR(){
+
+if(!finalQRData){
+showMessage("Generate QR first.");
+return;
+}
+
+let a=document.createElement("a");
+a.href=finalQRData;
+a.download="qr-code.png";
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+
+showMessage("QR code downloaded successfully ✓");
+
+}
+
+
+async function copyQR(){
+
+if(!finalQRData){
+showMessage("Generate QR first.");
+return;
+}
+
+try{
+
+let response=await fetch(finalQRData);
+let blob=await response.blob();
+
+await navigator.clipboard.write([
+new ClipboardItem({
+"image/png":blob
+})
+]);
+
+showMessage("QR code copied successfully ✓");
+
+}catch(e){
+
+showMessage("Copy image is not supported.");
+
+}
+
+}
+
+
+function clearQR(){
+
+qrURL="";
+
+document.getElementById("qrImage").src="";
+
+document.getElementById("qrImage").style.display="none";
+
+showMessage("Cleared ✓");
+
+}
+
+
+
+function showMessage(text){
+
+let box=document.getElementById("success");
+
+box.innerHTML=text;
+
+box.style.display="block";
+
+
+setTimeout(()=>{
+
+box.style.display="none";
+
+},3000);
+
+
+}
+
+
+</script>
+
+
+<div class="faq">
+
+<h2>
+Frequently Asked Questions
+</h2>
+
+
+<h3>
+What types of QR codes can I create?
+</h3>
+
+<p>
+You can create QR codes for URLs, text, WiFi, email, phone numbers and contacts.
+</p>
+
+
+<h3>
+Are QR codes generated for free?
+</h3>
+
+<p>
+Yes. This tool creates QR codes directly in your browser.
+</p>
+
+
+<h3>
+Are my data stored?
+</h3>
+
+<p>
+No. Your entered data is only used to generate the QR code.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>

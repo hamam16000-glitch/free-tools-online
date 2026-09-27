@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Free PDF Compressor Online - Reduce PDF Size</title>
+
+<meta name="description" content="Compress PDF files online for free. Reduce PDF size while keeping quality. Fast and easy PDF compressor tool.">
+
+<meta name="keywords" content="PDF compressor, compress PDF online, reduce PDF size, free PDF tool">
+
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free PDF Compressor Online - Reduce PDF Size">
+<meta property="og:description" content="Compress PDF files online for free. Reduce PDF size directly in your browser while keeping readable quality.">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<style>
+.pdf-box{
+    width:100%;
+    max-width:700px;
+    box-sizing:border-box;
+}
+
+.pdf-box input[type="file"]{
+    display:none;
+}
+
+.pdf-file-picker{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    box-sizing:border-box;
+}
+
+.pdf-file-button{
+    background:#2563eb;
+    color:white;
+    padding:11px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+#fileName{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.pdf-box button{
+    min-width:130px;
+}
+
+.pdf-button-row{
+    display:flex;
+    flex-wrap:nowrap;
+    width:100%;
+    gap:8px;
+}
+
+.pdf-button-row button{
+    flex:1;
+    width:auto;
+    min-width:0;
+    margin:0;
+}
+
+.file-hint{
+    margin-top:8px;
+    font-size:13px;
+    opacity:0.7;
+}
+
+#info{
+    margin-top:15px;
+    line-height:1.5;
+}
+
+@media (max-width:600px){
+
+    .pdf-box{
+        padding:0 12px;
+    }
+
+    .pdf-box input[type="file"]{
+        width:100%;
+    }
+
+    .pdf-button-row button{
+        width:auto;
+        min-width:0;
+        padding:12px 3px;
+        margin:0;
+        font-size:14px;
+    }
+
+    .pdf-box select{
+        max-width:55%;
+    }
+
+    #info{
+        text-align:center;
+        width:100%;
+    }
+}
+
+.download-success{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>PDF Compressor Online</h1>
+
+<p>
+Reduce PDF file size online for free while keeping good quality.
+</p>
+
+
+<div class="pdf-box">
+
+<h2>Compress Your PDF</h2>
+
+<div class="pdf-file-picker">
+<label for="pdfFile" class="pdf-file-button">Choose PDF File</label>
+<span id="fileName">No file selected</span>
+<input type="file" id="pdfFile" onchange="selectPDF()" accept="application/pdf">
+</div>
+
+<div class="file-hint">PDF files only - Maximum size: 50 MB</div>
+
+<br>
+<label>Compression Level</label>
+<select id="compressionLevel" onchange="resetCompression()">
+<option value="0.8">Low - Better Quality</option>
+<option value="0.6" selected>Medium</option>
+<option value="0.4">High - Smaller Size</option>
+</select>
+<br><br>
+
+<div class="pdf-button-row">
+
+<button id="compressBtn" onclick="compressPDF()" disabled>
+Compress PDF
+</button>
+
+<button id="downloadBtn" onclick="downloadPDF()" disabled>
+Download
+</button>
+
+<button onclick="clearPDF()">
+Clear
+</button>
+
+</div>
+
+
+<div id="downloadSuccess"
+     class="download-success"
+     role="status"
+     aria-live="polite">
+PDF downloaded successfully.
+</div>
+
+<div id="info"></div>
+
+
+</div>
+
+
+<section>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is a PDF compressor?</h3>
+
+<p>
+A PDF compressor reduces the size of PDF files to make them easier to share and upload.
+</p>
+
+
+<h3>Will compression reduce PDF quality?</h3>
+
+<p>
+The goal is to reduce file size while maintaining readable quality.
+</p>
+
+
+<h3>Are my files uploaded?</h3>
+
+<p>
+Your PDF is processed locally in your browser and is not uploaded to our server.
+</p>
+
+
+</section>
+
+
+<script>
+let originalPDF = null;
+let compressedPDF = null;
+let pageCount = 0;
+async function selectPDF(){
+let file=document.getElementById("pdfFile").files[0];
+
+if(!file)return;
+
+if(file.type !== "application/pdf"){
+alert("Please select a PDF file only");
+
+originalPDF=null;
+compressedPDF=null;
+pageCount=0;
+
+document.getElementById("pdfFile").value="";
+document.getElementById("fileName").textContent="No file selected";
+document.getElementById("info").innerHTML="";
+document.getElementById("compressBtn").disabled=true;
+document.getElementById("downloadBtn").disabled=true;
+
+return;
+}
+
+const maxFileSize = 50 * 1024 * 1024;
+
+if(file.size > maxFileSize){
+alert("PDF is too large. Maximum file size is 50 MB.");
+
+originalPDF=null;
+compressedPDF=null;
+pageCount=0;
+
+document.getElementById("pdfFile").value="";
+document.getElementById("fileName").textContent="No file selected";
+document.getElementById("info").innerHTML="";
+document.getElementById("compressBtn").disabled=true;
+document.getElementById("downloadBtn").disabled=true;
+
+return;
+}
+
+originalPDF=file;
+compressedPDF=null;
+
+document.getElementById("fileName").textContent=file.name;
+document.getElementById("downloadBtn").disabled=true;
+
+let btn=document.getElementById("compressBtn");
+btn.disabled=false;
+btn.innerHTML="Compress PDF";
+
+document.getElementById("info").innerHTML=
+"Reading PDF information...";
+
+try{
+
+let bytes = await file.arrayBuffer();
+
+let pdfInfo = await pdfjsLib.getDocument({
+data: bytes
+}).promise;
+
+pageCount = pdfInfo.numPages;
+
+document.getElementById("info").innerHTML=
+"Original Size: "+formatSize(file.size)+
+"<br>Pages: "+pageCount;
+
+}catch(error){
+
+console.error("PDF info error:", error);
+
+document.getElementById("info").innerHTML=
+"Original Size: "+formatSize(file.size)+
+"<br>Could not read page count.";
+
+}
+}
+async function compressPDF(){
+
+if(!originalPDF){
+alert("Please select a PDF file");
+return;
+}
+
+let btn=document.getElementById("compressBtn");
+btn.disabled=true;
+btn.innerHTML="Compressing...";
+
+document.getElementById("info").innerHTML="Reading PDF...";
+
+compressedPDF=null;
+
+try{
+
+let bytes = await originalPDF.arrayBuffer();
+
+let pdf = await pdfjsLib.getDocument({
+data: bytes
+}).promise;
+
+
+let newPDF = await PDFLib.PDFDocument.create();
+
+let level = document.getElementById("compressionLevel").value;
+
+let quality;
+
+if(level === "0.8"){
+quality = 0.8;
+}
+
+else if(level === "0.6"){
+quality = 0.6;
+}
+
+else if(level === "0.4"){
+quality = 0.4;
+}
+
+
+for(let i=1;i<=pdf.numPages;i++){
+
+document.getElementById("info").innerHTML =
+"Processing page "+i+" / "+pdf.numPages;
+
+
+let page = await pdf.getPage(i);
+
+
+let viewport = page.getViewport({
+scale:1.2
+});
+
+
+let canvas=document.createElement("canvas");
+let context=canvas.getContext("2d");
+
+
+canvas.width=viewport.width;
+canvas.height=viewport.height;
+
+
+await page.render({
+canvasContext:context,
+viewport:viewport
+}).promise;
+
+
+let image=canvas.toDataURL(
+"image/jpeg",
+quality
+);
+
+
+let jpg=await newPDF.embedJpg(image);
+
+
+let newPage=newPDF.addPage([
+viewport.width,
+viewport.height
+]);
+
+
+newPage.drawImage(jpg,{
+x:0,
+y:0,
+width:viewport.width,
+height:viewport.height
+});
+
+
+}
+
+
+document.getElementById("info").innerHTML="Creating PDF...";
+
+
+
+let output=await newPDF.save();
+
+
+compressedPDF=new Blob(
+[output],
+{type:"application/pdf"}
+);
+
+let saved;
+
+if(compressedPDF.size >= originalPDF.size){
+    compressedPDF = originalPDF;
+    saved = 0;
+}else{
+    saved = Math.round(
+        (1-(compressedPDF.size/originalPDF.size))*100
+    );
+}
+
+
+document.getElementById("info").innerHTML=
+"Original: "+formatSize(originalPDF.size)+
+"<br>New: "+formatSize(compressedPDF.size)+
+"<br>Saved: "+saved+"%"+
+"<br>Pages: "+pageCount;
+
+btn.disabled=true;
+btn.innerHTML="Compressed";
+document.getElementById("downloadBtn").disabled=false;
+
+}catch(error){
+
+console.error("PDF compression error:", error);
+
+compressedPDF=null;
+document.getElementById("downloadBtn").disabled=true;
+
+document.getElementById("info").innerHTML=
+"Could not compress this PDF.<br>Please try another file.";
+
+btn.disabled=false;
+btn.innerHTML="Compress PDF";
+
+}
+
+}
+
+function resetCompression(){
+compressedPDF=null;
+document.getElementById("downloadBtn").disabled=true;
+
+let btn=document.getElementById("compressBtn");
+
+if(originalPDF){
+btn.disabled=false;
+btn.innerHTML="Compress PDF";
+
+document.getElementById("info").innerHTML=
+"Original Size: "+formatSize(originalPDF.size);
+}
+}
+
+function downloadPDF(){
+    if(!compressedPDF){
+        alert("Please compress PDF first");
+        return;
+    }
+
+    const url = URL.createObjectURL(compressedPDF);
+
+    const link = document.createElement("a");
+    link.href = url;
+
+    const originalName =
+        originalPDF.name.replace(/\.pdf$/i,"");
+
+    link.download =
+        originalName + "-compressed.pdf";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    const successBox =
+        document.getElementById("downloadSuccess");
+
+    successBox.style.display = "block";
+
+    clearTimeout(window.pdfCompressorSuccessTimer);
+
+    window.pdfCompressorSuccessTimer =
+        setTimeout(() => {
+            successBox.style.display = "none";
+        },4000);
+
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    },1500);
+}
+
+function clearPDF(){
+document.getElementById("downloadSuccess").style.display="none";
+originalPDF=null;
+compressedPDF=null;
+pageCount=0;
+
+document.getElementById("downloadBtn").disabled=true;
+document.getElementById("pdfFile").value="";
+document.getElementById("fileName").textContent="No file selected";
+document.getElementById("info").innerHTML="";
+
+let btn=document.getElementById("compressBtn");
+btn.disabled=true;
+btn.innerHTML="Compress PDF";
+}
+function formatSize(bytes){
+if(bytes >= 1024*1024){
+return (bytes/(1024*1024)).toFixed(2)+" MB";
+}
+return Math.round(bytes/1024)+" KB";
+}
+</script>
+</body>
+
+</html>

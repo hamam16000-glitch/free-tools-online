@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Free Resume Builder - Create & Download Your CV as PDF</title>
+<meta name="description" content="Create a professional resume online for free. Add your experience, education and skills, preview your CV instantly and download it as a PDF.">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    padding:20px;
+    font-family:Arial,sans-serif;
+    background:#f5f7fb;
+    color:#111827;
+}
+
+.page-head{
+    max-width:1200px;
+    margin:0 auto 24px;
+    text-align:center;
+}
+
+.page-head h1{
+    margin:10px 0 8px;
+    font-size:clamp(30px,6vw,46px);
+}
+
+.page-head p{
+    margin:0 auto;
+    color:#64748b;
+    line-height:1.6;
+    max-width:720px;
+}
+
+.builder{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:22px;
+    align-items:start;
+}
+
+.panel{
+    background:#fff;
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 5px 20px rgba(0,0,0,.07);
+}
+
+.section{
+    padding-bottom:22px;
+    margin-bottom:22px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.section:last-child{
+    border-bottom:0;
+}
+
+.section h2{
+    font-size:19px;
+    margin:0 0 15px;
+}
+
+label{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    margin:13px 0 6px;
+}
+
+input,textarea,select{
+    width:100%;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:9px;
+    background:#fff;
+    font:inherit;
+    outline:none;
+}
+
+input:focus,textarea:focus,select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.10);
+}
+
+textarea{
+    resize:vertical;
+    min-height:95px;
+}
+
+.two{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.entry{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    padding:15px;
+    border-radius:12px;
+    margin-top:12px;
+}
+
+button{
+    border:0;
+    border-radius:9px;
+    padding:12px 16px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:14px;
+}
+
+.primary{
+    background:#2563eb;
+    color:#fff;
+}
+
+.secondary{
+    background:#eaf1ff;
+    color:#1d4ed8;
+}
+
+.danger{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.add-btn{
+    width:100%;
+    margin-top:10px;
+}
+
+.remove-btn{
+    margin-top:12px;
+    padding:9px 12px;
+}
+
+.actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.actions button{
+    width:100%;
+    margin:0;
+}
+
+.status{
+    display:none;
+    margin-top:12px;
+    padding:11px;
+    text-align:center;
+    border-radius:8px;
+    background:#dcfce7;
+    color:#166534;
+    font-weight:700;
+}
+
+.preview-wrap{
+    position:sticky;
+    top:15px;
+}
+
+.preview-title{
+    margin:0 0 14px;
+    font-size:18px;
+}
+
+.resume{
+    width:100%;
+    min-height:850px;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    box-shadow:0 5px 18px rgba(0,0,0,.06);
+    overflow:hidden;
+}
+
+.resume-header{
+    background:#1e3a5f;
+    color:#fff;
+    padding:36px;
+}
+
+.resume-name{
+    font-size:32px;
+    font-weight:800;
+    margin:0 0 5px;
+}
+
+.resume-title{
+    font-size:17px;
+    opacity:.9;
+}
+
+.resume-contact{
+    margin-top:15px;
+    font-size:12px;
+    line-height:1.7;
+    word-break:break-word;
+}
+
+.resume-body{
+    padding:32px 36px;
+}
+
+.cv-section{
+    margin-bottom:25px;
+}
+
+.cv-section:last-child{
+    margin-bottom:0;
+}
+
+.cv-heading{
+    color:#1e3a5f;
+    font-size:15px;
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    font-weight:800;
+    padding-bottom:7px;
+    border-bottom:2px solid #1e3a5f;
+    margin-bottom:12px;
+}
+
+.cv-text{
+    font-size:13px;
+    line-height:1.65;
+    white-space:pre-line;
+    color:#374151;
+}
+
+.cv-item{
+    margin-bottom:16px;
+}
+
+.cv-item-title{
+    font-size:14px;
+    font-weight:800;
+}
+
+.cv-item-sub{
+    color:#475569;
+    font-size:13px;
+    margin:3px 0;
+}
+
+.cv-date{
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.skills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.skill{
+    padding:6px 9px;
+    background:#eef2f7;
+    border-radius:5px;
+    font-size:12px;
+}
+
+.empty{
+    color:#94a3b8;
+    font-style:italic;
+}
+
+.template-modern .resume-header{
+    background:#1e3a5f;
+}
+
+.template-modern .cv-heading{
+    color:#1e3a5f;
+    border-color:#1e3a5f;
+}
+
+.template-classic .resume-header{
+    background:#fff;
+    color:#111827;
+    border-bottom:3px solid #111827;
+}
+
+.template-classic .cv-heading{
+    color:#111827;
+    border-color:#111827;
+}
+
+.template-minimal .resume-header{
+    background:#f8fafc;
+    color:#111827;
+}
+
+.template-minimal .cv-heading{
+    color:#334155;
+    border-color:#cbd5e1;
+}
+
+.faq{
+    max-width:1200px;
+    margin:25px auto 0;
+    background:#fff;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.faq h2{
+    text-align:center;
+}
+
+.faq h3{
+    margin-bottom:6px;
+}
+
+.faq p{
+    color:#475569;
+    line-height:1.6;
+}
+
+@media(max-width:850px){
+    .builder{
+        grid-template-columns:1fr;
+    }
+
+    .preview-wrap{
+        position:static;
+    }
+}
+
+@media(max-width:520px){
+    body{
+        padding:14px;
+    }
+
+    .panel{
+        padding:17px;
+    }
+
+    .two{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+
+    .resume-header{
+        padding:26px 22px;
+    }
+
+    .resume-body{
+        padding:25px 22px;
+    }
+
+    .resume-name{
+        font-size:26px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-head">
+    <h1>Free Resume Builder</h1>
+    <p>Create a professional resume online, preview your CV instantly and download it as a PDF.</p>
+</div>
+
+<div class="builder">
+
+<div class="panel">
+
+<div class="section">
+<h2>Template</h2>
+
+<label for="template">Resume Style</label>
+<select id="template" oninput="updatePreview()">
+    <option value="modern">Modern</option>
+    <option value="classic">Classic</option>
+    <option value="minimal">Minimal</option>
+</select>
+</div>
+
+<div class="section">
+<h2>Personal Information</h2>
+
+<label>Full Name</label>
+<input id="fullName" placeholder="John Smith" oninput="updatePreview()">
+
+<label>Professional Title</label>
+<input id="jobTitle" placeholder="Software Engineer" oninput="updatePreview()">
+
+<div class="two">
+<div>
+<label>Email</label>
+<input id="email" type="email" placeholder="john@example.com" oninput="updatePreview()">
+</div>
+
+<div>
+<label>Phone</label>
+<input id="phone" placeholder="+1 555 123 4567" oninput="updatePreview()">
+</div>
+</div>
+
+<div class="two">
+<div>
+<label>Location</label>
+<input id="location" placeholder="New York, USA" oninput="updatePreview()">
+</div>
+
+<div>
+<label>Website / LinkedIn</label>
+<input id="website" placeholder="linkedin.com/in/johnsmith" oninput="updatePreview()">
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>Professional Summary</h2>
+<textarea id="summary" placeholder="Write a short professional summary..." oninput="updatePreview()"></textarea>
+</div>
+
+<div class="section">
+<h2>Work Experience</h2>
+<div id="experienceList"></div>
+<button class="secondary add-btn" type="button" onclick="addExperience()">+ Add Experience</button>
+</div>
+
+<div class="section">
+<h2>Education</h2>
+<div id="educationList"></div>
+<button class="secondary add-btn" type="button" onclick="addEducation()">+ Add Education</button>
+</div>
+
+<div class="section">
+<h2>Skills</h2>
+<label>Skills</label>
+<textarea id="skills" placeholder="JavaScript, Project Management, Communication, Excel" oninput="updatePreview()"></textarea>
+<small>Separate skills with commas.</small>
+</div>
+
+<div class="actions">
+<button class="primary" onclick="downloadPDF()">Download PDF</button>
+<button class="danger" onclick="clearResume()">Clear</button>
+</div>
+
+<div id="status" class="status"></div>
+
+</div>
+
+<div class="panel preview-wrap">
+<h2 class="preview-title">Live Preview</h2>
+
+<div id="resume" class="resume template-modern">
+
+<div class="resume-header">
+<div id="pName" class="resume-name">Your Name</div>
+<div id="pTitle" class="resume-title">Professional Title</div>
+<div id="pContact" class="resume-contact">Email · Phone · Location</div>
+</div>
+
+<div class="resume-body">
+
+<div class="cv-section" id="summarySection">
+<div class="cv-heading">Profile</div>
+<div id="pSummary" class="cv-text empty">Your professional summary will appear here.</div>
+</div>
+
+<div class="cv-section" id="experienceSection">
+<div class="cv-heading">Experience</div>
+<div id="pExperience"></div>
+</div>
+
+<div class="cv-section" id="educationSection">
+<div class="cv-heading">Education</div>
+<div id="pEducation"></div>
+</div>
+
+<div class="cv-section" id="skillsSection">
+<div class="cv-heading">Skills</div>
+<div id="pSkills" class="skills"></div>
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+
+<h3>Is this resume builder free?</h3>
+<p>Yes. You can create, preview and download your resume without paying for the tool.</p>
+
+<h3>Can I download my resume as a PDF?</h3>
+<p>Yes. Use the Download PDF button to create a PDF version of your resume.</p>
+
+<h3>Is my resume information stored?</h3>
+<p>No. Your resume is created directly in your browser and the tool does not intentionally send your resume details to our server.</p>
+</div>
+
+<script>
+let expCount=0;
+let eduCount=0;
+
+function esc(value){
+    return String(value || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function value(id){
+    return document.getElementById(id)?.value.trim() || "";
+}
+
+function addExperience(data={}){
+    expCount++;
+
+    const box=document.createElement("div");
+    box.className="entry";
+    box.innerHTML=`
+        <label>Job Title</label>
+        <input class="exp-role" placeholder="Software Engineer" value="${esc(data.role||"")}" oninput="updatePreview()">
+
+        <label>Company</label>
+        <input class="exp-company" placeholder="Company Name" value="${esc(data.company||"")}" oninput="updatePreview()">
+
+        <div class="two">
+            <div>
+                <label>Start Date</label>
+                <input class="exp-start" placeholder="Jan 2023" value="${esc(data.start||"")}" oninput="updatePreview()">
+            </div>
+            <div>
+                <label>End Date</label>
+                <input class="exp-end" placeholder="Present" value="${esc(data.end||"")}" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <label>Description</label>
+        <textarea class="exp-desc" placeholder="Describe your responsibilities and achievements..." oninput="updatePreview()">${esc(data.desc||"")}</textarea>
+
+        <button class="danger remove-btn" type="button" onclick="this.parentElement.remove();updatePreview()">Remove</button>
+    `;
+
+    document.getElementById("experienceList").appendChild(box);
+    updatePreview();
+}
+
+function addEducation(data={}){
+    eduCount++;
+
+    const box=document.createElement("div");
+    box.className="entry";
+    box.innerHTML=`
+        <label>Degree / Qualification</label>
+        <input class="edu-degree" placeholder="Bachelor of Science" value="${esc(data.degree||"")}" oninput="updatePreview()">
+
+        <label>School / University</label>
+        <input class="edu-school" placeholder="University Name" value="${esc(data.school||"")}" oninput="updatePreview()">
+
+        <div class="two">
+            <div>
+                <label>Start Date</label>
+                <input class="edu-start" placeholder="2018" value="${esc(data.start||"")}" oninput="updatePreview()">
+            </div>
+            <div>
+                <label>End Date</label>
+                <input class="edu-end" placeholder="2022" value="${esc(data.end||"")}" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <button class="danger remove-btn" type="button" onclick="this.parentElement.remove();updatePreview()">Remove</button>
+    `;
+
+    document.getElementById("educationList").appendChild(box);
+    updatePreview();
+}
+
+function updatePreview(){
+
+    const resume=document.getElementById("resume");
+    resume.className="resume template-"+value("template");
+
+    document.getElementById("pName").textContent=value("fullName") || "Your Name";
+    document.getElementById("pTitle").textContent=value("jobTitle") || "Professional Title";
+
+    const contact=[
+        value("email"),
+        value("phone"),
+        value("location"),
+        value("website")
+    ].filter(Boolean);
+
+    document.getElementById("pContact").textContent=
+        contact.length ? contact.join(" · ") : "Email · Phone · Location";
+
+    const summary=value("summary");
+    const ps=document.getElementById("pSummary");
+
+    ps.textContent=summary || "Your professional summary will appear here.";
+    ps.classList.toggle("empty",!summary);
+
+    const expOut=document.getElementById("pExperience");
+    expOut.innerHTML="";
+
+    document.querySelectorAll("#experienceList .entry").forEach(entry=>{
+        const role=entry.querySelector(".exp-role").value.trim();
+        const company=entry.querySelector(".exp-company").value.trim();
+        const start=entry.querySelector(".exp-start").value.trim();
+        const end=entry.querySelector(".exp-end").value.trim();
+        const desc=entry.querySelector(".exp-desc").value.trim();
+
+        if(role || company || start || end || desc){
+            const item=document.createElement("div");
+            item.className="cv-item";
+
+            if(role){
+                const d=document.createElement("div");
+                d.className="cv-item-title";
+                d.textContent=role;
+                item.appendChild(d);
+            }
+
+            if(company){
+                const d=document.createElement("div");
+                d.className="cv-item-sub";
+                d.textContent=company;
+                item.appendChild(d);
+            }
+
+            if(start || end){
+                const d=document.createElement("div");
+                d.className="cv-date";
+                d.textContent=[start,end].filter(Boolean).join(" - ");
+                item.appendChild(d);
+            }
+
+            if(desc){
+                const d=document.createElement("div");
+                d.className="cv-text";
+                d.textContent=desc;
+                item.appendChild(d);
+            }
+
+            expOut.appendChild(item);
+        }
+    });
+
+    if(!expOut.children.length){
+        expOut.innerHTML='<div class="empty cv-text">Your work experience will appear here.</div>';
+    }
+
+    const eduOut=document.getElementById("pEducation");
+    eduOut.innerHTML="";
+
+    document.querySelectorAll("#educationList .entry").forEach(entry=>{
+        const degree=entry.querySelector(".edu-degree").value.trim();
+        const school=entry.querySelector(".edu-school").value.trim();
+        const start=entry.querySelector(".edu-start").value.trim();
+        const end=entry.querySelector(".edu-end").value.trim();
+
+        if(degree || school || start || end){
+            const item=document.createElement("div");
+            item.className="cv-item";
+
+            if(degree){
+                const d=document.createElement("div");
+                d.className="cv-item-title";
+                d.textContent=degree;
+                item.appendChild(d);
+            }
+
+            if(school){
+                const d=document.createElement("div");
+                d.className="cv-item-sub";
+                d.textContent=school;
+                item.appendChild(d);
+            }
+
+            if(start || end){
+                const d=document.createElement("div");
+                d.className="cv-date";
+                d.textContent=[start,end].filter(Boolean).join(" - ");
+                item.appendChild(d);
+            }
+
+            eduOut.appendChild(item);
+        }
+    });
+
+    if(!eduOut.children.length){
+        eduOut.innerHTML='<div class="empty cv-text">Your education will appear here.</div>';
+    }
+
+    const skills=value("skills")
+        .split(",")
+        .map(s=>s.trim())
+        .filter(Boolean);
+
+    const skillsOut=document.getElementById("pSkills");
+    skillsOut.innerHTML="";
+
+    if(skills.length){
+        skills.forEach(skill=>{
+            const el=document.createElement("span");
+            el.className="skill";
+            el.textContent=skill;
+            skillsOut.appendChild(el);
+        });
+    }else{
+        skillsOut.innerHTML='<span class="empty cv-text">Your skills will appear here.</span>';
+    }
+}
+
+function showStatus(message){
+    const box=document.getElementById("status");
+    box.textContent=message;
+    box.style.display="block";
+
+    clearTimeout(window.statusTimer);
+    window.statusTimer=setTimeout(()=>{
+        box.style.display="none";
+    },4000);
+}
+
+async function downloadPDF(){
+
+    updatePreview();
+
+    const source=document.getElementById("resume");
+    const name=value("fullName") || "resume";
+
+    showStatus("Creating your PDF...");
+
+    const exportBox=document.createElement("div");
+    exportBox.style.position="fixed";
+    exportBox.style.left="-10000px";
+    exportBox.style.top="0";
+    exportBox.style.width="794px";
+    exportBox.style.background="#ffffff";
+    exportBox.style.zIndex="-9999";
+
+    const clone=source.cloneNode(true);
+
+    clone.style.width="794px";
+    clone.style.minHeight="1123px";
+    clone.style.height="auto";
+    clone.style.margin="0";
+    clone.style.boxShadow="none";
+    clone.style.border="0";
+    clone.style.overflow="visible";
+
+    exportBox.appendChild(clone);
+    document.body.appendChild(exportBox);
+
+    const options={
+        margin:0,
+        filename:name.toLowerCase().replace(/[^a-z0-9]+/g,"-")+".pdf",
+        image:{
+            type:"jpeg",
+            quality:0.98
+        },
+        html2canvas:{
+            scale:2,
+            useCORS:true,
+            logging:false,
+            backgroundColor:"#ffffff",
+            width:794,
+            windowWidth:794,
+            scrollX:0,
+            scrollY:0
+        },
+        jsPDF:{
+            unit:"px",
+            format:[794,1123],
+            orientation:"portrait",
+            hotfixes:["px_scaling"]
+        },
+        pagebreak:{
+            mode:["css","legacy"],
+            avoid:[".cv-item",".cv-heading"]
+        }
+    };
+
+    try{
+        await new Promise(resolve=>setTimeout(resolve,150));
+
+        await html2pdf()
+            .set(options)
+            .from(clone)
+            .save();
+
+        showStatus("Resume downloaded successfully.");
+
+    }catch(error){
+
+        console.error(error);
+        showStatus("Could not create the PDF. Please try again.");
+
+    }finally{
+
+        exportBox.remove();
+    }
+}
+
+function clearResume(){
+
+    document.querySelectorAll(
+        '#fullName,#jobTitle,#email,#phone,#location,#website,#summary,#skills'
+    ).forEach(el=>el.value="");
+
+    document.getElementById("template").value="modern";
+    document.getElementById("experienceList").innerHTML="";
+    document.getElementById("educationList").innerHTML="";
+
+    addExperience();
+    addEducation();
+
+    updatePreview();
+}
+
+addExperience();
+addEducation();
+updatePreview();
+</script>
+
+</body>
+</html>

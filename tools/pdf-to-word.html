@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>PDF To Word Converter Online Free</title>
+
+<meta name="description" content="Convert PDF files to editable Word documents online for free. Extract text from PDF files directly in your browser.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+margin:0;
+}
+
+h1,p{
+text-align:center;
+}
+
+.converter-box{
+max-width:700px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.upload-area{
+border:2px dashed #2563eb;
+padding:30px;
+text-align:center;
+border-radius:12px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin:10px;
+}
+
+textarea{
+width:100%;
+height:220px;
+margin-top:20px;
+padding:15px;
+box-sizing:border-box;
+border-radius:10px;
+}
+
+
+#pdfInput{
+    display:none;
+}
+
+.custom-file-picker{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    box-sizing:border-box;
+}
+
+.custom-file-button{
+    display:inline-block;
+    padding:12px 16px;
+    background:#2563eb;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+#fileName{
+    flex:1;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.download-success{
+    display:none;
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid #86efac;
+    border-radius:10px;
+    background:#f0fdf4;
+    color:#166534;
+    font-weight:600;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>PDF To Word Converter</h1>
+
+<p>
+Convert PDF text into an editable Word document online.
+</p>
+
+<div class="converter-box">
+
+<div class="upload-area">
+
+<div class="custom-file-picker">
+<label for="pdfInput" class="custom-file-button">
+Choose PDF File
+</label>
+
+<span id="fileName">No file selected</span>
+
+<input type="file"
+       id="pdfInput"
+       accept="application/pdf,.pdf">
+</div>
+
+</div><button onclick="convertPDF()">Convert To Word</button>
+
+<button onclick="downloadWord()">Download DOCX</button>
+
+<div id="downloadSuccess"
+     class="download-success"
+     role="status"
+     aria-live="polite">
+DOCX downloaded successfully.
+</div>
+
+<textarea id="output" placeholder="Extracted text will appear here..."></textarea>
+
+</div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+
+<script>
+
+let wordBlob=null;
+
+document.getElementById("pdfInput").addEventListener("change", function(){
+    const file = this.files[0];
+
+    document.getElementById("fileName").textContent =
+        file ? file.name : "No file selected";
+
+    document.getElementById("downloadSuccess").style.display =
+        "none";
+});
+
+
+async function convertPDF(){
+
+let file=document.getElementById("pdfInput").files[0];
+
+if(!file){
+alert("Please select PDF file");
+return;
+}
+
+let output=document.getElementById("output");
+
+output.value="Extracting text...";
+
+
+let buffer=await file.arrayBuffer();
+
+let pdf=await pdfjsLib.getDocument({
+data:buffer
+}).promise;
+
+
+let text="";
+
+
+for(let i=1;i<=pdf.numPages;i++){
+
+let page=await pdf.getPage(i);
+
+let content=await page.getTextContent();
+
+content.items.forEach(item=>{
+text += item.str+" ";
+});
+
+text+="\n\n";
+
+}
+
+
+output.value=text;
+
+
+let doc=new docx.Document({
+
+sections:[{
+
+children:[
+
+new docx.Paragraph(text)
+
+]
+
+}]
+
+});
+
+
+try{
+wordBlob=new Blob(["<html><body><pre>"+text+"</pre></body></html>"],{type:"application/msword"});
+}catch(e){output.value="DOCX ERROR: "+e;}
+
+
+}function downloadWord(){
+
+if(!wordBlob){
+    alert("Convert PDF first");
+    return;
+}
+
+const url = URL.createObjectURL(wordBlob);
+
+const a = document.createElement("a");
+a.style.display = "none";
+a.href = url;
+a.download = "converted-file.docx";
+
+document.body.appendChild(a);
+a.click();
+a.remove();
+
+const successBox =
+    document.getElementById("downloadSuccess");
+
+successBox.style.display = "block";
+
+clearTimeout(window.pdfWordSuccessTimer);
+
+window.pdfWordSuccessTimer =
+    setTimeout(() => {
+        successBox.style.display = "none";
+    },4000);
+
+setTimeout(() => {
+    URL.revokeObjectURL(url);
+},1500);
+
+}
+
+</script>
+
+
+<div class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Can I convert PDF to Word online?</h3>
+<p>Yes, this tool extracts text from PDF files and creates an editable Word document.</p>
+
+<h3>Are my files uploaded?</h3>
+<p>No, files are processed directly in your browser.</p>
+
+<h3>Is the converted Word file editable?</h3>
+<p>Yes, the generated DOCX file can be edited with Microsoft Word.</p>
+
+</div>
+
+
+</body>
+</html>

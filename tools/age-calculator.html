@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Age Calculator Online Free</title>
+
+<meta name="description" content="Calculate your exact age in years, months and days online for free. Simple and accurate age calculator.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+margin:0;
+}
+
+h1,p{
+text-align:center;
+}
+
+.tool-box{
+max-width:700px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+box-sizing:border-box;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:16px;
+}
+
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin:10px;
+box-sizing:border-box;
+}
+
+
+#result{
+text-align:center;
+font-size:18px;
+font-weight:bold;
+margin:20px;
+}
+
+
+
+.birth-date-fields{
+    display:grid;
+    grid-template-columns:.8fr 1.5fr 1fr;
+    gap:10px;
+    width:100%;
+    margin-top:8px;
+}
+
+.birth-date-fields select{
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    padding:12px 8px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    background:#fff;
+    font-size:16px;
+}
+
+@media(max-width:520px){
+    .birth-date-fields{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>Age Calculator</h1>
+
+<p>
+Calculate your exact age in years, months and days.
+</p>
+
+
+<div class="tool-box">
+
+
+<label>Date of Birth</label>
+
+<div class="birth-date-fields">
+<select id="birthDay" aria-label="Birth day">
+<option value="">Day</option>
+</select>
+
+<select id="birthMonth" aria-label="Birth month">
+<option value="">Month</option>
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+
+<select id="birthYear" aria-label="Birth year">
+<option value="">Year</option>
+</select>
+</div>
+
+
+<div class="tool-actions">
+
+<button onclick="calculateAge()">Calculate Age</button>
+
+<button onclick="clearAge()">Clear</button>
+
+</div>
+
+
+<div id="result"></div>
+<script>
+
+
+const daySelect =
+    document.getElementById("birthDay");
+
+const monthSelect =
+    document.getElementById("birthMonth");
+
+const yearSelect =
+    document.getElementById("birthYear");
+
+for(let day = 1; day <= 31; day++){
+    const option =
+        document.createElement("option");
+
+    option.value = day;
+    option.textContent = day;
+
+    daySelect.appendChild(option);
+}
+
+const currentYear =
+    new Date().getFullYear();
+
+for(let year = currentYear; year >= 1900; year--){
+    const option =
+        document.createElement("option");
+
+    option.value = year;
+    option.textContent = year;
+
+    yearSelect.appendChild(option);
+}
+
+function calculateAge(){
+
+    const day =
+        Number(daySelect.value);
+
+    const month =
+        Number(monthSelect.value);
+
+    const year =
+        Number(yearSelect.value);
+
+    if(!day || !month || !year){
+        alert("Please select your complete birth date");
+        return;
+    }
+
+    const birthDate =
+        new Date(
+            year,
+            month - 1,
+            day
+        );
+
+    if(
+        birthDate.getFullYear() !== year ||
+        birthDate.getMonth() !== month - 1 ||
+        birthDate.getDate() !== day
+    ){
+        alert("Please select a valid birth date");
+        return;
+    }
+
+    const today =
+        new Date();
+
+    today.setHours(0,0,0,0);
+    birthDate.setHours(0,0,0,0);
+
+    if(birthDate > today){
+        alert("Birth date cannot be in the future");
+        return;
+    }
+
+    let years =
+        today.getFullYear() -
+        birthDate.getFullYear();
+
+    let months =
+        today.getMonth() -
+        birthDate.getMonth();
+
+    let days =
+        today.getDate() -
+        birthDate.getDate();
+
+    if(days < 0){
+        months--;
+
+        const previousMonthDays =
+            new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                0
+            ).getDate();
+
+        days += previousMonthDays;
+    }
+
+    if(months < 0){
+        years--;
+        months += 12;
+    }
+
+    document.getElementById("result").innerHTML =
+        "Your Age: " +
+        years + " Years, " +
+        months + " Months, " +
+        days + " Days";
+}
+
+function clearAge(){
+    daySelect.value = "";
+    monthSelect.value = "";
+    yearSelect.value = "";
+
+    document.getElementById("result").innerHTML =
+        "";
+}
+
+</script>
+<div class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+
+<h3>What is an age calculator?</h3>
+
+<p>
+An age calculator calculates your exact age based on your date of birth.
+</p>
+
+
+<h3>Can I calculate my age in days?</h3>
+
+<p>
+Yes, this tool shows your age in years, months and days.
+</p>
+
+
+<h3>Is my birth date saved?</h3>
+
+<p>
+No, calculations are performed directly in your browser.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+</html>

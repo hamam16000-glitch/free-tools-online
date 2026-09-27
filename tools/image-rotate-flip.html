@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rotate & Flip Image Online - JPG, PNG & WebP Free</title>
+
+<meta name="description" content="Rotate images left or right, flip images horizontally or vertically, and export JPG, PNG or WebP free. Fast and private browser-based image tool.">
+
+<meta name="keywords" content="rotate image online, flip image online, mirror image, rotate JPG, rotate PNG, rotate WebP, flip photo, image rotator">
+
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rotate & Flip Image Online">
+<meta property="og:description" content="Rotate and flip JPG, PNG and WebP images quickly and privately in your browser.">
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.cropper-box{
+    width:100%;
+    max-width:980px;
+    box-sizing:border-box;
+}
+
+.drop-zone{
+    width:100%;
+    padding:28px 16px;
+    border:2px dashed #cbd5e1;
+    border-radius:14px;
+    text-align:center;
+    box-sizing:border-box;
+    transition:.2s ease;
+}
+
+.drop-zone.dragover{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.drop-zone input[type="file"]{
+    display:none;
+}
+
+.file-button{
+    display:inline-block;
+    padding:11px 18px;
+    border-radius:8px;
+    background:#2563eb;
+    color:#fff;
+    cursor:pointer;
+}
+
+.drop-title{
+    margin-top:12px;
+    font-weight:600;
+}
+
+.drop-subtitle{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.7;
+}
+
+.file-card{
+    display:none;
+    margin-top:14px;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+}
+
+.file-name{
+    font-weight:600;
+    overflow-wrap:anywhere;
+}
+
+.file-meta{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.72;
+}
+
+.section{
+    margin-top:22px;
+}
+
+.section-title{
+    display:block;
+    margin-bottom:9px;
+    font-weight:600;
+}
+
+.rotate-actions,
+.flip-actions{
+    display:grid;
+    gap:8px;
+}
+
+.rotate-actions{
+    grid-template-columns:repeat(3,1fr);
+}
+
+.flip-actions{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.rotate-actions button,
+.flip-actions button{
+    min-height:46px;
+    margin:0;
+    padding:10px 8px;
+}
+
+.flip-actions button.active{
+    border-color:#2563eb;
+    background:#eff6ff;
+    color:#1d4ed8;
+}
+
+.angle-control{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 110px;
+    gap:14px;
+    align-items:center;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:11px;
+}
+
+.angle-control input[type="range"]{
+    width:100%;
+}
+
+.angle-number-wrap{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.angle-number-wrap input{
+    width:100%;
+    min-width:0;
+    padding:10px 8px;
+    box-sizing:border-box;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:15px;
+    text-align:center;
+}
+
+.angle-number-wrap span{
+    font-weight:600;
+}
+
+.editor-wrap{
+    display:none;
+    margin-top:18px;
+}
+
+.canvas-shell{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    min-height:180px;
+    max-height:620px;
+    padding:12px;
+    box-sizing:border-box;
+    overflow:hidden;
+    background:#111827;
+    border-radius:12px;
+}
+
+#editorCanvas{
+    display:block;
+    width:auto;
+    height:auto;
+    max-width:100%;
+    max-height:596px;
+    margin:auto;
+}
+
+.settings-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.setting-card{
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:11px;
+}
+
+.setting-card select,
+.setting-card input[type="color"]{
+    width:100%;
+    min-height:42px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    background:#fff;
+    box-sizing:border-box;
+}
+
+.quality-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.quality-row input{
+    flex:1;
+}
+
+.quality-value{
+    min-width:48px;
+    font-weight:600;
+    text-align:right;
+}
+
+.plan-box{
+    display:none;
+    margin-top:12px;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:11px;
+    line-height:1.55;
+}
+
+.preview-box{
+    display:none;
+    margin-top:18px;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+}
+
+.preview-image-wrap{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:10px;
+    padding:10px;
+    min-height:120px;
+    background:#f8fafc;
+    border-radius:9px;
+}
+
+#resultPreview{
+    display:block;
+    max-width:100%;
+    max-height:420px;
+    object-fit:contain;
+    border-radius:9px;
+}
+
+.result-meta{
+    margin-top:10px;
+    font-size:14px;
+    line-height:1.55;
+}
+
+.button-row{
+    display:flex;
+    gap:8px;
+    margin-top:18px;
+}
+
+.button-row button{
+    flex:1;
+    min-width:0;
+    margin:0;
+}
+
+#info{
+    margin-top:14px;
+    line-height:1.5;
+}
+
+.privacy-note{
+    margin-top:15px;
+    padding:11px 12px;
+    border-radius:10px;
+    background:#f8fafc;
+    font-size:13px;
+    line-height:1.5;
+}
+
+@media(max-width:760px){
+    .cropper-box{
+        padding:0 12px;
+    }
+
+    .rotate-actions{
+        grid-template-columns:1fr;
+    }
+
+    .settings-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:520px){
+    .flip-actions{
+        grid-template-columns:1fr;
+    }
+
+    .angle-control{
+        grid-template-columns:minmax(0,1fr) 88px;
+        gap:8px;
+    }
+
+    .button-row{
+        flex-wrap:wrap;
+    }
+
+    .button-row button{
+        flex:1 1 45%;
+    }
+}
+
+/* Final action layout */
+.tool-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+    margin-top:18px;
+}
+
+.tool-actions button{
+    width:100%;
+    min-width:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+@media(max-width:520px){
+    .tool-actions{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .tool-actions button{
+        font-size:15px;
+        padding:12px 6px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Image Rotate & Flip</h1>
+
+<p>
+Rotate JPG, PNG and WebP images left or right, use custom angles, and flip images horizontally or vertically directly in your browser.
+</p>
+
+<div class="cropper-box">
+
+<h2>Rotate or Flip Image Online</h2>
+
+<div id="dropZone" class="drop-zone">
+
+<label for="imageFile" class="file-button">
+Choose Image
+</label>
+
+<input
+    type="file"
+    id="imageFile"
+    accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+>
+
+<div class="drop-title">
+or drag and drop an image here
+</div>
+
+<div class="drop-subtitle">
+JPG, PNG or WebP • Maximum file size: 50 MB
+</div>
+
+</div>
+
+<div id="fileCard" class="file-card">
+<div id="fileName" class="file-name"></div>
+<div id="fileMeta" class="file-meta"></div>
+</div>
+
+<div id="rotateControls" style="display:none">
+
+<div class="section">
+
+<span class="section-title">Rotate Image</span>
+
+<div class="rotate-actions">
+
+<button type="button" onclick="rotateBy(-90)">
+Rotate Left 90°
+</button>
+
+<button type="button" onclick="rotateBy(90)">
+Rotate Right 90°
+</button>
+
+<button type="button" onclick="rotateBy(180)">
+Rotate 180°
+</button>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<span class="section-title">Custom Rotation</span>
+
+<div class="angle-control">
+
+<input
+    type="range"
+    id="angleRange"
+    min="-180"
+    max="180"
+    step="1"
+    value="0"
+>
+
+<div class="angle-number-wrap">
+<input
+    type="number"
+    id="angleNumber"
+    min="-180"
+    max="180"
+    step="1"
+    value="0"
+>
+<span>°</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<span class="section-title">Flip / Mirror Image</span>
+
+<div class="flip-actions">
+
+<button
+    type="button"
+    id="flipHorizontalBtn"
+    onclick="toggleFlipHorizontal()"
+>
+Flip Horizontal
+</button>
+
+<button
+    type="button"
+    id="flipVerticalBtn"
+    onclick="toggleFlipVertical()"
+>
+Flip Vertical
+</button>
+
+</div>
+
+</div>
+
+<div class="editor-wrap" id="editorWrap">
+
+<div class="canvas-shell">
+<canvas id="editorCanvas"></canvas>
+</div>
+
+<div id="transformInfo" class="plan-box"></div>
+
+</div>
+
+<div class="section settings-grid">
+
+<div class="setting-card">
+
+<label class="section-title" for="outputFormat">
+Output Format
+</label>
+
+<select id="outputFormat">
+<option value="jpg">JPG</option>
+<option value="png">PNG</option>
+<option value="webp">WebP</option>
+</select>
+
+</div>
+
+<div id="qualityCard" class="setting-card">
+
+<span class="section-title">Quality</span>
+
+<div class="quality-row">
+
+<input
+    type="range"
+    id="quality"
+    min="50"
+    max="100"
+    step="1"
+    value="92"
+>
+
+<span id="qualityValue" class="quality-value">
+92%
+</span>
+
+</div>
+
+</div>
+
+<div id="backgroundCard" class="setting-card">
+
+<label class="section-title" for="backgroundColor">
+JPG Background
+</label>
+
+<input
+    type="color"
+    id="backgroundColor"
+    value="#ffffff"
+>
+
+</div>
+
+</div>
+
+<div id="previewBox" class="preview-box">
+
+<strong>Result Preview</strong>
+
+<div class="preview-image-wrap">
+<img
+    id="resultPreview"
+    alt="Rotated or flipped image preview"
+>
+</div>
+
+<div id="resultMeta" class="result-meta"></div>
+
+</div>
+
+<div class="tool-actions">
+
+<button
+    id="createBtn"
+    onclick="createResult()"
+    disabled
+>
+Create Image
+</button>
+
+<button
+    id="downloadBtn"
+    onclick="downloadResult()"
+    disabled
+>
+Download
+</button>
+
+<button
+    id="resetBtn"
+    onclick="resetTransform()"
+    disabled
+>
+Reset
+</button>
+
+<button
+    id="clearBtn"
+    onclick="clearAll()"
+>
+Clear
+</button>
+
+</div>
+
+<div id="downloadStatus" style="
+display:none;
+margin-top:14px;
+padding:12px 15px;
+border-radius:10px;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+color:#166534;
+font-weight:600;
+text-align:center;
+">
+✓ Download completed successfully.
+</div>
+
+<div id="info" aria-live="polite"></div>
+
+<div class="privacy-note">
+Your image is processed locally in your browser and is never uploaded to our server.
+</div>
+
+</div>
+
+</div>
+
+<section>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Can I rotate an image by 90 or 180 degrees?</h3>
+<p>
+Yes. You can rotate an image left or right by 90 degrees, or rotate it by 180 degrees.
+</p>
+
+<h3>Can I rotate an image by a custom angle?</h3>
+<p>
+Yes. Use the custom rotation control to choose an angle between -180° and 180°.
+</p>
+
+<h3>Can I flip or mirror an image?</h3>
+<p>
+Yes. You can flip an image horizontally, vertically, or use both options together.
+</p>
+
+<h3>Which image formats are supported?</h3>
+<p>
+You can open JPG, PNG and WebP images and export the result as JPG, PNG or WebP.
+</p>
+
+<h3>Will PNG transparency be preserved?</h3>
+<p>
+PNG and WebP can preserve transparent areas. JPG does not support transparency, so a background color is used when exporting as JPG.
+</p>
+
+<h3>Are my images uploaded?</h3>
+<p>
+No. Image rotation and flipping happen locally in your browser.
+</p>
+
+</section>
+
+<script>
+const maxFileSize = 50 * 1024 * 1024;
+const maxOutputPixels = 60000000;
+
+let sourceFile = null;
+let sourceImage = null;
+let sourceURL = null;
+
+let rotation = 0;
+let flipHorizontal = false;
+let flipVertical = false;
+
+let outputBlob = null;
+let outputURL = null;
+let outputName = "";
+
+const canvas = document.getElementById("editorCanvas");
+const ctx = canvas.getContext("2d");
+
+const input = document.getElementById("imageFile");
+const dropZone = document.getElementById("dropZone");
+
+const angleRange = document.getElementById("angleRange");
+const angleNumber = document.getElementById("angleNumber");
+
+const quality = document.getElementById("quality");
+const outputFormat = document.getElementById("outputFormat");
+
+input.addEventListener("change", event => {
+    const file = event.target.files[0];
+
+    if(file){
+        loadImage(file);
+    }
+});
+
+dropZone.addEventListener("dragover", event => {
+    event.preventDefault();
+    dropZone.classList.add("dragover");
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+});
+
+dropZone.addEventListener("drop", event => {
+    event.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    const file = event.dataTransfer.files[0];
+
+    if(file){
+        loadImage(file);
+    }
+});
+
+angleRange.addEventListener("input", () => {
+    setRotation(Number(angleRange.value));
+});
+
+angleNumber.addEventListener("input", () => {
+    if(angleNumber.value === ""){
+        return;
+    }
+
+    let value = Number(angleNumber.value);
+
+    if(!Number.isFinite(value)){
+        return;
+    }
+
+    value = Math.max(-180, Math.min(180, value));
+
+    rotation = value;
+    angleRange.value = value;
+
+    invalidateOutput();
+    drawEditor();
+    updateTransformInfo();
+});
+
+angleNumber.addEventListener("change", () => {
+    if(angleNumber.value === ""){
+        angleNumber.value = rotation;
+        return;
+    }
+
+    setRotation(Number(angleNumber.value));
+});
+
+quality.addEventListener("input", () => {
+    document.getElementById("qualityValue").textContent =
+        quality.value + "%";
+
+    invalidateOutput();
+});
+
+outputFormat.addEventListener("change", () => {
+    updateOutputSettings();
+    invalidateOutput();
+});
+
+document
+    .getElementById("backgroundColor")
+    .addEventListener("input", () => {
+        invalidateOutput();
+    });
+
+window.addEventListener("resize", () => {
+    if(sourceImage){
+        drawEditor();
+    }
+});
+
+async function loadImage(file){
+    const valid =
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/webp" ||
+        /\.(jpe?g|png|webp)$/i.test(file.name);
+
+    if(!valid){
+        alert("Please choose a JPG, PNG or WebP image.");
+        return;
+    }
+
+    if(file.size > maxFileSize){
+        alert("Image is too large. Maximum file size is 50 MB.");
+        return;
+    }
+
+    clearImageObjects();
+
+    document.getElementById("info").textContent =
+        "Reading image...";
+
+    try{
+        sourceURL = URL.createObjectURL(file);
+
+        const image = new Image();
+
+        await new Promise((resolve, reject) => {
+            image.onload = resolve;
+            image.onerror = reject;
+            image.src = sourceURL;
+        });
+
+        if(!image.naturalWidth || !image.naturalHeight){
+            throw new Error("Invalid image dimensions.");
+        }
+
+        sourceFile = file;
+        sourceImage = image;
+
+        rotation = 0;
+        flipHorizontal = false;
+        flipVertical = false;
+
+        syncTransformControls();
+
+        document.getElementById("fileCard").style.display =
+            "block";
+
+        document.getElementById("fileName").textContent =
+            file.name;
+
+        document.getElementById("fileMeta").textContent =
+            image.naturalWidth +
+            " × " +
+            image.naturalHeight +
+            " • " +
+            formatSize(file.size) +
+            " • " +
+            sourceFormat(file);
+
+        document.getElementById("rotateControls").style.display =
+            "block";
+
+        document.getElementById("editorWrap").style.display =
+            "block";
+
+        document.getElementById("createBtn").disabled =
+            false;
+
+        document.getElementById("resetBtn").disabled =
+            false;
+
+        outputFormat.value =
+            sourceFormat(file).toLowerCase();
+
+        updateOutputSettings();
+        invalidateOutput();
+        drawEditor();
+        updateTransformInfo();
+
+        document.getElementById("info").textContent =
+            "Image loaded. Rotate or flip it, then create the final image.";
+
+    }catch(error){
+        console.error("Image load error:", error);
+
+        alert("Could not read this image.");
+        clearAll();
+    }
+}
+
+function normalizeAngle(value){
+    let angle = Number(value);
+
+    if(!Number.isFinite(angle)){
+        return 0;
+    }
+
+    angle %= 360;
+
+    if(angle > 180){
+        angle -= 360;
+    }
+
+    if(angle < -180){
+        angle += 360;
+    }
+
+    return Math.round(angle * 100) / 100;
+}
+
+function setRotation(value){
+    if(!sourceImage){
+        return;
+    }
+
+    rotation = normalizeAngle(value);
+
+    syncTransformControls();
+    invalidateOutput();
+    drawEditor();
+    updateTransformInfo();
+}
+
+function rotateBy(amount){
+    if(!sourceImage){
+        return;
+    }
+
+    setRotation(rotation + amount);
+}
+
+function toggleFlipHorizontal(){
+    if(!sourceImage){
+        return;
+    }
+
+    flipHorizontal = !flipHorizontal;
+
+    syncFlipButtons();
+    invalidateOutput();
+    drawEditor();
+    updateTransformInfo();
+}
+
+function toggleFlipVertical(){
+    if(!sourceImage){
+        return;
+    }
+
+    flipVertical = !flipVertical;
+
+    syncFlipButtons();
+    invalidateOutput();
+    drawEditor();
+    updateTransformInfo();
+}
+
+function syncTransformControls(){
+    angleRange.value = rotation;
+    angleNumber.value = rotation;
+
+    syncFlipButtons();
+}
+
+function syncFlipButtons(){
+    const horizontalButton =
+        document.getElementById("flipHorizontalBtn");
+
+    const verticalButton =
+        document.getElementById("flipVerticalBtn");
+
+    horizontalButton.classList.toggle(
+        "active",
+        flipHorizontal
+    );
+
+    verticalButton.classList.toggle(
+        "active",
+        flipVertical
+    );
+
+    horizontalButton.setAttribute(
+        "aria-pressed",
+        flipHorizontal ? "true" : "false"
+    );
+
+    verticalButton.setAttribute(
+        "aria-pressed",
+        flipVertical ? "true" : "false"
+    );
+}
+
+function getOutputDimensions(){
+    if(!sourceImage){
+        return {
+            width:0,
+            height:0
+        };
+    }
+
+    const radians =
+        rotation * Math.PI / 180;
+
+    const rawCos =
+        Math.abs(Math.cos(radians));
+
+    const rawSin =
+        Math.abs(Math.sin(radians));
+
+    const cos =
+        rawCos < 1e-10
+        ? 0
+        : rawCos;
+
+    const sin =
+        rawSin < 1e-10
+        ? 0
+        : rawSin;
+
+    return {
+        width:
+            Math.max(
+                1,
+                Math.ceil(
+                    sourceImage.naturalWidth * cos +
+                    sourceImage.naturalHeight * sin
+                )
+            ),
+
+        height:
+            Math.max(
+                1,
+                Math.ceil(
+                    sourceImage.naturalWidth * sin +
+                    sourceImage.naturalHeight * cos
+                )
+            )
+    };
+}
+
+function drawEditor(){
+    if(!sourceImage || !ctx){
+        return;
+    }
+
+    const dimensions = getOutputDimensions();
+
+    const shell =
+        document.querySelector(".canvas-shell");
+
+    const availableWidth =
+        Math.max(
+            1,
+            shell.clientWidth - 24
+        );
+
+    const availableHeight = 596;
+
+    const previewScale =
+        Math.min(
+            availableWidth / dimensions.width,
+            availableHeight / dimensions.height,
+            1
+        );
+
+    canvas.width =
+        Math.max(
+            1,
+            Math.round(
+                dimensions.width * previewScale
+            )
+        );
+
+    canvas.height =
+        Math.max(
+            1,
+            Math.round(
+                dimensions.height * previewScale
+            )
+        );
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.save();
+
+    ctx.translate(
+        canvas.width / 2,
+        canvas.height / 2
+    );
+
+    ctx.rotate(
+        rotation * Math.PI / 180
+    );
+
+    ctx.scale(
+        (flipHorizontal ? -1 : 1) * previewScale,
+        (flipVertical ? -1 : 1) * previewScale
+    );
+
+    ctx.drawImage(
+        sourceImage,
+        -sourceImage.naturalWidth / 2,
+        -sourceImage.naturalHeight / 2
+    );
+
+    ctx.restore();
+}
+
+function updateTransformInfo(){
+    const box =
+        document.getElementById("transformInfo");
+
+    if(!sourceImage){
+        box.style.display = "none";
+        box.textContent = "";
+        return;
+    }
+
+    const dimensions =
+        getOutputDimensions();
+
+    let flipText = "None";
+
+    if(flipHorizontal && flipVertical){
+        flipText = "Horizontal + Vertical";
+    }else if(flipHorizontal){
+        flipText = "Horizontal";
+    }else if(flipVertical){
+        flipText = "Vertical";
+    }
+
+    box.style.display = "block";
+
+    box.innerHTML =
+        "Rotation: " +
+        rotation +
+        "°" +
+        "<br>Flip: " +
+        flipText +
+        "<br>Output dimensions: " +
+        dimensions.width +
+        " × " +
+        dimensions.height +
+        " px";
+}
+
+function resetTransform(){
+    if(!sourceImage){
+        return;
+    }
+
+    rotation = 0;
+    flipHorizontal = false;
+    flipVertical = false;
+
+    syncTransformControls();
+    invalidateOutput();
+    drawEditor();
+    updateTransformInfo();
+
+    document.getElementById("info").textContent =
+        "Rotation and flip settings reset.";
+}
+
+function updateOutputSettings(){
+    const format =
+        outputFormat.value;
+
+    document.getElementById("qualityCard").style.display =
+        format === "png"
+        ? "none"
+        : "block";
+
+    document.getElementById("backgroundCard").style.display =
+        format === "jpg"
+        ? "block"
+        : "none";
+}
+
+async function createResult(){
+    if(!sourceImage || !sourceFile){
+        return;
+    }
+
+    invalidateOutput();
+
+    const dimensions =
+        getOutputDimensions();
+
+    if(
+        dimensions.width *
+        dimensions.height >
+        maxOutputPixels
+    ){
+        alert(
+            "This output is too large for safe processing on a mobile browser. Please resize the image first."
+        );
+        return;
+    }
+
+    document.getElementById("createBtn").disabled =
+        true;
+
+    document.getElementById("info").textContent =
+        "Creating image...";
+
+    try{
+        const outputCanvas =
+            document.createElement("canvas");
+
+        outputCanvas.width =
+            dimensions.width;
+
+        outputCanvas.height =
+            dimensions.height;
+
+        const format =
+            outputFormat.value;
+
+        const outputContext =
+            outputCanvas.getContext(
+                "2d",
+                {
+                    alpha:format !== "jpg"
+                }
+            );
+
+        if(!outputContext){
+            throw new Error(
+                "Canvas is not supported."
+            );
+        }
+
+        outputContext.imageSmoothingEnabled =
+            true;
+
+        outputContext.imageSmoothingQuality =
+            "high";
+
+        if(format === "jpg"){
+            outputContext.fillStyle =
+                document
+                    .getElementById("backgroundColor")
+                    .value;
+
+            outputContext.fillRect(
+                0,
+                0,
+                dimensions.width,
+                dimensions.height
+            );
+        }
+
+        outputContext.save();
+
+        outputContext.translate(
+            dimensions.width / 2,
+            dimensions.height / 2
+        );
+
+        outputContext.rotate(
+            rotation * Math.PI / 180
+        );
+
+        outputContext.scale(
+            flipHorizontal ? -1 : 1,
+            flipVertical ? -1 : 1
+        );
+
+        outputContext.drawImage(
+            sourceImage,
+            -sourceImage.naturalWidth / 2,
+            -sourceImage.naturalHeight / 2
+        );
+
+        outputContext.restore();
+
+        const mime =
+            format === "png"
+            ? "image/png"
+            : format === "webp"
+            ? "image/webp"
+            : "image/jpeg";
+
+        const qualityValue =
+            format === "png"
+            ? undefined
+            : Number(quality.value) / 100;
+
+        outputBlob =
+            await canvasToBlob(
+                outputCanvas,
+                mime,
+                qualityValue
+            );
+
+        if(!outputBlob){
+            throw new Error(
+                "Could not create output image."
+            );
+        }
+
+        if(
+            format === "webp" &&
+            outputBlob.type !== "image/webp"
+        ){
+            outputBlob = null;
+
+            alert(
+                "WebP export is not supported by this browser."
+            );
+
+            return;
+        }
+
+        const baseName =
+            sourceFile.name.replace(
+                /\.(jpe?g|png|webp)$/i,
+                ""
+            ) || "image";
+
+        outputName =
+            baseName +
+            "-rotated-flipped." +
+            (
+                format === "jpg"
+                ? "jpg"
+                : format
+            );
+
+        outputURL =
+            URL.createObjectURL(outputBlob);
+
+        document.getElementById("resultPreview").src =
+            outputURL;
+
+        document.getElementById("previewBox").style.display =
+            "block";
+
+        const sizeDifference =
+            sourceFile.size > 0
+            ? Math.round(
+                (
+                    (
+                        sourceFile.size -
+                        outputBlob.size
+                    ) /
+                    sourceFile.size
+                ) * 100
+            )
+            : 0;
+
+        let sizeText;
+
+        if(sizeDifference >= 0){
+            sizeText =
+                sizeDifference +
+                "% smaller";
+        }else{
+            sizeText =
+                Math.abs(sizeDifference) +
+                "% larger";
+        }
+
+        document.getElementById("resultMeta").innerHTML =
+            "Output: " +
+            dimensions.width +
+            " × " +
+            dimensions.height +
+            " px" +
+            "<br>Rotation: " +
+            rotation +
+            "°" +
+            "<br>Format: " +
+            format.toUpperCase() +
+            "<br>Size: " +
+            formatSize(outputBlob.size) +
+            " • " +
+            sizeText;
+
+        document.getElementById("downloadBtn").disabled =
+            false;
+
+        document.getElementById("info").textContent =
+            "Image created successfully.";
+
+    }catch(error){
+        console.error(
+            "Image processing error:",
+            error
+        );
+
+        invalidateOutput();
+
+        alert(
+            "Could not create the transformed image. The image may be too large for this browser."
+        );
+
+        document.getElementById("info").textContent =
+            "Image processing failed.";
+
+    }finally{
+        document.getElementById("createBtn").disabled =
+            false;
+    }
+}
+
+function canvasToBlob(
+    canvasElement,
+    type,
+    qualityValue
+){
+    return new Promise(resolve => {
+        if(type === "image/png"){
+            canvasElement.toBlob(
+                resolve,
+                type
+            );
+        }else{
+            canvasElement.toBlob(
+                resolve,
+                type,
+                qualityValue
+            );
+        }
+    });
+}
+
+function downloadResult(){
+    if(!outputBlob || !outputURL){
+        return;
+    }
+
+    const link = document.createElement("a");
+    link.href = outputURL;
+    link.download = outputName;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    const status = document.getElementById("downloadStatus");
+
+    if(status){
+        status.textContent = "✓ Download completed successfully.";
+        status.style.display = "block";
+
+        clearTimeout(window.downloadStatusTimer);
+
+        window.downloadStatusTimer = setTimeout(() => {
+            status.style.display = "none";
+        }, 4000);
+    }
+}
+
+function invalidateOutput(){
+    if(outputURL){
+        URL.revokeObjectURL(outputURL);
+        outputURL = null;
+    }
+
+    outputBlob = null;
+    outputName = "";
+
+    document.getElementById("downloadBtn").disabled =
+        true;
+
+    document.getElementById("previewBox").style.display =
+        "none";
+
+    document
+        .getElementById("resultPreview")
+        .removeAttribute("src");
+
+    document.getElementById("resultMeta").textContent =
+        "";
+}
+
+function clearImageObjects(){
+    invalidateOutput();
+
+    if(sourceURL){
+        try{
+            URL.revokeObjectURL(sourceURL);
+        }catch(error){}
+
+        sourceURL = null;
+    }
+
+    sourceFile = null;
+    sourceImage = null;
+}
+
+function clearAll(){
+    clearImageObjects();
+
+    input.value = "";
+
+    rotation = 0;
+    flipHorizontal = false;
+    flipVertical = false;
+
+    syncTransformControls();
+
+    document.getElementById("fileCard").style.display =
+        "none";
+
+    document.getElementById("rotateControls").style.display =
+        "none";
+
+    document.getElementById("editorWrap").style.display =
+        "none";
+
+    document.getElementById("createBtn").disabled =
+        true;
+
+    document.getElementById("downloadBtn").disabled =
+        true;
+
+    document.getElementById("resetBtn").disabled =
+        true;
+
+    document.getElementById("transformInfo").style.display =
+        "none";
+
+    document.getElementById("transformInfo").textContent =
+        "";
+
+    document.getElementById("info").textContent =
+        "";
+
+    if(ctx){
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+    }
+}
+
+function sourceFormat(file){
+    if(
+        file.type === "image/png" ||
+        /\.png$/i.test(file.name)
+    ){
+        return "PNG";
+    }
+
+    if(
+        file.type === "image/webp" ||
+        /\.webp$/i.test(file.name)
+    ){
+        return "WebP";
+    }
+
+    return "JPG";
+}
+
+function formatSize(bytes){
+    if(bytes >= 1024 * 1024){
+        return (
+            bytes /
+            (1024 * 1024)
+        ).toFixed(2) + " MB";
+    }
+
+    if(bytes >= 1024){
+        return (
+            bytes / 1024
+        ).toFixed(1) + " KB";
+    }
+
+    return bytes + " B";
+}
+
+updateOutputSettings();
+syncTransformControls();
+</script>
+
+</body>
+</html>

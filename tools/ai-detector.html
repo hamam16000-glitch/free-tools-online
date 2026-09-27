@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>AI Detector Online Free - Analyze Text Writing Patterns</title>
+
+<meta name="description" content="Analyze text writing patterns with our free AI detector tool. Check readability, sentence structure, word diversity and text characteristics.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../css/style.css">
+
+
+<style>
+
+.detector-box{
+
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+
+textarea{
+
+width:100%;
+height:230px;
+padding:15px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:16px;
+box-sizing:border-box;
+margin:10px 0 20px;
+
+}
+
+
+.actions{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+
+}
+
+
+.primary{
+
+grid-column:1/-1;
+
+}
+
+
+button{
+
+background:#2563eb;
+color:white;
+border:0;
+padding:14px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+
+}
+
+
+.stats{
+
+display:flex;
+justify-content:space-around;
+margin:20px 0;
+font-weight:bold;
+color:#475569;
+
+}
+
+
+.result-box{
+
+margin-top:20px;
+padding:20px;
+background:#f8fafc;
+border-radius:15px;
+
+}
+
+
+.score{
+
+font-size:32px;
+font-weight:bold;
+text-align:center;
+margin:15px;
+
+}
+
+
+.level-low{
+
+color:#16a34a;
+
+}
+
+
+.level-medium{
+
+color:#d97706;
+
+}
+
+
+.level-high{
+
+color:#dc2626;
+
+}
+
+
+.success{
+
+display:none;
+padding:12px;
+margin-top:15px;
+background:#dcfce7;
+color:#166534;
+border-radius:10px;
+text-align:center;
+
+}
+
+
+@media(max-width:600px){
+
+.actions{
+
+grid-template-columns:1fr;
+
+}
+
+.primary{
+
+grid-column:auto;
+
+}
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<h1>AI Detector Online</h1>
+
+
+<p class="tool-description">
+Analyze text patterns, readability and writing characteristics.
+</p>
+
+
+<div class="detector-box">
+
+
+<label>
+Enter Text
+</label>
+
+
+<textarea id="inputText" placeholder="Paste your text here..."></textarea>
+
+
+<div class="actions">
+
+
+<button class="primary" onclick="analyzeText()">
+Analyze Text
+</button>
+
+
+<button onclick="copyReport()">
+Copy Report
+</button>
+
+
+<button onclick="downloadReport()">
+Download TXT
+</button>
+
+
+<button onclick="clearText()">
+Clear
+</button>
+
+
+</div>
+
+
+<div class="stats">
+
+<div id="wordCount">
+0 Words
+</div>
+
+
+<div id="charCount">
+0 Characters
+</div>
+
+
+<div id="sentenceCount">
+0 Sentences
+</div>
+
+</div>
+
+
+<div id="result" class="result-box" style="display:none">
+
+
+<div id="score" class="score">
+0%
+</div>
+
+
+<div id="levelText" style="text-align:center;font-weight:bold;font-size:20px;"></div>
+
+
+<div id="details"></div>
+
+
+</div>
+
+
+<div id="success" class="success"></div>
+<script>
+
+function analyzeText(){
+
+let text=document.getElementById("inputText").value.trim();
+
+
+if(!text){
+
+showMessage("Please enter text first.");
+
+return;
+
+}
+
+
+
+let words=text.split(/\s+/).filter(Boolean);
+
+let sentences=text.split(/[.!?]+/).filter(s=>s.trim());
+
+
+let wordCount=words.length;
+
+let charCount=text.length;
+
+let sentenceCount=sentences.length;
+
+
+
+// Word diversity
+
+let uniqueWords=[...new Set(words.map(w=>w.toLowerCase()))];
+
+let diversity=(uniqueWords.length/wordCount)*100;
+
+
+
+// Average sentence length
+
+let avgSentence=wordCount/Math.max(sentenceCount,1);
+
+
+// Repetition score
+
+let repetition=100-diversity;
+
+
+// Pattern score (heuristic only)
+
+let score=35;
+
+
+// Higher repetition and lower diversity increase the indicator
+
+if(diversity<50){
+
+score+=20;
+
+}
+
+else if(diversity<70){
+
+score+=10;
+
+}
+
+
+if(avgSentence>25){
+
+score+=20;
+
+}
+
+else if(avgSentence>15){
+
+score+=10;
+
+}
+
+
+if(repetition>50){
+
+score+=20;
+
+}
+
+else if(repetition>30){
+
+score+=10;
+
+}
+
+
+// Keep score in reasonable range
+
+score=Math.min(95,Math.max(5,Math.round(score)));
+
+
+
+document.getElementById("wordCount").innerHTML=
+wordCount+" Words";
+
+
+document.getElementById("charCount").innerHTML=
+charCount+" Characters";
+
+
+document.getElementById("sentenceCount").innerHTML=
+sentenceCount+" Sentences";
+
+
+
+document.getElementById("score").innerHTML=
+score+"%";
+
+
+let levelText="";
+
+
+if(score<=35){
+
+levelText="Low AI Pattern ✓";
+
+}
+
+else if(score<=65){
+
+levelText="Mixed Writing Pattern";
+
+}
+
+else{
+
+levelText="High AI Pattern Indicator";
+
+}
+
+
+document.getElementById("levelText").innerHTML=
+levelText;
+
+
+let levelBox=document.getElementById("levelText");
+
+levelBox.className="";
+
+
+if(score<=35){
+
+levelBox.classList.add("level-low");
+
+}
+
+else if(score<=65){
+
+levelBox.classList.add("level-medium");
+
+}
+
+else{
+
+levelBox.classList.add("level-high");
+
+}
+
+
+let summary="";
+
+if(score<=35){
+
+summary=`
+<p><b>Summary:</b></p>
+
+<p>
+✓ Good vocabulary variation<br>
+✓ Low repetition level<br>
+✓ Balanced sentence structure
+</p>
+`;
+
+}
+
+else if(score<=65){
+
+summary=`
+<p><b>Summary:</b></p>
+
+<p>
+• Mixed writing characteristics<br>
+• Some repeated patterns detected<br>
+• Moderate sentence variation
+</p>
+`;
+
+}
+
+else{
+
+summary=`
+<p><b>Summary:</b></p>
+
+<p>
+• Higher repeated patterns<br>
+• Lower vocabulary variation<br>
+• More structured writing style
+</p>
+`;
+
+}
+
+
+document.getElementById("details").innerHTML=
+
+`
+<p><b>Text Analysis:</b></p>
+
+<p>Word Diversity: ${Math.round(diversity)}%</p>
+
+<p>Average Sentence Length: ${Math.round(avgSentence)} words</p>
+
+<p>Repeated Pattern Level: ${Math.round(repetition)}%</p>
+
+${summary}
+
+<p>
+This result is a writing-pattern analysis indicator and not a guaranteed AI detection result.
+</p>
+`;
+
+
+
+document.getElementById("result").style.display="block";
+
+
+showMessage("Analysis completed ✓");
+
+
+}
+
+
+
+function getReport(){
+
+return document.getElementById("result").innerText;
+
+}
+
+
+
+async function copyReport(){
+
+let report=getReport();
+
+
+if(!report){
+
+return;
+
+}
+
+
+try{
+
+await navigator.clipboard.writeText(report);
+
+showMessage("Report copied successfully ✓");
+
+
+}catch(e){
+
+showMessage("Copy failed.");
+
+}
+
+}
+
+
+
+function downloadReport(){
+
+let report=getReport();
+
+
+if(!report){
+
+return;
+
+}
+
+
+let blob=new Blob(
+[report],
+{type:"text/plain"}
+);
+
+
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="ai-analysis-report.txt";
+
+a.click();
+
+
+showMessage("Report downloaded ✓");
+
+
+}
+
+
+
+function clearText(){
+
+document.getElementById("inputText").value="";
+
+document.getElementById("result").style.display="none";
+
+
+document.getElementById("wordCount").innerHTML="0 Words";
+
+document.getElementById("charCount").innerHTML="0 Characters";
+
+document.getElementById("sentenceCount").innerHTML="0 Sentences";
+
+
+showMessage("Cleared ✓");
+
+}
+
+
+
+function showMessage(text){
+
+let box=document.getElementById("success");
+
+box.innerHTML=text;
+
+box.style.display="block";
+
+
+setTimeout(()=>{
+
+box.style.display="none";
+
+},3000);
+
+
+}
+
+
+</script>
+
+
+
+<div class="faq">
+
+
+<h2>
+Frequently Asked Questions
+</h2>
+
+
+<h3>
+Is this AI detector 100% accurate?
+</h3>
+
+<p>
+No. This tool analyzes writing patterns and provides an indicator, not a guaranteed detection result.
+</p>
+
+
+<h3>
+What does the tool analyze?
+</h3>
+
+<p>
+It analyzes sentence length, word diversity and repeated writing patterns.
+</p>
+
+
+<h3>
+Is my text stored?
+</h3>
+
+<p>
+No. Your text is processed in your browser.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>
