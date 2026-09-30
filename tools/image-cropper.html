@@ -327,6 +327,82 @@
     }
 }
 
+
+/* Final Image Cropper Guide */
+.tool-guide{
+    width:min(900px, calc(100% - 32px));
+    margin:32px auto 50px;
+    padding:28px;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    box-shadow:0 8px 24px rgba(0,0,0,.05);
+    box-sizing:border-box;
+}
+
+.tool-guide h2{
+    margin:28px 0 10px;
+    font-size:22px;
+    line-height:1.3;
+    color:#111827;
+}
+
+.tool-guide > h2:first-child{
+    margin-top:0;
+}
+
+.tool-guide h3{
+    margin:20px 0 6px;
+    font-size:17px;
+    line-height:1.4;
+    color:#1f2937;
+}
+
+.tool-guide p,
+.tool-guide li{
+    font-size:15px;
+    line-height:1.7;
+    color:#4b5563;
+}
+
+.tool-guide ul,
+.tool-guide ol{
+    padding-left:22px;
+    margin:10px 0;
+}
+
+.tool-guide li{
+    margin:6px 0;
+}
+
+.guide-faq{
+    margin-top:28px;
+    padding-top:4px;
+    border-top:1px solid #e5e7eb;
+}
+
+@media (max-width:600px){
+    .tool-guide{
+        width:calc(100% - 24px);
+        margin:24px auto 36px;
+        padding:20px;
+        border-radius:14px;
+    }
+
+    .tool-guide h2{
+        font-size:20px;
+    }
+
+    .tool-guide h3{
+        font-size:16px;
+    }
+
+    .tool-guide p,
+    .tool-guide li{
+        font-size:14px;
+    }
+}
+
 </style>
 <link rel="canonical" href="https://hamam16000-glitch.github.io/free-tools-online/tools/image-cropper.html">
 
@@ -538,34 +614,70 @@ Your image is processed locally in your browser and is never uploaded to our ser
 
 </div>
 
-<section>
+<section class="tool-guide">
+
+<h2>About Image Cropper</h2>
+<p>
+Image Cropper is a free online tool for cropping JPG, PNG and WebP images directly in your browser. Select a custom crop area or use popular aspect ratios for photos, social media and other projects.
+</p>
+
+<h2>How to Crop an Image</h2>
+<ol>
+<li>Choose an image from your device or drag and drop it into the tool.</li>
+<li>Select Free Crop or a preset aspect ratio.</li>
+<li>Adjust the crop area visually or enter exact X, Y, width and height values.</li>
+<li>Select JPG, PNG or WebP as the output format.</li>
+<li>Adjust output quality when available.</li>
+<li>Click <strong>Crop Image</strong>, preview the result and download it.</li>
+</ol>
+
+<h2>Key Features</h2>
+<ul>
+<li>Crop JPG, PNG and WebP images</li>
+<li>Free-form image cropping</li>
+<li>Preset ratios including 1:1, 4:3, 3:2, 16:9 and 9:16</li>
+<li>Precise X, Y, width and height controls</li>
+<li>Export as JPG, PNG or WebP</li>
+<li>Transparency support for PNG and WebP</li>
+<li>Adjustable output quality</li>
+<li>No account or software installation required</li>
+</ul>
+
+<h2>Privacy &amp; Security</h2>
+<p>
+Your image is processed locally in your browser and is not uploaded to our server. Your file remains on your device while you crop and export it.
+</p>
+
+<div class="guide-faq">
 
 <h2>Frequently Asked Questions</h2>
 
 <h3>Can I crop images to a specific aspect ratio?</h3>
 <p>
-Yes. Choose Free Crop or preset ratios including 1:1, 4:3, 3:2, 16:9 and 9:16.
+Yes. You can use Free Crop or choose preset ratios including 1:1, 4:3, 3:2, 16:9 and 9:16.
 </p>
 
 <h3>Can I enter exact crop dimensions?</h3>
 <p>
-Yes. You can enter exact X, Y, width and height values in pixels.
+Yes. You can enter exact X, Y, width and height values in pixels for precise cropping.
 </p>
 
 <h3>Which image formats are supported?</h3>
 <p>
-You can open JPG, PNG and WebP images and export the crop as JPG, PNG or WebP.
+You can open JPG, PNG and WebP images and export the cropped result as JPG, PNG or WebP.
 </p>
 
-<h3>Will transparent PNG images stay transparent?</h3>
+<h3>Will transparent images stay transparent?</h3>
 <p>
-PNG and WebP can preserve transparency. JPG does not support transparency, so a selectable background color is used.
+PNG and WebP can preserve transparency. JPG does not support transparency, so the selected JPG background color is used instead.
 </p>
 
 <h3>Are my images uploaded?</h3>
 <p>
-No. Cropping happens locally in your browser.
+No. Image cropping takes place locally in your browser.
 </p>
+
+</div>
 
 </section>
 
