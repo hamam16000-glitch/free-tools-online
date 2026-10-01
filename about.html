@@ -1,66 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About Us - Free Tools Online</title>
-
 <meta name="description" content="Learn more about Free Tools Online and our free web tools.">
+<link rel="canonical" href="https://hamam16000-glitch.github.io/free-tools-online/about.html">
 
-<link rel="stylesheet" href="css/style.css">
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f6f8fb;
+    color: #172033;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.7;
+}
+
+.page-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e6eaf0;
+}
+
+.page-header-inner {
+    width: min(920px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 42px 0 34px;
+}
+
+.page-header h1 {
+    margin: 0 0 8px;
+    font-size: clamp(30px, 5vw, 42px);
+    line-height: 1.15;
+    color: #111827;
+}
+
+.page-header p {
+    margin: 0;
+    max-width: 680px;
+    color: #64748b;
+    font-size: 16px;
+}
+
+.page-content {
+    width: min(920px, calc(100% - 40px));
+    margin: 32px auto 48px;
+}
+
+.info-card {
+    background: #ffffff;
+    border: 1px solid #e6eaf0;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.04);
+}
+
+.info-card h2 {
+    margin: 0 0 12px;
+    color: #111827;
+    font-size: 22px;
+    line-height: 1.3;
+}
+
+.info-card p {
+    margin: 0;
+    color: #5f6b7a;
+    font-size: 16px;
+}
+
+.info-card p + p {
+    margin-top: 12px;
+}
+
+.info-card a {
+    color: #2563eb;
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.info-card a:hover {
+    text-decoration: underline;
+}
+
+.site-footer {
+    border-top: 1px solid #e6eaf0;
+    background: #ffffff;
+    padding: 26px 20px;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    margin-bottom: 10px;
+}
+
+.site-footer a {
+    color: #475569;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.site-footer p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .page-header-inner,
+    .page-content {
+        width: calc(100% - 32px);
+    }
+
+    .page-header-inner {
+        padding: 30px 0 26px;
+    }
+
+    .page-header h1 {
+        font-size: 30px;
+    }
+
+    .page-header p {
+        font-size: 15px;
+    }
+
+    .page-content {
+        margin-top: 20px;
+        margin-bottom: 32px;
+    }
+
+    .info-card {
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 14px;
+    }
+
+    .info-card h2 {
+        font-size: 20px;
+    }
+
+    .info-card p {
+        font-size: 15px;
+    }
+}
+</style>
 
 </head>
-
-
 <body>
 
-<header>
-
-<h1>About Free Tools Online</h1>
-
+<header class="page-header">
+  <div class="page-header-inner">
+    <h1>About Free Tools Online</h1>
+    <p>Simple, fast and accessible browser-based tools for everyday digital tasks.</p>
+  </div>
 </header>
 
+<main class="page-content">
 
-<div class="container">
-
+<section class="info-card">
 <h2>About Our Website</h2>
+<p>Free Tools Online provides simple, fast and free web tools that help users complete everyday digital tasks easily.</p>
+<p>Our platform includes PDF, image, text, SEO, developer, generator and productivity tools designed to work directly in your browser.</p>
+</section>
 
-<p>
-Free Tools Online provides simple, fast and free web tools that help users complete everyday digital tasks easily.
-
-Our platform offers useful online utilities for PDF processing, image tools, text tools, SEO solutions, developer utilities, generators and productivity tasks.
-
-All tools are designed to work directly in your browser with a simple experience, helping users save time and complete their tasks efficiently.
-
-Our mission is to provide accessible and reliable online tools for everyone without complicated steps or unnecessary registration.
-</p>
-
-<p>
-Our goal is to create useful online tools that work directly in your browser without requiring downloads or registration.
-</p>
-
+<section class="info-card">
 <h2>Our Mission</h2>
+<p>Our mission is to provide accessible and reliable online tools without complicated steps or unnecessary registration. We continuously improve the website to help students, developers, writers and everyday internet users save time.</p>
+</section>
 
-<p>
-We continuously develop new tools to help students, developers, writers and internet users save time.
-</p>
-
-</div>
+</main>
 
 
-<footer>
-
-<a href="privacy.html">Privacy Policy</a>
-
-<br>
-
-© 2026 Free Tools Online
-
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html">Contact Us</a>
+  </div>
+  <p>© 2026 Free Tools Online</p>
 </footer>
 
 
 </body>
-
 </html>
