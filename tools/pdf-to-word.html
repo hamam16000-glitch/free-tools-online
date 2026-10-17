@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 
-<title>PDF To Word Converter Online Free</title>
+<title>PDF Text to Word | Free Tools Online</title>
 
-<meta name="description" content="Export embedded PDF text to a real DOCX document in your browser. Original page layout, tables, images and scanned text are not reconstructed.">
+<meta name="description" content="Create a real DOCX document containing embedded PDF text as paragraphs.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -159,6 +159,8 @@ border-radius:10px;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 <body>
@@ -168,11 +170,11 @@ border-radius:10px;
   <span aria-hidden="true">›</span>
   <a href="../#pdf-tools">PDF Tools</a>
   <span aria-hidden="true">›</span>
-  <span aria-current="page">PDF To Word Converter</span>
+  <span aria-current="page">PDF Text to Word Converter</span>
 </nav>
 
 
-<h1>PDF To Word Converter</h1>
+<h1>PDF Text to Word</h1>
 
 <p style="max-width:900px;margin:14px auto;padding:14px;background:#eef5ff;border-radius:8px;line-height:1.65;color:#172033">Convert selectable PDF text into an editable DOCX. Page layout, tables and images are not preserved. Scanned PDFs need OCR first.</p>
 
@@ -205,148 +207,15 @@ DOCX downloaded successfully.
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="../vendor/pdfjs/pdf.min.js"></script>
 
-<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-
-<script>
-let wordBlob = null;
-let wordJob = 0;
-let outputFileName = 'converted-file.docx';
-
-document.getElementById('pdfInput').addEventListener('change', function () {
-  wordJob++;
-  wordBlob = null;
-  document.getElementById('output').value = '';
-  const file = this.files[0];
-  document.getElementById('fileName').textContent = file ? file.name : 'No file selected';
-  document.getElementById('downloadSuccess').style.display = 'none';
-  outputFileName = file
-    ? (file.name.replace(/\.pdf$/i, '') || 'converted-file') + '.docx'
-    : 'converted-file.docx';
-});
-
-async function convertPDF() {
-  const file = document.getElementById('pdfInput').files[0];
-  const output = document.getElementById('output');
-  const job = ++wordJob;
-  wordBlob = null;
-  document.getElementById('downloadSuccess').style.display = 'none';
-  if (!file) {
-    output.value = 'Please select a PDF file.';
-    return;
-  }
-  if (file.size > 50 * 1024 * 1024) {
-    output.value = 'Maximum PDF size is 50 MB.';
-    return;
-  }
-  try {
-    if (typeof pdfjsLib === 'undefined' || typeof docx === 'undefined') {
-      throw new Error('Required PDF/Word library did not load. Reload and try again.');
-    }
-    output.value = 'Extracting embedded text...';
-    const pdf = await pdfjsLib.getDocument({
-      isEvalSupported: false,
-      data: await file.arrayBuffer()
-    }).promise;
-    const paragraphs = [];
-    const pages = [];
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const content = await page.getTextContent();
-      let line = '';
-      const lines = [];
-      for (const item of content.items) {
-        if (typeof item.str !== 'string') continue;
-        line += item.str + ' ';
-        if (item.hasEOL) {
-          lines.push(line.trim());
-          line = '';
-        }
-      }
-      if (line.trim()) lines.push(line.trim());
-      pages.push(lines.join('\n'));
-      lines.forEach((text, index) => paragraphs.push(new docx.Paragraph({
-        text,
-        pageBreakBefore: i > 1 && index === 0
-      })));
-    }
-    if (job !== wordJob) return;
-    if (!pages.some(text => text.trim())) {
-      output.value = 'No embedded text found. Scanned PDFs need OCR first.';
-      return;
-    }
-    const documentFile = new docx.Document({sections: [{children: paragraphs}]});
-    const blob = await docx.Packer.toBlob(documentFile);
-    if (job !== wordJob) return;
-    wordBlob = blob;
-    output.value = pages.join('\n\n');
-  } catch (error) {
-    if (job === wordJob) {
-      wordBlob = null;
-      output.value = 'Could not create Word document: ' + error.message;
-    }
-  }
-}
-
-function downloadWord() {
-  if (!wordBlob) {
-    document.getElementById('output').value = 'Convert the current PDF successfully first.';
-    return;
-  }
-  const url = URL.createObjectURL(wordBlob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = outputFileName;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  document.getElementById('downloadSuccess').style.display = 'block';
-  setTimeout(() => URL.revokeObjectURL(url), 1500);
-}
-</script>
+<script src="../vendor/docx/docx.umd.js"></script>
 
 
 
-<section class="tool-guide">
 
-<h2>About PDF to Word Converter</h2>
-<p>Export embedded PDF text to a real DOCX document in your browser. Original page layout, tables, images and scanned text are not reconstructed.</p>
 
-<h2>How to Use PDF to Word Converter</h2>
-<ol>
-<li>Choose a PDF file up to 50 MB with selectable text.</li>
-<li>Start the conversion.</li>
-<li>Wait for the document to be generated.</li>
-<li>Download the Word file.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>PDF text extraction</li>
-<li>Editable Word output</li>
-<li>Instant DOCX download</li>
-<li>Browser-based processing</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>Your files are processed directly in your browser by this tool and are not uploaded to our server.</p>
-
-<div class="guide-faq">
-<h2>Frequently Asked Questions</h2>
-
-<h3>Can I convert PDF to Word online?</h3>
-<p>Yes, this tool extracts text from PDF files and creates an editable Word document.</p>
-
-<h3>Are my files uploaded?</h3>
-<p>No, files are processed directly in your browser.</p>
-
-<h3>Is the converted Word file editable?</h3>
-<p>Yes, the generated DOCX file can be edited with Microsoft Word.</p>
-
-</div>
-
-</section>
+<section class="tool-guide"><h2>How PDF Text to Word works</h2><p>Create a real DOCX document containing embedded PDF text as paragraphs.</p><h3>Steps</h3><p>Select a text PDF, convert it, review the extracted text, then download and open the DOCX.</p><h3>Example to check</h3><p>Text extracted from successive pages is written as document paragraphs with page boundaries where possible.</p><h3>Limits and review</h3><p>This is text extraction, not full document reconstruction. Original tables, images, fonts and layout are not reproduced. Scanned pages require OCR. Check reading order before editing or sharing the Word file.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -360,5 +229,7 @@ function downloadWord() {
   </div>
 </section>
 
+<script src="../assets/js/tools/pdf-to-word.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>

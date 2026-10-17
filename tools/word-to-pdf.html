@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Word To PDF Converter Online Free</title>
+<title>DOCX Text to PDF | Free Tools Online</title>
 
-<meta name="description" content="Convert Word documents to PDF online for free. Turn DOC and DOCX files into PDF files quickly in your browser.">
+<meta name="description" content="Extract DOCX text and create a paginated PDF with embedded Latin and Arabic font coverage.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -157,6 +157,9 @@ margin:10px;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
+<script src="../vendor/jspdf/jspdf.umd.min.js"></script>
 </head>
 
 <body>
@@ -166,11 +169,11 @@ margin:10px;
   <span aria-hidden="true">›</span>
   <a href="../#pdf-tools">PDF Tools</a>
   <span aria-hidden="true">›</span>
-  <span aria-current="page">Word To PDF Converter</span>
+  <span aria-current="page">DOCX Text to PDF Converter</span>
 </nav>
 
 
-<h1>Word To PDF Converter</h1>
+<h1>DOCX Text to PDF</h1>
 
 <p>
 Convert DOCX text into a PDF document online.
@@ -214,331 +217,16 @@ PDF downloaded successfully.
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="../vendor/pdf-lib/pdf-lib.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="../vendor/mammoth/mammoth.browser.min.js"></script>
 
 
-<script>
 
-let pdfBlob=null;
-let outputFileName="converted-file.pdf";
 
-const wordInput =
-    document.getElementById("wordFile");
 
-wordInput.addEventListener("change", function(){
-    const file = this.files[0];
 
-    document.getElementById("fileName").textContent =
-        file ? file.name : "No file selected";
-
-    document.getElementById("downloadSuccess").style.display =
-        "none";
-
-    pdfBlob = null;
-
-    document.getElementById("status").textContent =
-        "";
-});
-
-async function convertToPDF(){
-
-    const file =
-        wordInput.files[0];
-
-    if(!file){
-        alert("Please select a DOCX file");
-        return;
-    }
-
-    if(!/\.docx$/i.test(file.name)){
-        alert("This browser tool supports DOCX files only.");
-        return;
-    }
-
-    const status =
-        document.getElementById("status");
-
-    status.textContent =
-        "Reading DOCX document...";
-
-    pdfBlob = null;
-
-    try{
-        const arrayBuffer =
-            await file.arrayBuffer();
-
-        const result =
-            await mammoth.extractRawText({
-                arrayBuffer:arrayBuffer
-            });
-
-        const text =
-            (result.value || "")
-            .replace(/\r/g,"")
-            .trim();
-
-        if(!text){
-            throw new Error(
-                "No readable text was found in this DOCX file."
-            );
-        }
-
-        status.textContent =
-            "Creating PDF...";
-
-        const pdfDoc =
-            await PDFLib.PDFDocument.create();
-
-        const font =
-            await pdfDoc.embedFont(
-                PDFLib.StandardFonts.Helvetica
-            );
-
-        const pageWidth = 595.28;
-        const pageHeight = 841.89;
-
-        const margin = 50;
-        const fontSize = 11;
-        const lineHeight = 16;
-        const maxWidth =
-            pageWidth - (margin * 2);
-
-        const paragraphs =
-            text.split(/\n+/);
-
-        const lines = [];
-
-        for(const paragraph of paragraphs){
-
-            const words =
-                paragraph
-                .replace(/\s+/g," ")
-                .trim()
-                .split(" ")
-                .filter(Boolean);
-
-            if(words.length === 0){
-                lines.push("");
-                continue;
-            }
-
-            let currentLine = "";
-
-            for(const word of words){
-                const candidate =
-                    currentLine
-                    ? currentLine + " " + word
-                    : word;
-
-                const width =
-                    font.widthOfTextAtSize(
-                        candidate,
-                        fontSize
-                    );
-
-                if(
-                    width <= maxWidth ||
-                    !currentLine
-                ){
-                    currentLine = candidate;
-                }else{
-                    lines.push(currentLine);
-                    currentLine = word;
-                }
-            }
-
-            if(currentLine){
-                lines.push(currentLine);
-            }
-
-            lines.push("");
-        }
-
-        const usableHeight =
-            pageHeight - (margin * 2);
-
-        const linesPerPage =
-            Math.max(
-                1,
-                Math.floor(
-                    usableHeight / lineHeight
-                )
-            );
-
-        for(
-            let startLine = 0;
-            startLine < lines.length;
-            startLine += linesPerPage
-        ){
-            const page =
-                pdfDoc.addPage([
-                    pageWidth,
-                    pageHeight
-                ]);
-
-            let y =
-                pageHeight - margin;
-
-            const pageLines =
-                lines.slice(
-                    startLine,
-                    startLine + linesPerPage
-                );
-
-            for(const line of pageLines){
-                if(line){
-                    page.drawText(line,{
-                        x:margin,
-                        y:y,
-                        size:fontSize,
-                        font:font,
-                        maxWidth:maxWidth
-                    });
-                }
-
-                y -= lineHeight;
-            }
-        }
-
-        const pdfBytes =
-            await pdfDoc.save();
-
-        pdfBlob =
-            new Blob(
-                [pdfBytes],
-                {type:"application/pdf"}
-            );
-
-        const baseName =
-            file.name.replace(/\.docx$/i,"") ||
-            "document";
-
-        outputFileName =
-            baseName + ".pdf";
-
-        status.innerHTML =
-            "PDF Created Successfully" +
-            "<br>Pages: " +
-            pdfDoc.getPageCount() +
-            "<br>PDF Size: " +
-            formatSize(pdfBlob.size);
-
-    }catch(error){
-        console.error(
-            "DOCX to PDF error:",
-            error
-        );
-
-        pdfBlob = null;
-
-        status.textContent =
-            "Could not convert this DOCX file. " +
-            (error.message || "Please try another file.");
-    }
-}
-
-function downloadPDF(){
-
-    if(!pdfBlob){
-        alert("Convert DOCX first");
-        return;
-    }
-
-    const url =
-        URL.createObjectURL(pdfBlob);
-
-    const a =
-        document.createElement("a");
-
-    a.href = url;
-    a.download = outputFileName;
-
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    const successBox =
-        document.getElementById("downloadSuccess");
-
-    successBox.style.display =
-        "block";
-
-    clearTimeout(
-        window.wordPDFSuccessTimer
-    );
-
-    window.wordPDFSuccessTimer =
-        setTimeout(() => {
-            successBox.style.display =
-                "none";
-        },4000);
-
-    setTimeout(() => {
-        URL.revokeObjectURL(url);
-    },1500);
-}
-
-function formatSize(bytes){
-    if(bytes >= 1024 * 1024){
-        return (
-            bytes / (1024 * 1024)
-        ).toFixed(2) + " MB";
-    }
-
-    if(bytes >= 1024){
-        return Math.round(
-            bytes / 1024
-        ) + " KB";
-    }
-
-    return bytes + " B";
-}
-
-</script>
-
-
-
-<section class="tool-guide">
-
-<h2>About Word to PDF Converter</h2>
-<p>Convert supported Word documents into PDF files directly in your browser.</p>
-
-<h2>How to Use Word to PDF Converter</h2>
-<ol>
-<li>Choose a Word document.</li>
-<li>Start the conversion.</li>
-<li>Review the generated result.</li>
-<li>Download the PDF file.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>DOCX input support</li>
-<li>Generate downloadable PDFs</li>
-<li>Simple conversion workflow</li>
-<li>Browser-based processing</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>Your files are processed directly in your browser by this tool and are not uploaded to our server.</p>
-
-<div class="guide-faq">
-<h2>Frequently Asked Questions</h2>
-
-<h3>Can I convert Word to PDF online?</h3>
-<p>Yes. This tool extracts text from DOCX documents and creates a PDF file directly in your browser.</p>
-
-<h3>Are my files uploaded?</h3>
-<p>No, files are processed directly in your browser.</p>
-
-<h3>Is the PDF file downloadable?</h3>
-<p>Yes, you can download the generated PDF instantly.</p>
-
-</div>
-
-</section>
+<section class="tool-guide"><h2>How DOCX Text to PDF works</h2><p>Extract DOCX text and create a paginated PDF with embedded Latin and Arabic font coverage.</p><h3>Steps</h3><p>Choose a DOCX file up to 25 MB, convert the text and inspect the PDF before sharing.</p><h3>Example to check</h3><p>A document containing &#x27;café&#x27; and Arabic text can be exported without relying on the PDF standard Helvetica font.</p><h3>Limits and review</h3><p>DOC files are not supported. Images, tables, original page layout and typography are not reproduced. Extracted text is limited to one million characters; font coverage does not include every script or emoji.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -546,12 +234,14 @@ function formatSize(bytes){
 <section class="tool-connections" aria-labelledby="related-tools-heading">
   <h2 id="related-tools-heading">Related PDF Tools</h2>
   <div class="tool-connections-grid">
-    <a href="pdf-to-word.html">PDF To Word Converter →</a>
+    <a href="pdf-to-word.html">PDF Text to Word Converter →</a>
     <a href="pdf-compressor.html">PDF Compressor →</a>
     <a href="merge-pdf.html">Merge PDF →</a>
     <a class="all-tools-link" href="../">Browse all 48 free tools →</a>
   </div>
 </section>
 
+<script src="../assets/js/tools/word-to-pdf.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>

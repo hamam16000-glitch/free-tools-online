@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Robots.txt Generator Online Free</title>
+<title>Robots.txt Generator | Free Tools Online</title>
 
-<meta name="description" content="Generate robots.txt file online for your website. Create SEO friendly robots.txt rules easily.">
+<meta name="description" content="Create a user-agent rule and an optional public sitemap reference.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -141,6 +141,8 @@ margin:15px;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 <body>
@@ -164,12 +166,12 @@ Create SEO friendly robots.txt file online.
 <div class="tool-box">
 
 
-<label>User Agent</label>
+<label for="agent">User Agent</label>
 
 <input id="agent" value="*">
 
 
-<label>Rule</label>
+<label for="rule">Rule</label>
 
 <select id="rule">
 
@@ -180,12 +182,12 @@ Create SEO friendly robots.txt file online.
 </select>
 
 
-<label>Path</label>
+<label for="path">Path</label>
 
 <input id="path" value="/">
 
 
-<label>Sitemap URL</label>
+<label for="sitemap">Sitemap URL</label>
 
 <input id="sitemap" placeholder="https://example.com/sitemap.xml">
 
@@ -208,158 +210,11 @@ Robots.txt copied successfully.
 <div id="status"></div>
 
 
-<script>
-
-
-function generateRobots(){
-
-let agent=document.getElementById("agent").value;
-
-let rule=document.getElementById("rule").value;
-
-let path=document.getElementById("path").value;
-
-let sitemap=document.getElementById("sitemap").value;
-
-
-let robots=
-`User-agent: ${agent}
-
-${rule}: ${path}
-
-`;
-
-
-if(sitemap){
-
-robots += `Sitemap: ${sitemap}`;
-
-}
-
-
-document.getElementById("output").value=robots;
-
-
-document.getElementById("status").innerHTML=
-"Robots.txt Generated Successfully";
-
-}
 
 
 
-async function copyRobots(){
 
-    const output = document.getElementById("output");
-
-    if(!output.value.trim()){
-        return;
-    }
-
-    try{
-        if(navigator.clipboard && window.isSecureContext){
-            await navigator.clipboard.writeText(output.value);
-        }else{
-            output.focus();
-            output.select();
-
-            if(!document.execCommand("copy")){
-                throw new Error("Copy failed");
-            }
-
-            output.setSelectionRange(0,0);
-        }
-
-        const box = document.getElementById("copySuccess");
-        box.style.display = "block";
-
-        clearTimeout(window.robotsCopyTimer);
-
-        window.robotsCopyTimer = setTimeout(() => {
-            box.style.display = "none";
-        }, 3000);
-
-    }catch(error){
-        console.error("Copy error:", error);
-    }
-}function clearRobots(){
-
-document.getElementById("agent").value="*";
-
-document.getElementById("rule").value="Allow";
-
-document.getElementById("path").value="/";
-
-document.getElementById("sitemap").value="";
-
-document.getElementById("output").value="";
-
-document.getElementById("status").innerHTML="";
-
-const box=document.getElementById("copySuccess");
-if(box) box.style.display="none";
-
-}
-
-
-</script>
-
-
-
-<section class="tool-guide">
-
-<h2>About Robots.txt Generator</h2>
-<p>Create a robots.txt file to provide crawl instructions for supported search-engine crawlers.</p>
-
-<h2>How to Use Robots.txt Generator</h2>
-<ol>
-<li>Choose the crawler rules you want to define.</li>
-<li>Add allowed or disallowed paths as needed.</li>
-<li>Generate the robots.txt content.</li>
-<li>Review and copy the result to your website.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>Create robots.txt directives</li>
-<li>Configure crawl rules</li>
-<li>Generate ready-to-copy output</li>
-<li>Useful for website crawl configuration</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>
-Information entered into this tool is processed in your browser whenever
-supported by the tool. Avoid entering sensitive information unless you
-understand how the specific tool handles it.
-</p>
-
-<div class="guide-faq">
-
-<h2>Frequently Asked Questions</h2>
-
-<h3>What is robots.txt?</h3>
-
-<p>
-Robots.txt tells search engines which pages they can or cannot crawl on a website.
-</p>
-
-
-<h3>Why use a robots.txt generator?</h3>
-
-<p>
-It helps create a correct robots.txt file without writing the rules manually.
-</p>
-
-
-<h3>Is robots.txt saved?</h3>
-
-<p>
-No, the file is generated directly in your browser.
-</p>
-
-</div>
-
-</section>
+<section class="tool-guide"><h2>How Robots.txt Generator works</h2><p>Create a user-agent rule and an optional public sitemap reference.</p><h3>Steps</h3><p>Enter one user-agent, choose Allow or Disallow and a path beginning with a slash. Copy the result to your hostname&#x27;s root robots.txt.</p><h3>Example to check</h3><p>Disallow: /private/ asks compliant crawlers not to crawl that path. It does not make those pages private.</p><h3>Limits and review</h3><p>A project subfolder&#x27;s robots.txt is not the hostname root file. Robots rules control crawling, not access security or guaranteed removal from search. A sitemap reference does not guarantee indexing.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -376,5 +231,7 @@ No, the file is generated directly in your browser.
   </div>
 </section>
 
+<script src="../assets/js/tools/robots-txt-generator.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>

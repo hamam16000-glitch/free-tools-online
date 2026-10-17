@@ -5,9 +5,9 @@
 
 <meta charset="UTF-8">
 
-<title>AI Text Humanizer Online Free - Rewrite Text Naturally</title>
+<title>Text Cleanup and Simple Rewrites | Free Tools Online</title>
 
-<meta name="description" content="Improve your writing with our AI text humanizer tool. Rewrite text naturally, improve readability and make your content more professional.">
+<meta name="description" content="Apply a fixed English phrase list, whitespace cleanup and optional capitalization changes.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -212,6 +212,8 @@ grid-column:auto;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 
@@ -222,12 +224,12 @@ grid-column:auto;
   <span aria-hidden="true">›</span>
   <a href="../#generator-tools">Generator Tools</a>
   <span aria-hidden="true">›</span>
-  <span aria-current="page">AI Text Humanizer</span>
+  <span aria-current="page">Text Cleanup and Simple Rewrites</span>
 </nav>
 
 
 
-<h1>AI Text Humanizer</h1>
+<h1>Text Cleanup and Simple Rewrites</h1>
 
 
 <p class="tool-description">
@@ -238,7 +240,7 @@ Rewrite and improve your text to make it clearer and more natural.
 <div class="humanizer-box">
 
 
-<label>
+<label for="inputText">
 Original Text
 </label>
 
@@ -246,7 +248,7 @@ Original Text
 <textarea id="inputText" placeholder="Paste your text here..."></textarea>
 
 
-<label>
+<label for="level">
 Improvement Level
 </label>
 
@@ -254,15 +256,15 @@ Improvement Level
 <select id="level">
 
 <option value="light">
-Light Improvement
+Basic cleanup
 </option>
 
 <option value="medium">
-Medium Improvement
+Cleanup and sentence case
 </option>
 
 <option value="strong">
-Strong Improvement
+Cleanup and extra phrase replacements
 </option>
 
 </select>
@@ -272,12 +274,12 @@ Strong Improvement
 
 
 <button class="primary" onclick="humanizeText()">
-Humanize Text
+Apply edits
 </button>
 
 
 <button onclick="copyResult()">
-Copy Improved
+Copy result
 </button>
 
 
@@ -326,314 +328,11 @@ Clear
 
 
 <div id="success" class="success"></div>
-<script>
 
 
-function humanizeText(){
 
-let text=document.getElementById("inputText").value.trim();
 
-let level=document.getElementById("level").value;
-
-
-document.getElementById("originalPreview").value=text;
-
-
-if(!text){
-
-showMessage("Please enter text first.");
-
-return;
-
-}
-
-
-let result=text;
-
-
-// remove extra spaces
-
-result=result.replace(/\\s+/g," ").trim();
-
-
-// improve common words
-
-let replacements={
-
-"utilize":"use",
-
-"utilizes":"uses",
-
-"very important":"essential",
-
-"very good":"effective",
-
-"very bad":"poor",
-
-"a lot of":"many",
-
-"in order to":"to",
-
-"due to the fact that":"because",
-
-"at this point in time":"currently"
-
-};
-
-
-Object.keys(replacements).forEach(word=>{
-
-let regex=new RegExp("\\b"+word+"\\b","gi");
-
-result=result.replace(regex,replacements[word]);
-
-});
-
-
-
-// improve punctuation
-
-result=result
-.replace(/ ,/g,",")
-.replace(/ \./g,".")
-.replace(/\. +/g,". ");
-
-
-
-if(level==="medium" || level==="strong"){
-
-result=result
-.split(". ")
-.map(sentence=>{
-
-sentence=sentence.trim();
-
-if(sentence.length>0){
-
-return sentence.charAt(0).toUpperCase()+sentence.slice(1);
-
-}
-
-return sentence;
-
-})
-.join(". ");
-
-}
-
-
-
-if(level==="strong"){
-
-result=result
-.replace(/I think/gi,"I believe")
-.replace(/but/gi,"however")
-.replace(/also/gi,"additionally");
-
-}
-
-
-
-document.getElementById("output").value=result;
-
-
-updateStats(result);
-
-
-let words=result.split(/\s+/).length;
-
-let minutes=Math.max(1,Math.ceil(words/200));
-
-
-showMessage("Text professionally improved ✓");
-
-
-}
-
-function addSpacing(text){
-
-return text
-.split(". ")
-.map(sentence=>{
-
-return sentence.trim();
-
-})
-.join(". ");
-
-}
-
-
-
-function updateStats(text){
-
-let words=text.trim()
-? text.trim().split(/\s+/).length
-:0;
-
-
-document.getElementById("wordCount").innerHTML=
-words+" Words";
-
-
-document.getElementById("charCount").innerHTML=
-text.length+" Characters";
-
-
-let reading=Math.max(1,Math.ceil(words/200));
-
-
-document.getElementById("readingTime").innerHTML=
-reading+" min read";
-
-
-}
-
-
-
-async function copyResult(){
-
-let text=document.getElementById("output").value;
-
-
-if(!text){
-
-return;
-
-}
-
-
-try{
-
-await navigator.clipboard.writeText(text);
-
-showMessage("Text copied successfully ✓");
-
-
-}catch(e){
-
-showMessage("Copy failed.");
-
-}
-
-}
-
-
-
-function downloadText(){
-
-let text=document.getElementById("output").value;
-
-
-if(!text){
-
-return;
-
-}
-
-
-let blob=new Blob(
-[text],
-{type:"text/plain"}
-);
-
-
-let a=document.createElement("a");
-
-a.href=URL.createObjectURL(blob);
-
-a.download="humanized-text.txt";
-
-a.click();
-
-
-showMessage("TXT file downloaded ✓");
-
-
-}
-
-
-
-function clearText(){
-
-document.getElementById("inputText").value="";
-
-document.getElementById("output").value="";
-
-
-document.getElementById("wordCount").innerHTML="0 Words";
-
-document.getElementById("charCount").innerHTML="0 Characters";
-
-
-showMessage("Cleared ✓");
-
-}
-
-
-
-function showMessage(text){
-
-let box=document.getElementById("success");
-
-box.innerHTML=text;
-
-box.style.display="block";
-
-
-setTimeout(()=>{
-
-box.style.display="none";
-
-},3000);
-
-
-}
-
-
-</script>
-
-
-
-<section class="tool-guide">
-
-<h2>About AI Text Humanizer</h2>
-<p>AI Text Humanizer is a browser-based writing tool that rewrites text to improve readability, flow and natural phrasing while helping preserve the original meaning.</p>
-
-<h2>How to Use AI Text Humanizer</h2>
-<ol>
-<li>Paste the text you want to improve.</li>
-<li>Start the humanizing process.</li>
-<li>Compare the improved text with the original.</li>
-<li>Review the rewritten text for meaning and accuracy.</li>
-<li>Copy the version you want to use.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>Natural text rewriting</li>
-<li>Readability improvements</li>
-<li>Original and improved text comparison</li>
-<li>Fast browser-based processing</li>
-<li>No account required</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>Text entered into this tool is processed directly in your browser and is not intentionally uploaded to our server.</p>
-
-<hr class="guide-divider">
-
-<h2>Frequently Asked Questions</h2>
-<h3>What does AI Text Humanizer do?</h3>
-<p>It rewrites text to improve readability, flow and natural writing style.</p>
-<h3>Does humanizing text guarantee that AI detectors will classify it as human-written?</h3>
-<p>No. Detection systems use different methods, and no rewriting tool can guarantee a particular detector result.</p>
-<h3>Can it improve professional writing?</h3>
-<p>It can help make sentences clearer and more polished, but important text should always be reviewed before use.</p>
-<h3>Is my text stored?</h3>
-<p>No. Your text is processed directly in your browser.</p>
-
-</section>
+<section class="tool-guide"><h2>How Text Cleanup and Simple Rewrites works</h2><p>Apply a fixed English phrase list, whitespace cleanup and optional capitalization changes.</p><h3>Steps</h3><p>Paste your text, choose a level, apply edits and compare the original with the result.</p><h3>Example to check</h3><p>The phrase &#x27;in order to&#x27; becomes &#x27;to&#x27;; a standalone &#x27;but&#x27; can become &#x27;however&#x27; at the strongest level. &#x27;Butterfly&#x27; stays intact.</p><h3>Limits and review</h3><p>This is a rule-based editor. It does not understand meaning, verify facts or make text undetectable. Read each replacement for grammar and tone before using it.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -651,6 +350,8 @@ box.style.display="none";
   </div>
 </section>
 
+<script src="../assets/js/tools/ai-text-humanizer.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 
 </html>

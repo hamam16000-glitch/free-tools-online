@@ -5,9 +5,9 @@
 
 <meta charset="UTF-8">
 
-<title>AI Detector Online Free - Analyze Text Writing Patterns</title>
+<title>Writing Pattern Analyzer | Free Tools Online</title>
 
-<meta name="description" content="Analyze text writing patterns with our free AI detector tool. Check readability, sentence structure, word diversity and text characteristics.">
+<meta name="description" content="Measure repeated whitespace-separated words and average sentence length with a transparent, rule-based index.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -226,6 +226,8 @@ grid-column:auto;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 
@@ -236,12 +238,12 @@ grid-column:auto;
   <span aria-hidden="true">›</span>
   <a href="../#generator-tools">Generator Tools</a>
   <span aria-hidden="true">›</span>
-  <span aria-current="page">AI Detector</span>
+  <span aria-current="page">Writing Pattern Analyzer</span>
 </nav>
 
 
 
-<h1>AI Detector Online</h1>
+<h1>Writing Pattern Analyzer</h1>
 
 
 <p class="tool-description">
@@ -252,7 +254,7 @@ Analyze text patterns, readability and writing characteristics.
 <div class="detector-box">
 
 
-<label>
+<label for="inputText">
 Enter Text
 </label>
 
@@ -323,401 +325,12 @@ Clear
 
 
 <div id="success" class="success"></div>
-<script>
 
-function analyzeText(){
 
-let text=document.getElementById("inputText").value.trim();
 
 
-if(!text){
 
-showMessage("Please enter text first.");
-
-return;
-
-}
-
-
-
-let words=text.split(/\s+/).filter(Boolean);
-
-let sentences=text.split(/[.!?]+/).filter(s=>s.trim());
-
-
-let wordCount=words.length;
-
-let charCount=text.length;
-
-let sentenceCount=sentences.length;
-
-
-
-// Word diversity
-
-let uniqueWords=[...new Set(words.map(w=>w.toLowerCase()))];
-
-let diversity=(uniqueWords.length/wordCount)*100;
-
-
-
-// Average sentence length
-
-let avgSentence=wordCount/Math.max(sentenceCount,1);
-
-
-// Repetition score
-
-let repetition=100-diversity;
-
-
-// Pattern score (heuristic only)
-
-let score=35;
-
-
-// Higher repetition and lower diversity increase the indicator
-
-if(diversity<50){
-
-score+=20;
-
-}
-
-else if(diversity<70){
-
-score+=10;
-
-}
-
-
-if(avgSentence>25){
-
-score+=20;
-
-}
-
-else if(avgSentence>15){
-
-score+=10;
-
-}
-
-
-if(repetition>50){
-
-score+=20;
-
-}
-
-else if(repetition>30){
-
-score+=10;
-
-}
-
-
-// Keep score in reasonable range
-
-score=Math.min(95,Math.max(5,Math.round(score)));
-
-
-
-document.getElementById("wordCount").innerHTML=
-wordCount+" Words";
-
-
-document.getElementById("charCount").innerHTML=
-charCount+" Characters";
-
-
-document.getElementById("sentenceCount").innerHTML=
-sentenceCount+" Sentences";
-
-
-
-document.getElementById("score").innerHTML=
-score+"%";
-
-
-let levelText="";
-
-
-if(score<=35){
-
-levelText="Low AI Pattern ✓";
-
-}
-
-else if(score<=65){
-
-levelText="Mixed Writing Pattern";
-
-}
-
-else{
-
-levelText="High AI Pattern Indicator";
-
-}
-
-
-document.getElementById("levelText").innerHTML=
-levelText;
-
-
-let levelBox=document.getElementById("levelText");
-
-levelBox.className="";
-
-
-if(score<=35){
-
-levelBox.classList.add("level-low");
-
-}
-
-else if(score<=65){
-
-levelBox.classList.add("level-medium");
-
-}
-
-else{
-
-levelBox.classList.add("level-high");
-
-}
-
-
-let summary="";
-
-if(score<=35){
-
-summary=`
-<p><b>Summary:</b></p>
-
-<p>
-✓ Good vocabulary variation<br>
-✓ Low repetition level<br>
-✓ Balanced sentence structure
-</p>
-`;
-
-}
-
-else if(score<=65){
-
-summary=`
-<p><b>Summary:</b></p>
-
-<p>
-• Mixed writing characteristics<br>
-• Some repeated patterns detected<br>
-• Moderate sentence variation
-</p>
-`;
-
-}
-
-else{
-
-summary=`
-<p><b>Summary:</b></p>
-
-<p>
-• Higher repeated patterns<br>
-• Lower vocabulary variation<br>
-• More structured writing style
-</p>
-`;
-
-}
-
-
-document.getElementById("details").innerHTML=
-
-`
-<p><b>Text Analysis:</b></p>
-
-<p>Word Diversity: ${Math.round(diversity)}%</p>
-
-<p>Average Sentence Length: ${Math.round(avgSentence)} words</p>
-
-<p>Repeated Pattern Level: ${Math.round(repetition)}%</p>
-
-${summary}
-
-<p>
-This result is a writing-pattern analysis indicator and not a guaranteed AI detection result.
-</p>
-`;
-
-
-
-document.getElementById("result").style.display="block";
-
-
-showMessage("Analysis completed ✓");
-
-
-}
-
-
-
-function getReport(){
-
-return document.getElementById("result").innerText;
-
-}
-
-
-
-async function copyReport(){
-
-let report=getReport();
-
-
-if(!report){
-
-return;
-
-}
-
-
-try{
-
-await navigator.clipboard.writeText(report);
-
-showMessage("Report copied successfully ✓");
-
-
-}catch(e){
-
-showMessage("Copy failed.");
-
-}
-
-}
-
-
-
-function downloadReport(){
-
-let report=getReport();
-
-
-if(!report){
-
-return;
-
-}
-
-
-let blob=new Blob(
-[report],
-{type:"text/plain"}
-);
-
-
-let a=document.createElement("a");
-
-a.href=URL.createObjectURL(blob);
-
-a.download="ai-analysis-report.txt";
-
-a.click();
-
-
-showMessage("Report downloaded ✓");
-
-
-}
-
-
-
-function clearText(){
-
-document.getElementById("inputText").value="";
-
-document.getElementById("result").style.display="none";
-
-
-document.getElementById("wordCount").innerHTML="0 Words";
-
-document.getElementById("charCount").innerHTML="0 Characters";
-
-document.getElementById("sentenceCount").innerHTML="0 Sentences";
-
-
-showMessage("Cleared ✓");
-
-}
-
-
-
-function showMessage(text){
-
-let box=document.getElementById("success");
-
-box.innerHTML=text;
-
-box.style.display="block";
-
-
-setTimeout(()=>{
-
-box.style.display="none";
-
-},3000);
-
-
-}
-
-
-</script>
-
-
-
-
-<section class="tool-guide">
-
-<h2>About AI Detector</h2>
-<p>AI Detector is a browser-based text analysis tool that examines writing patterns and provides an estimate of whether text shows characteristics commonly associated with AI-generated writing. The result is an indicator and should not be treated as proof.</p>
-
-<h2>How to Use AI Detector</h2>
-<ol>
-<li>Paste the text you want to analyze.</li>
-<li>Start the text analysis.</li>
-<li>Review the generated indicators and results.</li>
-<li>Use the result as guidance rather than a definitive determination.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>Writing-pattern analysis</li>
-<li>Sentence-length analysis</li>
-<li>Word-diversity analysis</li>
-<li>Repeated-pattern detection</li>
-<li>Browser-based processing</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>Text entered into this tool is processed directly in your browser and is not intentionally uploaded to our server.</p>
-
-<hr class="guide-divider">
-
-<h2>Frequently Asked Questions</h2>
-<h3>Is this AI detector 100% accurate?</h3>
-<p>No. This tool analyzes writing patterns and provides an indicator, not a guaranteed detection result.</p>
-<h3>What does the tool analyze?</h3>
-<p>It analyzes characteristics such as sentence length, word diversity and repeated writing patterns.</p>
-<h3>Can the result prove that text was written by AI?</h3>
-<p>No. The result is an estimate based on writing patterns and should not be used as definitive proof of authorship.</p>
-<h3>Is my text stored?</h3>
-<p>No. Your text is processed in your browser.</p>
-
-</section>
+<section class="tool-guide"><h2>How Writing Pattern Analyzer works</h2><p>Measure repeated whitespace-separated words and average sentence length with a transparent, rule-based index.</p><h3>Steps</h3><p>Paste text, run the analysis and read the measured statistics before copying the report.</p><h3>Example to check</h3><p>Repeating the same word lowers the distinct-word percentage. Longer sentences increase the sentence-length component.</p><h3>Limits and review</h3><p>The index cannot establish whether a person or AI wrote text. It is not a probability, accuracy score or evidence of misconduct. Short texts and languages without spaces can produce misleading statistics.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -728,13 +341,15 @@ box.style.display="none";
 <section class="tool-connections" aria-labelledby="related-tools-heading">
   <h2 id="related-tools-heading">Related Generator Tools</h2>
   <div class="tool-connections-grid">
-    <a href="ai-text-humanizer.html">AI Text Humanizer →</a>
+    <a href="ai-text-humanizer.html">Text Cleanup and Simple Rewrites →</a>
     <a href="invoice-generator.html">Invoice Generator →</a>
     <a href="youtube-thumbnail-downloader.html">YouTube Thumbnail Downloader →</a>
     <a class="all-tools-link" href="../">Browse all 48 free tools →</a>
   </div>
 </section>
 
+<script src="../assets/js/tools/ai-detector.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 
 </html>

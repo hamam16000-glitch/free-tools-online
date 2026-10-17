@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 
-<title>UUID Generator Online Free</title>
+<title>UUID v4 Generator | Free Tools Online</title>
 
-<meta name="description" content="Generate random UUID v4 online for free. Create unique identifiers instantly for developers and applications.">
+<meta name="description" content="Create version 4 UUID strings using cryptographic browser randomness.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -130,6 +130,8 @@ margin:15px;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 <body>
@@ -143,7 +145,7 @@ margin:15px;
 </nav>
 
 
-<h1>UUID Generator</h1>
+<h1>UUID v4 Generator</h1>
 
 <p class="tool-description">
 Generate random UUID v4 online instantly.
@@ -177,190 +179,11 @@ UUID copied successfully.
 <div id="status"></div>
 
 
-<script>
-
-function createUUIDv4(){
-
-    // Best option when supported
-    if(window.crypto && typeof crypto.randomUUID === "function"){
-        return crypto.randomUUID();
-    }
-
-    // Secure fallback for browsers without randomUUID()
-    if(window.crypto && typeof crypto.getRandomValues === "function"){
-
-        const bytes = new Uint8Array(16);
-        crypto.getRandomValues(bytes);
-
-        // UUID v4 version + variant bits
-        bytes[6] = (bytes[6] & 0x0f) | 0x40;
-        bytes[8] = (bytes[8] & 0x3f) | 0x80;
-
-        const hex = Array.from(
-            bytes,
-            b => b.toString(16).padStart(2,"0")
-        );
-
-        return (
-            hex.slice(0,4).join("") + "-" +
-            hex.slice(4,6).join("") + "-" +
-            hex.slice(6,8).join("") + "-" +
-            hex.slice(8,10).join("") + "-" +
-            hex.slice(10,16).join("")
-        );
-    }
-
-    // Compatibility fallback
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-        /[xy]/g,
-        function(c){
-            const r = Math.floor(Math.random() * 16);
-            const v = c === "x" ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        }
-    );
-}
-
-function generateUUID(){
-
-    const uuid = createUUIDv4();
-
-    document.getElementById("uuidOutput").value = uuid;
-
-    document.getElementById("status").innerHTML =
-        "UUID Generated Successfully";
-
-    hideCopyMessage();
-}
-
-function generateMultiple(){
-
-    const list = [];
-
-    for(let i = 0; i < 5; i++){
-        list.push(createUUIDv4());
-    }
-
-    document.getElementById("uuidOutput").value =
-        list.join("\n");
-
-    document.getElementById("status").innerHTML =
-        "5 UUIDs Generated Successfully";
-
-    hideCopyMessage();
-}
-
-async function copyUUID(){
-
-    const output =
-        document.getElementById("uuidOutput");
-
-    if(!output.value.trim()){
-        return;
-    }
-
-    try{
-
-        if(navigator.clipboard && window.isSecureContext){
-
-            await navigator.clipboard.writeText(
-                output.value
-            );
-
-        }else{
-
-            output.focus();
-            output.select();
-
-            if(!document.execCommand("copy")){
-                throw new Error("Copy failed");
-            }
-
-            output.setSelectionRange(0,0);
-        }
-
-        const box =
-            document.getElementById("copySuccess");
-
-        box.style.display = "block";
-
-        clearTimeout(window.uuidCopyTimer);
-
-        window.uuidCopyTimer = setTimeout(() => {
-            box.style.display = "none";
-        },3000);
-
-    }catch(error){
-
-        console.error("Copy error:",error);
-
-    }
-}
-
-function hideCopyMessage(){
-
-    const box =
-        document.getElementById("copySuccess");
-
-    if(box){
-        box.style.display = "none";
-    }
-}
-
-function clearUUID(){
-
-    document.getElementById("uuidOutput").value = "";
-
-    document.getElementById("status").innerHTML = "";
-
-    hideCopyMessage();
-}
-
-</script>
 
 
 
-<section class="tool-guide">
 
-<h2>About UUID Generator</h2>
-<p>UUID Generator is a free online tool for creating unique identifiers that can be used in applications, databases, APIs, testing and development projects.</p>
-
-<h2>How to Use UUID Generator</h2>
-<ol>
-<li>Open the UUID Generator.</li>
-<li>Generate a new UUID using the available button.</li>
-<li>Review the generated identifier.</li>
-<li>Generate additional UUIDs when needed.</li>
-<li>Copy the UUID for use in your project.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>Generate unique identifiers instantly</li>
-<li>Useful for applications, databases and APIs</li>
-<li>Fast browser-based generation</li>
-<li>Easy copy functionality</li>
-<li>No account or software installation required</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>UUIDs are generated directly in your browser. No personal information needs to be uploaded to use this tool.</p>
-
-<hr class="guide-divider">
-
-<h2>Frequently Asked Questions</h2>
-<h3>What is a UUID?</h3>
-<p>A UUID is a unique identifier commonly used to identify records, objects and resources in software systems.</p>
-<h3>What can UUIDs be used for?</h3>
-<p>UUIDs are commonly used in databases, APIs, applications, testing and distributed systems.</p>
-<h3>Can I generate multiple UUIDs?</h3>
-<p>Yes. You can generate new identifiers whenever you need them.</p>
-<h3>Can I copy the generated UUID?</h3>
-<p>Yes. The generated identifier can be copied for use in your project.</p>
-<h3>Is any personal data required?</h3>
-<p>No. You do not need to provide personal information to generate a UUID.</p>
-
-</section>
+<section class="tool-guide"><h2>How UUID v4 Generator works</h2><p>Create version 4 UUID strings using cryptographic browser randomness.</p><h3>Steps</h3><p>Generate one UUID or a small set, then copy the identifiers into your application.</p><h3>Example to check</h3><p>Each string uses the 8-4-4-4-12 hexadecimal layout, a version-4 nibble and the standard variant bits.</p><h3>Limits and review</h3><p>Random IDs have an extremely low collision risk but are not a database uniqueness constraint. They are not passwords or authorization tokens. A secure browser randomness API is required; no insecure random fallback is used.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -378,5 +201,7 @@ function clearUUID(){
   </div>
 </section>
 
+<script src="../assets/js/tools/uuid-generator.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>

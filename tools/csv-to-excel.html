@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 
-<title>CSV To Excel Converter Online Free</title>
+<title>CSV to Excel Converter | Free Tools Online</title>
 
-<meta name="description" content="Convert CSV files to Excel XLSX format online for free. Easily transform CSV data into editable Excel spreadsheets.">
+<meta name="description" content="Create a real XLSX workbook from CSV fields kept as literal text.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -230,6 +230,8 @@ margin:15px;
 </style>
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 <body>
@@ -243,7 +245,7 @@ margin:15px;
 </nav>
 
 
-<h1>CSV To Excel Converter</h1>
+<h1>CSV to Excel Converter</h1>
 
 <p>
 Convert CSV files into editable Excel spreadsheets online.
@@ -281,204 +283,13 @@ File downloaded successfully.
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="../vendor/sheetjs/xlsx.full.min.js"></script>
 
 
-<script>
-
-let excelBlob = null;
-let objectURL = null;
-let outputFileName = "converted-file.xlsx";
-
-const csvFile = document.getElementById("csvFile");
-const downloadBtn = document.getElementById("downloadBtn");
-const status = document.getElementById("status");
-const fileName = document.getElementById("fileName");
-const downloadSuccess = document.getElementById("downloadSuccess");
-
-csvFile.addEventListener("change", function(){
-
-    excelBlob = null;
-    downloadBtn.disabled = true;
-    status.textContent = "";
-    downloadSuccess.style.display = "none";
-
-    if(objectURL){
-        URL.revokeObjectURL(objectURL);
-        objectURL = null;
-    }
-
-    const file = csvFile.files[0];
-
-    if(!file){
-        fileName.textContent = "No file selected";
-        return;
-    }
-
-    fileName.textContent = file.name;
-
-    const base =
-        file.name.replace(/\.csv$/i, "") ||
-        "converted-file";
-
-    outputFileName = base + ".xlsx";
-});
-
-function convertCSV(){
-
-    const file = csvFile.files[0];
-
-    if(!file){
-        status.textContent = "Please select a CSV file.";
-        return;
-    }
-
-    excelBlob = null;
-    downloadBtn.disabled = true;
-    downloadSuccess.style.display = "none";
-
-    status.textContent = "Converting...";
-
-    const reader = new FileReader();
-
-    reader.onload = function(e){
-
-        try{
-            const data = e.target.result;
-
-            const workbook = XLSX.read(data,{
-                type:"string"
-            });
-
-            const excelData = XLSX.write(
-                workbook,
-                {
-                    bookType:"xlsx",
-                    type:"array"
-                }
-            );
-
-            excelBlob = new Blob(
-                [excelData],
-                {
-                    type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                }
-            );
-
-            status.textContent = "Excel Created Successfully";
-            downloadBtn.disabled = false;
-
-        }catch(error){
-
-            console.error("CSV conversion error:", error);
-
-            excelBlob = null;
-            downloadBtn.disabled = true;
-
-            status.textContent =
-                "Could not convert this CSV file.";
-        }
-    };
-
-    reader.onerror = function(){
-
-        excelBlob = null;
-        downloadBtn.disabled = true;
-
-        status.textContent =
-            "Could not read this CSV file.";
-    };
-
-    reader.readAsText(file);
-}
-
-function downloadExcel(){
-
-    if(!excelBlob){
-        status.textContent = "Convert the CSV file first.";
-        return;
-    }
-
-    if(objectURL){
-        URL.revokeObjectURL(objectURL);
-    }
-
-    objectURL = URL.createObjectURL(excelBlob);
-
-    const a = document.createElement("a");
-
-    a.href = objectURL;
-    a.download = outputFileName;
-
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    downloadSuccess.style.display = "block";
-
-    clearTimeout(window.csvDownloadTimer);
-
-    window.csvDownloadTimer = setTimeout(() => {
-        downloadSuccess.style.display = "none";
-    }, 4000);
-
-    setTimeout(() => {
-        if(objectURL){
-            URL.revokeObjectURL(objectURL);
-            objectURL = null;
-        }
-    }, 1500);
-}
-
-</script>
 
 
-<section class="tool-guide">
 
-<h2>About CSV to Excel Converter</h2>
-<p>
-CSV to Excel Converter is a free online tool for converting CSV data into an editable Excel XLSX spreadsheet directly in your browser.
-</p>
-
-<h2>How to Use CSV to Excel Converter</h2>
-<ol>
-<li>Select your CSV file.</li>
-<li>Load the CSV data into the converter.</li>
-<li>Start the conversion.</li>
-<li>Download the generated Excel XLSX file.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>CSV to XLSX conversion</li>
-<li>Editable spreadsheet output</li>
-<li>Fast browser-based processing</li>
-<li>Simple file conversion workflow</li>
-<li>No account required</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>
-Your CSV file is processed directly in your browser by this tool and is not uploaded to our server.
-</p>
-
-<hr>
-
-<h2>Frequently Asked Questions</h2>
-
-<h3>Can I convert CSV to Excel online?</h3>
-<p>Yes. This tool converts CSV data into an editable Excel XLSX file.</p>
-
-<h3>Are my CSV files uploaded?</h3>
-<p>No. CSV processing takes place directly in your browser.</p>
-
-<h3>What CSV files are supported?</h3>
-<p>Standard CSV files containing comma-separated data are supported.</p>
-
-<h3>Can I edit the converted Excel file?</h3>
-<p>Yes. The generated XLSX file can be opened and edited with compatible spreadsheet software.</p>
-
-</section>
+<section class="tool-guide"><h2>How CSV to Excel Converter works</h2><p>Create a real XLSX workbook from CSV fields kept as literal text.</p><h3>Steps</h3><p>Choose a CSV file up to 25 MB, convert it, then download the XLSX result.</p><h3>Example to check</h3><p>A value such as 00123 stays 00123, and =2+2 stays text rather than becoming an Excel formula.</p><h3>Limits and review</h3><p>Automatic numeric and date conversion is intentionally avoided. CSV dialects and text encoding vary; inspect separators, non-English text and row counts in the result. Formula execution is not added by the converter.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 </div>
@@ -494,5 +305,7 @@ Your CSV file is processed directly in your browser by this tool and is not uplo
   </div>
 </section>
 
+<script src="../assets/js/tools/csv-to-excel.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>

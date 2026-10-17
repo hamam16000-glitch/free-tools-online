@@ -5,9 +5,9 @@
 
 <meta charset="UTF-8">
 
-<title>Sitemap Generator Online Free</title>
+<title>XML Sitemap Generator | Free Tools Online</title>
 
-<meta name="description" content="Generate XML sitemap files online for your website. Create SEO friendly sitemap quickly and download it for free.">
+<meta name="description" content="Create a deduplicated XML sitemap from URLs on the same HTTP(S) origin.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -151,6 +151,8 @@ text-align:center;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 
@@ -166,7 +168,7 @@ text-align:center;
 
 
 
-<h1>Sitemap Generator</h1>
+<h1>XML Sitemap Generator</h1>
 
 
 <p class="tool-description">
@@ -177,21 +179,21 @@ Create SEO friendly XML sitemap files for your website.
 <div class="sitemap-box">
 
 
-<label>
+<label for="siteUrl">
 Website URL
 </label>
 
 <input id="siteUrl" placeholder="https://example.com">
 
 
-<label>
+<label for="pages">
 Website Pages (one URL per line)
 </label>
 
 <textarea id="pages" rows="8" placeholder="/&#10;/about&#10;/contact"></textarea>
 
 
-<label>
+<label for="frequency">
 Change Frequency
 </label>
 
@@ -239,258 +241,11 @@ Clear
 
 
 <div id="output" class="result" style="display:none"></div>
-<script>
 
-function generateSitemap(){
 
-let base=document.getElementById("siteUrl").value.trim();
 
-let pages=document.getElementById("pages").value.trim();
 
-let freq=document.getElementById("frequency").value;
-
-
-if(!base || !pages){
-
-showMessage("Please enter website URL and pages.");
-
-return;
-
-}
-
-
-let urls=pages.split("\n")
-.map(p=>p.trim())
-.filter(Boolean);
-
-
-
-let xml=`<?xml version="1.0" encoding="UTF-8"?>
-
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-`;
-
-
-urls.forEach(page=>{
-
-
-let url;
-
-
-if(page.startsWith("http")){
-
-url=page;
-
-}
-
-else{
-
-url=base.replace(/\/$/,"")+"/"+page.replace(/^\//,"");
-
-}
-
-
-
-xml+=`
-
-<url>
-
-<loc>${url}</loc>
-
-<lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
-
-<changefreq>${freq}</changefreq>
-
-<priority>0.8</priority>
-
-</url>
-
-`;
-
-
-});
-
-
-xml+=`
-
-</urlset>`;
-
-
-document.getElementById("output").innerText=xml;
-
-
-document.getElementById("output").style.display="block";
-
-
-document.getElementById("pageCount").innerHTML=
-urls.length+" Pages";
-
-
-showMessage("Sitemap generated successfully ✓");
-
-
-}
-
-
-
-async function copySitemap(){
-
-let text=document.getElementById("output").innerText;
-
-
-if(!text){
-
-return;
-
-}
-
-
-await navigator.clipboard.writeText(text);
-
-
-showMessage("XML copied successfully ✓");
-
-
-}
-
-
-
-function downloadSitemap(){
-
-let text=document.getElementById("output").innerText;
-
-
-if(!text){
-
-return;
-
-}
-
-
-let blob=new Blob(
-[text],
-{type:"application/xml"}
-);
-
-
-let a=document.createElement("a");
-
-a.href=URL.createObjectURL(blob);
-
-a.download="sitemap.xml";
-
-a.click();
-
-
-showMessage("sitemap.xml downloaded ✓");
-
-
-}
-
-
-
-function clearSitemap(){
-
-document.getElementById("siteUrl").value="";
-
-document.getElementById("pages").value="";
-
-document.getElementById("output").style.display="none";
-
-
-document.getElementById("pageCount").innerHTML="0 Pages";
-
-
-showMessage("Cleared ✓");
-
-}
-
-
-
-function showMessage(text){
-
-let box=document.getElementById("success");
-
-box.innerHTML=text;
-
-box.style.display="block";
-
-
-setTimeout(()=>{
-
-box.style.display="none";
-
-},3000);
-
-
-}
-
-
-</script>
-
-
-
-<section class="tool-guide">
-
-<h2>About Sitemap Generator</h2>
-<p>Create XML sitemap content that helps search engines discover URLs you want to make available for crawling.</p>
-
-<h2>How to Use Sitemap Generator</h2>
-<ol>
-<li>Enter the website or URL information requested by the tool.</li>
-<li>Configure the available sitemap options.</li>
-<li>Generate the sitemap.</li>
-<li>Review and save or copy the generated result.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>Generate XML sitemap content</li>
-<li>Organize website URLs</li>
-<li>Useful for search-engine discovery</li>
-<li>Fast browser-based generation</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>
-Information entered into this tool is processed in your browser whenever
-supported by the tool. Avoid entering sensitive information unless you
-understand how the specific tool handles it.
-</p>
-
-<div class="guide-faq">
-
-<h2>Frequently Asked Questions</h2>
-
-<h3>
-What is a sitemap?
-</h3>
-
-<p>
-A sitemap helps search engines discover and index website pages.
-</p>
-
-
-<h3>
-Can I upload this sitemap to Google Search Console?
-</h3>
-
-<p>
-Yes. Download the XML file and submit it to your search engine tools.
-</p>
-
-
-<h3>
-Is my website data stored?
-</h3>
-
-<p>
-No. Everything runs directly in your browser.
-</p>
-
-</div>
-
-</section>
+<section class="tool-guide"><h2>How XML Sitemap Generator works</h2><p>Create a deduplicated XML sitemap from URLs on the same HTTP(S) origin.</p><h3>Steps</h3><p>Enter the site base URL and one page path per line, generate, review the URLs and publish sitemap.xml at an appropriate path.</p><h3>Example to check</h3><p>A page listed twice, once with a fragment, appears once. Ampersands in query strings are XML-escaped.</p><h3>Limits and review</h3><p>Use up to 50,000 URLs. Lastmod is omitted because the tool does not know actual page update dates. Only include canonical, public pages you want indexed. A sitemap helps discovery but does not guarantee crawling or indexing.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -507,6 +262,8 @@ No. Everything runs directly in your browser.
   </div>
 </section>
 
+<script src="../assets/js/tools/sitemap-generator.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 
 </html>

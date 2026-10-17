@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 
-<title>URL Encoder Decoder Online Free</title>
+<title>URL Component Encoder and Decoder | Free Tools Online</title>
 
-<meta name="description" content="Encode and decode URLs online for free. Convert text to URL encoded format and decode URL strings instantly.">
+<meta name="description" content="Encode a string as a URL component, or decode percent-encoded component text.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -127,6 +127,8 @@ margin:15px;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 <body>
@@ -140,7 +142,7 @@ margin:15px;
 </nav>
 
 
-<h1>URL Encoder & Decoder</h1>
+<h1>URL Component Encoder and Decoder</h1>
 
 <p class="tool-description">
 Encode and decode URL text online.
@@ -173,150 +175,11 @@ Copied successfully.
 <div id="status"></div>
 
 
-<script>
-
-
-function encodeURL(){
-
-let text=document.getElementById("urlInput").value;
-
-let result=encodeURIComponent(text);
-
-
-document.getElementById("urlInput").value=result;
-
-document.getElementById("status").innerHTML=
-"URL Encoded Successfully";
-
-}
 
 
 
-function decodeURL(){
 
-let text=document.getElementById("urlInput").value;
-
-
-try{
-
-let result=decodeURIComponent(text);
-
-
-document.getElementById("urlInput").value=result;
-
-document.getElementById("status").innerHTML=
-"URL Decoded Successfully";
-
-}
-
-catch(e){
-
-document.getElementById("status").innerHTML=
-"Invalid URL Encoding";
-
-}
-
-}async function copyURL(){
-
-    const output = document.getElementById("urlInput");
-
-    if(!output.value.trim()){
-        return;
-    }
-
-    try{
-
-        if(navigator.clipboard && window.isSecureContext){
-
-            await navigator.clipboard.writeText(output.value);
-
-        }else{
-
-            output.focus();
-            output.select();
-
-            if(!document.execCommand("copy")){
-                throw new Error("Copy failed");
-            }
-
-            output.setSelectionRange(0,0);
-        }
-
-        const box = document.getElementById("copySuccess");
-        box.style.display = "block";
-
-        clearTimeout(window.urlCopyTimer);
-
-        window.urlCopyTimer = setTimeout(() => {
-            box.style.display = "none";
-        }, 3000);
-
-    }catch(error){
-
-        console.error("Copy error:", error);
-
-    }
-}
-
-
-
-function clearURL(){
-
-document.getElementById("urlInput").value="";
-
-document.getElementById("status").innerHTML="";
-
-const box=document.getElementById("copySuccess");
-if(box) box.style.display="none";
-
-}
-
-
-</script>
-
-
-
-<section class="tool-guide">
-
-<h2>About URL Encoder & Decoder</h2>
-<p>URL Encoder & Decoder is a free online tool for converting text into URL-safe format and decoding encoded URL text back into readable content. It is useful for query strings, links, parameters and web development.</p>
-
-<h2>How to Use URL Encoder & Decoder</h2>
-<ol>
-<li>Enter or paste the text you want to process.</li>
-<li>Choose Encode to convert text into URL-safe format.</li>
-<li>Choose Decode to convert encoded text back into readable text.</li>
-<li>Review the processed result.</li>
-<li>Copy the result when finished.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>Encode text for use in URLs</li>
-<li>Decode percent-encoded URL text</li>
-<li>Useful for query strings and URL parameters</li>
-<li>Instant browser-based processing</li>
-<li>No account or software installation required</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>Your text is processed directly in your browser and is not uploaded or stored on our server.</p>
-
-<hr class="guide-divider">
-
-<h2>Frequently Asked Questions</h2>
-<h3>What is URL encoding?</h3>
-<p>URL encoding converts characters into a format that can be safely transmitted inside URLs.</p>
-<h3>What does URL decoding do?</h3>
-<p>URL decoding converts encoded character sequences back into readable text.</p>
-<h3>When should I use URL encoding?</h3>
-<p>It is useful when preparing query parameters, links or other text that must be safely included in a URL.</p>
-<h3>Can I decode encoded URLs?</h3>
-<p>Yes. Paste the encoded text and use the Decode option to convert it back into readable form.</p>
-<h3>Is my data stored?</h3>
-<p>No. The conversion is performed directly in your browser.</p>
-
-</section>
+<section class="tool-guide"><h2>How URL Component Encoder and Decoder works</h2><p>Encode a string as a URL component, or decode percent-encoded component text.</p><h3>Steps</h3><p>Paste a parameter value, encode it before adding it to a URL, or decode a saved component.</p><h3>Example to check</h3><p>The text &#x27;a &amp; b&#x27; becomes a%20%26%20b. An Arabic query value is encoded using UTF-8 percent sequences.</p><h3>Limits and review</h3><p>This uses encodeURIComponent and decodeURIComponent, not a complete URL normalizer. Encoding a whole URL also encodes its separators. A plus sign is not automatically converted to a space; malformed escapes are rejected.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -334,5 +197,7 @@ if(box) box.style.display="none";
   </div>
 </section>
 
+<script src="../assets/js/tools/url-encoder-decoder.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>

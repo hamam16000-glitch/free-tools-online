@@ -5,9 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Image Compressor Online Free - Compress JPG PNG WebP Images</title>
+<title>Image Compressor | Free Tools Online</title>
 
-<meta name="description" content="Compress JPG, PNG and WebP images online for free. Reduce image size while keeping quality. Change format and optimize images directly in your browser.">
+<meta name="description" content="Re-encode PNG, JPEG or WebP locally, with real output byte counts and optional format changes.">
 
 <meta name="keywords" content="image compressor, jpg compressor, png compressor, webp compressor, reduce image size, optimize images">
 
@@ -238,6 +238,8 @@
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 <body>
@@ -254,7 +256,7 @@
 <main class="compressor-page">
 
 <header class="compressor-header">
-<h1>Image Compressor Online</h1>
+<h1>Image Compressor</h1>
 <p>
 Compress JPG, PNG and WebP images while maintaining high quality.
 
@@ -317,361 +319,12 @@ oninput="showQuality()"
 </div>
 </main>
 
-<script>
 
 
-let compressedImage = "";
 
-let originalSize = 0;
 
-let originalWidth = 0;
 
-let originalHeight = 0;
-
-
-
-
-function showQuality(){
-
-document.getElementById("qualityValue").innerHTML =
-document.getElementById("quality").value + "%";
-
-}
-
-
-
-
-function compressImage(){
-
-
-let file =
-document.getElementById("upload").files[0];
-
-
-
-if(!file){
-
-alert("Please select an image");
-
-return;
-
-}
-
-
-
-originalSize=file.size;
-
-
-
-let reader=new FileReader();
-
-
-
-reader.onload=function(e){
-
-
-let img=new Image();
-
-
-
-img.onload=function(){
-
-
-originalWidth=img.width;
-
-originalHeight=img.height;
-
-
-
-let canvas=document.createElement("canvas");
-
-let ctx=canvas.getContext("2d");
-
-
-
-canvas.width=img.width;
-
-canvas.height=img.height;
-
-
-
-ctx.drawImage(
-img,
-0,
-0
-);
-
-
-
-let format=
-document.getElementById("format").value;
-
-
-
-let quality=
-document.getElementById("quality").value / 100;
-
-
-
-compressedImage =
-canvas.toDataURL(
-format,
-quality
-);
-
-
-
-let newSize =
-Math.round(
-compressedImage.length * 0.75
-);
-
-
-
-let saved =
-Math.round(
-(1 - newSize/originalSize) * 100
-);
-
-
-
-document.getElementById("preview").src =
-compressedImage;
-
-
-
-document.getElementById("info").innerHTML =
-
-"Original Size: "
-+ Math.round(originalSize/1024)
-+ " KB"
-
-+
-
-"<br>Original Dimensions: "
-+ originalWidth
-+ " x "
-+ originalHeight
-
-+
-
-"<br>New Size: "
-+ Math.round(newSize/1024)
-+ " KB"
-
-+
-
-"<br>Saved: "
-+ saved
-+ "%";
-
-
-
-}
-
-
-
-img.src=e.target.result;
-
-
-}
-
-
-
-reader.readAsDataURL(file);
-
-
-}
-
-
-
-
-function downloadImage(){
-
-
-if(!compressedImage){
-
-return;
-
-}
-
-
-
-let format =
-document.getElementById("format").value;
-
-
-
-let extension =
-format.split("/")[1];
-
-
-
-let link=document.createElement("a");
-
-link.href=compressedImage;
-
-link.download=
-"compressed-image."
-+ extension;
-
-
-link.click();
-
-let status = document.getElementById("downloadStatus");
-status.style.display = "block";
-status.innerHTML = "Image downloaded successfully.";
-
-setTimeout(function(){
-    status.style.display = "none";
-}, 3000);
-
-
-
-}
-
-
-
-
-
-function clearImage(){
-
-
-compressedImage="";
-
-
-document.getElementById("upload").value="";
-
-
-document.getElementById("preview").src="";
-
-
-document.getElementById("info").innerHTML=
-"No image selected";
-
-
-}
-
-
-
-</script>
-
-
-
-
-<section class="tool-guide">
-
-<style>
-.tool-guide{
-max-width:760px;
-margin:35px auto;
-padding:24px;
-background:#ffffff;
-border:1px solid #e5e7eb;
-border-radius:18px;
-line-height:1.7;
-}
-
-.tool-guide h2{
-font-size:26px;
-margin:25px 0 12px;
-color:#111827;
-}
-
-.tool-guide h3{
-font-size:18px;
-margin:18px 0 8px;
-color:#2563eb;
-}
-
-.tool-guide p,
-.tool-guide li{
-font-size:16px;
-color:#475569;
-}
-
-.tool-guide ul,
-.tool-guide ol{
-padding-left:22px;
-}
-
-.tool-features{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:12px;
-margin-top:15px;
-}
-
-.feature-box{
-padding:14px;
-background:#f8fafc;
-border-radius:12px;
-font-size:15px;
-}
-
-.faq-box{
-margin-top:15px;
-padding:15px;
-background:#f8fafc;
-border-radius:12px;
-}
-
-@media(max-width:600px){
-.tool-guide{
-padding:18px;
-margin:25px 12px;
-}
-
-.tool-guide h2{
-font-size:22px;
-}
-}
-</style>
-
-<h2>About Image Compressor</h2>
-
-<p>
-Image Compressor is a free online tool that reduces image file size while helping maintain good quality.
-It supports common formats such as JPG, PNG and WebP.
-</p>
-
-<h2>How to use Image Compressor</h2>
-
-<ol>
-<li>Choose an image from your device.</li>
-<li>Apply compression settings if available.</li>
-<li>Download your optimized image.</li>
-</ol>
-
-<h2>Key Features</h2>
-
-<div class="tool-features">
-<div class="feature-box">✓ Free image compression</div>
-<div class="feature-box">✓ Supports JPG, PNG and WebP</div>
-<div class="feature-box">✓ Fast browser processing</div>
-<div class="feature-box">✓ No account required</div>
-</div>
-
-<h2>Privacy & Security</h2>
-
-<p>
-Your images stay private. Files are processed locally in your browser whenever possible and are not stored permanently.
-</p>
-
-<h2>Frequently Asked Questions</h2>
-
-<div class="faq-box">
-<h3>Is Image Compressor free?</h3>
-<p>Yes, you can use this tool for free.</p>
-
-<h3>Does it support PNG and WebP?</h3>
-<p>Yes, common image formats are supported.</p>
-
-<h3>Are my images uploaded?</h3>
-<p>No, processing happens in your browser when supported.</p>
-</div>
-
-</section>
+<section class="tool-guide"><h2>How Image Compressor works</h2><p>Re-encode PNG, JPEG or WebP locally, with real output byte counts and optional format changes.</p><h3>Steps</h3><p>Choose an image, select an output format and quality, process it and inspect the preview before downloading.</p><h3>Example to check</h3><p>JPEG quality affects lossy compression; the PNG quality control is disabled because canvas PNG encoding does not use that setting.</p><h3>Limits and review</h3><p>Compression is not guaranteed to shrink a file. Larger outputs are labelled honestly. JPEG removes transparency using a white background. Images are limited to 50 MB, 16,384 pixels per side and 32 million pixels overall.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -685,6 +338,8 @@ Your images stay private. Files are processed locally in your browser whenever p
   </div>
 </section>
 
+<script src="../assets/js/tools/image-compressor.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 
 </html>

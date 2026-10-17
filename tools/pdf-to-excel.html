@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 
-<title>PDF To Excel Converter Online Free</title>
+<title>PDF Text to Excel | Free Tools Online</title>
 
-<meta name="description" content="Convert PDF files to Excel spreadsheets online for free. Extract PDF tables and data into editable Excel files.">
+<meta name="description" content="Extract embedded PDF text fragments into a real XLSX sheet with Page and Text columns.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -156,6 +156,8 @@ font-weight:bold;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 <body>
@@ -165,11 +167,11 @@ font-weight:bold;
   <span aria-hidden="true">›</span>
   <a href="../#pdf-tools">PDF Tools</a>
   <span aria-hidden="true">›</span>
-  <span aria-current="page">PDF To Excel Converter</span>
+  <span aria-current="page">PDF Text to Excel Converter</span>
 </nav>
 
 
-<h1>PDF To Excel Converter</h1>
+<h1>PDF Text to Excel</h1>
 
 <p>
 Extract PDF data and convert it into an Excel file online.
@@ -209,172 +211,16 @@ File downloaded successfully.
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="../vendor/pdfjs/pdf.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="../vendor/sheetjs/xlsx.full.min.js"></script>
 
 
-<script>
 
-let excelBlob=null;
 
-document.getElementById("pdfFile").addEventListener("change", function(){
-    const file = this.files[0];
 
-    document.getElementById("fileName").textContent =
-        file ? file.name : "No file selected";
 
-    document.getElementById("downloadSuccess").style.display =
-        "none";
-});
-
-
-async function convertExcel(){
-
-let file=document.getElementById("pdfFile").files[0];
-
-if(!file){
-alert("Please select PDF file");
-return;
-}
-
-
-let status=document.getElementById("status");
-
-status.innerHTML="Extracting PDF data...";
-
-
-let buffer=await file.arrayBuffer();
-
-
-let pdf=await pdfjsLib.getDocument({
-data:buffer
-}).promise;
-
-
-let rows=[];
-
-
-for(let i=1;i<=pdf.numPages;i++){
-
-let page=await pdf.getPage(i);
-
-let content=await page.getTextContent();
-
-
-content.items.forEach(item=>{
-
-rows.push([item.str]);
-
-});
-
-}
-
-
-let sheet=XLSX.utils.aoa_to_sheet(rows);
-
-let workbook=XLSX.utils.book_new();
-
-XLSX.utils.book_append_sheet(
-workbook,
-sheet,
-"PDF Data"
-);
-
-
-let excel=XLSX.write(workbook,{
-bookType:"xlsx",
-type:"array"
-});
-
-
-excelBlob=new Blob(
-[excel],
-{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
-);
-
-
-status.innerHTML="Excel Created Successfully";
-
-
-}function downloadExcel(){
-
-if(!excelBlob){
-    alert("Convert PDF first");
-    return;
-}
-
-const url = URL.createObjectURL(excelBlob);
-
-const a = document.createElement("a");
-a.href = url;
-a.download = "converted-file.xlsx";
-
-document.body.appendChild(a);
-a.click();
-a.remove();
-
-const successBox =
-    document.getElementById("downloadSuccess");
-
-successBox.style.display = "block";
-
-clearTimeout(window.pdfExcelSuccessTimer);
-
-window.pdfExcelSuccessTimer =
-    setTimeout(() => {
-        successBox.style.display = "none";
-    },4000);
-
-setTimeout(() => {
-    URL.revokeObjectURL(url);
-},1500);
-
-}
-
-</script>
-
-
-
-<section class="tool-guide">
-
-<h2>About PDF to Excel Converter</h2>
-<p>Extract PDF content and create an editable Excel spreadsheet.</p>
-
-<h2>How to Use PDF to Excel Converter</h2>
-<ol>
-<li>Choose a PDF file.</li>
-<li>Start the conversion.</li>
-<li>Review the generated spreadsheet.</li>
-<li>Download the XLSX file.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>PDF data extraction</li>
-<li>Editable XLSX output</li>
-<li>Spreadsheet-compatible result</li>
-<li>Browser-based processing</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>Your files are processed directly in your browser by this tool and are not uploaded to our server.</p>
-
-<div class="guide-faq">
-<h2>Frequently Asked Questions</h2>
-
-<h3>Can I convert PDF to Excel online?</h3>
-<p>Yes, this tool extracts PDF data and creates an Excel spreadsheet.</p>
-
-<h3>Are my files uploaded?</h3>
-<p>No, files are processed directly in your browser.</p>
-
-<h3>Can I edit the Excel file?</h3>
-<p>Yes, the generated XLSX file can be edited with Excel or spreadsheet apps.</p>
-
-</div>
-
-</section>
+<section class="tool-guide"><h2>How PDF Text to Excel works</h2><p>Extract embedded PDF text fragments into a real XLSX sheet with Page and Text columns.</p><h3>Steps</h3><p>Select a text-based PDF, convert it, then open the XLSX and check extracted fragments against the source.</p><h3>Example to check</h3><p>A fragment &#x27;Page 2&#x27; found on the second page appears in a row whose Page value is 2.</p><h3>Limits and review</h3><p>Original table columns, cell types, formulas and visual layout are not reconstructed. Scanned PDFs have no embedded text to extract; use OCR first. Text order follows the PDF&#x27;s stored content order.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -382,12 +228,14 @@ setTimeout(() => {
 <section class="tool-connections" aria-labelledby="related-tools-heading">
   <h2 id="related-tools-heading">Related PDF Tools</h2>
   <div class="tool-connections-grid">
-    <a href="word-to-pdf.html">Word To PDF Converter →</a>
-    <a href="pdf-to-word.html">PDF To Word Converter →</a>
+    <a href="word-to-pdf.html">DOCX Text to PDF Converter →</a>
+    <a href="pdf-to-word.html">PDF Text to Word Converter →</a>
     <a href="pdf-compressor.html">PDF Compressor →</a>
     <a class="all-tools-link" href="../">Browse all 48 free tools →</a>
   </div>
 </section>
 
+<script src="../assets/js/tools/pdf-to-excel.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>

@@ -5,9 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Image Resizer Online Free - Resize JPG PNG WebP Images</title>
+<title>Image Resizer | Free Tools Online</title>
 
-<meta name="description" content="Resize JPG, PNG and WebP images online for free. Change image dimensions directly in your browser.">
+<meta name="description" content="Resize a raster image to chosen pixel dimensions and export JPEG, PNG or WebP.">
 
 <link rel="stylesheet" href="../css/style.css">
 
@@ -383,6 +383,8 @@
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 <body>
@@ -400,7 +402,7 @@
 
 <header class="resizer-header">
 
-<h1>Image Resizer Online</h1>
+<h1>Image Resizer</h1>
 
 <p>
 Resize JPG, PNG and WebP images quickly while keeping quality.
@@ -564,393 +566,9 @@ Image downloaded successfully.
 </main>
 
 
-<section class="tool-guide">
+<section class="tool-guide"><h2>How Image Resizer works</h2><p>Resize a raster image to chosen pixel dimensions and export JPEG, PNG or WebP.</p><h3>Steps</h3><p>Load an image, enter dimensions or choose a preset, select the format and create a new preview.</p><h3>Example to check</h3><p>An 80 by 40 image becomes 40 by 20 when halved with aspect ratio locked. A preset explicitly sets its own ratio.</p><h3>Limits and review</h3><p>Upscaling cannot restore lost detail. Presets can stretch an image when the ratio is unlocked. Limits are 50 MB, 16,384 pixels per side and 32 million pixels total. Changing settings invalidates the previous download.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
-<h2>About Image Resizer</h2>
-<p>
-Image Resizer is a free online tool for changing the width and height of JPG, PNG and WebP images directly in your browser. You can resize images manually or use ready-made dimensions for popular platforms.
-</p>
 
-<h2>How to Resize an Image</h2>
-<ol>
-<li>Choose an image from your device.</li>
-<li>Enter the width or height you need.</li>
-<li>Keep <strong>Aspect Ratio</strong> enabled to preserve the image proportions.</li>
-<li>Select JPG, PNG or WebP as the output format.</li>
-<li>Adjust image quality if needed.</li>
-<li>Click <strong>Resize Image</strong> and download the result.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>Resize JPG, PNG and WebP images</li>
-<li>Preserve the original aspect ratio</li>
-<li>Choose custom width and height</li>
-<li>Quick presets for popular social media sizes</li>
-<li>Control output format and image quality</li>
-<li>Compare the original and resized image</li>
-<li>No account or software installation required</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>
-Your images are processed locally in your browser and are not uploaded to our server. Your files remain on your device while resizing.
-</p>
-
-<div class="guide-faq">
-
-<h2>Frequently Asked Questions</h2>
-
-<h3>What is an Image Resizer?</h3>
-<p>
-An image resizer changes the width and height of an image while allowing you to control its output format and quality.
-</p>
-
-<h3>Which image formats are supported?</h3>
-<p>
-The tool supports JPG, PNG and WebP images.
-</p>
-
-<h3>What does Keep Aspect Ratio do?</h3>
-<p>
-It keeps the original proportions of your image so changing one dimension automatically adjusts the other.
-</p>
-
-<h3>Can I use ready-made image sizes?</h3>
-<p>
-Yes. Quick presets are available for popular formats including Instagram, YouTube, Facebook, TikTok, LinkedIn and WhatsApp.
-</p>
-
-<h3>Are my images uploaded?</h3>
-<p>
-No. Image processing takes place locally in your browser.
-</p>
-
-</div>
-
-</section>
-
-<script>
-
-const upload = document.getElementById("upload");
-const widthInput = document.getElementById("width");
-const heightInput = document.getElementById("height");
-const ratioCheckbox = document.getElementById("ratio");
-const preview = document.getElementById("preview");
-const originalPreview = document.getElementById("originalPreview");
-const info = document.getElementById("info");
-
-let image = new Image();
-let resizedImage = "";
-let aspectRatio = 1;
-let originalSize = 0;
-let originalWidth = 0;
-let originalHeight = 0;
-
-upload.addEventListener("change", function(e){
-
-    const file = e.target.files[0];
-
-    if(!file){
-        return;
-    }
-
-    if(!file.type.startsWith("image/")){
-        alert("Please select a valid image file.");
-        upload.value = "";
-        return;
-    }
-
-    const previewTitle = document.getElementById("previewTitle");
-    const comparisonArea = document.getElementById("comparisonArea");
-
-    if(previewTitle) previewTitle.style.display = "";
-    if(comparisonArea) comparisonArea.style.display = "";
-
-    originalSize = file.size;
-
-    const reader = new FileReader();
-
-    reader.onload = function(event){
-
-        image = new Image();
-
-        image.onload = function(){
-
-            originalWidth = image.width;
-            originalHeight = image.height;
-
-            aspectRatio = originalWidth / originalHeight;
-
-            widthInput.value = originalWidth;
-            heightInput.value = originalHeight;
-
-            originalPreview.src = image.src;
-            preview.removeAttribute("src");
-
-            resizedImage = "";
-
-            document.getElementById("fileText").textContent =
-            file.name;
-
-            info.innerHTML =
-            "Original Size: "
-            + Math.round(originalSize / 1024)
-            + " KB"
-            + "<br>Original Dimensions: "
-            + originalWidth
-            + " x "
-            + originalHeight;
-
-        };
-
-        image.onerror = function(){
-            alert("This image could not be loaded.");
-        };
-
-        image.src = event.target.result;
-    };
-
-    reader.readAsDataURL(file);
-});
-
-widthInput.addEventListener("input", function(){
-
-    if(
-        ratioCheckbox.checked &&
-        aspectRatio > 0 &&
-        Number(this.value) > 0
-    ){
-        heightInput.value =
-        Math.round(Number(this.value) / aspectRatio);
-    }
-
-});
-
-heightInput.addEventListener("input", function(){
-
-    if(
-        ratioCheckbox.checked &&
-        aspectRatio > 0 &&
-        Number(this.value) > 0
-    ){
-        widthInput.value =
-        Math.round(Number(this.value) * aspectRatio);
-    }
-
-});
-
-document.getElementById("quality").addEventListener(
-"input",
-function(){
-
-    document.getElementById("qualityValue").textContent =
-    this.value + "%";
-
-});
-
-function resizeImage(){
-
-    if(!image.src || !originalWidth || !originalHeight){
-        alert("Please select an image first.");
-        return;
-    }
-
-    const targetWidth = Number(widthInput.value);
-    const targetHeight = Number(heightInput.value);
-
-    if(
-        !Number.isInteger(targetWidth) ||
-        !Number.isInteger(targetHeight) ||
-        targetWidth < 1 ||
-        targetHeight < 1
-    ){
-        alert("Please enter valid width and height values.");
-        return;
-    }
-
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = targetWidth;
-    canvas.height = targetHeight;
-
-    ctx.drawImage(
-        image,
-        0,
-        0,
-        targetWidth,
-        targetHeight
-    );
-
-    const format =
-    document.getElementById("format").value;
-
-    const quality =
-    Number(document.getElementById("quality").value) / 100;
-
-    resizedImage =
-    canvas.toDataURL(format, quality);
-
-    preview.src = resizedImage;
-
-    const base64 =
-    resizedImage.split(",")[1] || "";
-
-    const padding =
-    (base64.match(/=*$/) || [""])[0].length;
-
-    const newSize =
-    Math.max(
-        0,
-        Math.floor((base64.length * 3) / 4) - padding
-    );
-
-    const difference =
-    originalSize > 0
-    ? Math.round(((originalSize - newSize) / originalSize) * 100)
-    : 0;
-
-    const sizeLabel =
-    difference >= 0
-    ? "Saved: " + difference + "%"
-    : "Size Change: +" + Math.abs(difference) + "%";
-
-    info.innerHTML =
-    "Original Size: "
-    + Math.round(originalSize / 1024)
-    + " KB"
-
-    + "<br>Original Dimensions: "
-    + originalWidth
-    + " x "
-    + originalHeight
-
-    + "<br>New Size: "
-    + Math.round(newSize / 1024)
-    + " KB"
-
-    + "<br>New Dimensions: "
-    + targetWidth
-    + " x "
-    + targetHeight
-
-    + "<br>"
-    + sizeLabel;
-}
-
-function downloadImage(){
-
-    if(!resizedImage){
-        alert("Please resize an image first.");
-        return;
-    }
-
-    const format =
-    document.getElementById("format").value;
-
-    let extension = "jpg";
-
-    if(format === "image/png"){
-        extension = "png";
-    }
-
-    if(format === "image/webp"){
-        extension = "webp";
-    }
-
-    const a = document.createElement("a");
-
-    a.href = resizedImage;
-    a.download = "resized-image." + extension;
-
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    const status =
-    document.getElementById("downloadStatus");
-
-    status.style.display = "block";
-
-    setTimeout(function(){
-        status.style.display = "none";
-    },3000);
-}
-
-function clearImage(){
-
-    upload.value = "";
-
-    image = new Image();
-    resizedImage = "";
-
-    aspectRatio = 1;
-    originalSize = 0;
-    originalWidth = 0;
-    originalHeight = 0;
-
-    widthInput.value = "";
-    heightInput.value = "";
-
-    originalPreview.removeAttribute("src");
-    preview.removeAttribute("src");
-
-    info.textContent = "No image selected";
-
-    document.getElementById("fileText").textContent =
-    "Choose Image";
-
-    document.getElementById("preset").value = "";
-
-    document.getElementById("quality").value = 90;
-    document.getElementById("qualityValue").textContent =
-    "90%";
-
-    ratioCheckbox.checked = true;
-
-    document.getElementById("downloadStatus").style.display =
-    "none";
-
-    setFormat(
-        "image/jpeg",
-        document.querySelector(
-            '.format-btn[data-format="image/jpeg"]'
-        )
-    );
-}
-
-function applyPreset(){
-
-    const value =
-    document.getElementById("preset").value;
-
-    if(!value){
-        return;
-    }
-
-    const size = value.split(",");
-
-    widthInput.value = size[0];
-    heightInput.value = size[1];
-}
-
-function setFormat(value, button){
-
-    document.getElementById("format").value = value;
-
-    document.querySelectorAll(".format-btn").forEach(
-        function(btn){
-            btn.classList.remove("active");
-        }
-    );
-
-    if(button){
-        button.classList.add("active");
-    }
-}
-
-</script>
 
 
 <section class="tool-connections" aria-labelledby="related-tools-heading">
@@ -963,6 +581,8 @@ function setFormat(value, button){
   </div>
 </section>
 
+<script src="../assets/js/tools/image-resizer.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>
 

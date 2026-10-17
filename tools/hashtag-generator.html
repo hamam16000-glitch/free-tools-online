@@ -5,9 +5,9 @@
 
 <meta charset="UTF-8">
 
-<title>Hashtag Generator Online Free</title>
+<title>Hashtag Suggestions | Free Tools Online</title>
 
-<meta name="description" content="Generate trending and niche hashtags for Instagram, TikTok, YouTube and social media platforms.">
+<meta name="description" content="Build Unicode hashtag suggestions from the topic words you enter.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -158,6 +158,8 @@ margin-top:15px;
 
 <link rel="stylesheet" href="../css/discovery-links.css">
 
+<link rel="stylesheet" href="../css/tool-common.css?v=repair-4">
+<script src="../assets/js/toolkit.js?v=repair-4"></script>
 </head>
 
 
@@ -173,7 +175,7 @@ margin-top:15px;
 
 
 
-<h1>Hashtag Generator</h1>
+<h1>Hashtag Suggestions</h1>
 
 
 <p class="tool-description">
@@ -184,14 +186,14 @@ Generate optimized hashtags for your social media content.
 <div class="hashtag-box">
 
 
-<label>
+<label for="topic">
 Topic / Keyword
 </label>
 
 <input id="topic" placeholder="Example: fitness, travel, technology">
 
 
-<label>
+<label for="platform">
 Platform
 </label>
 
@@ -208,7 +210,7 @@ Platform
 </select>
 
 
-<label>
+<label for="amount">
 Number of Hashtags
 </label>
 
@@ -256,415 +258,11 @@ Clear
 
 
 <div id="output" class="output" style="display:none"></div>
-<script>
 
-function generateHashtags(){
 
-let topic=document.getElementById("topic").value.trim();
 
-let platform=document.getElementById("platform").value;
 
-let amount=parseInt(document.getElementById("amount").value);
-
-
-
-if(!topic){
-
-showMessage("Please enter a topic first.");
-
-return;
-
-}
-
-
-
-let clean=topic
-.toLowerCase()
-.replace(/[^a-z0-9\s]/g,"")
-.trim()
-.replace(/\s+/g,"");
-
-
-
-let base=[
-
-clean,
-
-clean+"tips",
-
-clean+"ideas",
-
-clean+"daily",
-
-clean+"life",
-
-clean+"community",
-
-clean+"guide",
-
-clean+"inspiration",
-
-clean+"trend",
-
-clean+"world",
-
-clean+"online",
-
-clean+"creator",
-
-clean+"2026",
-
-"best"+clean,
-
-"learn"+clean
-
-];
-
-
-
-let popular=[
-
-"viral",
-
-"trending",
-
-"explore",
-
-"fyp",
-
-"contentcreator",
-
-"socialmedia",
-
-"instagood",
-
-"lifestyle"
-
-];
-
-
-
-let niche=[
-
-clean+"expert",
-
-clean+"strategy",
-
-clean+"tutorial",
-
-clean+"solutions",
-
-clean+"resources"
-
-];
-
-
-
-let popularTags=[
-
-"#"+clean,
-
-"#trending",
-
-"#viral",
-
-"#explore",
-
-"#socialmedia",
-
-"#contentcreator"
-
-];
-
-
-let nicheTags=[
-
-"#"+clean+"community",
-
-"#"+clean+"guide",
-
-"#"+clean+"creator",
-
-"#"+clean+"tips",
-
-"#"+clean+"strategy"
-
-];
-
-
-let longTags=[
-
-"#"+clean+"forbeginners",
-
-"#best"+clean+"ideas",
-
-"#"+clean+"motivationdaily",
-
-"#howto"+clean,
-
-"#"+clean+"lifestyle"
-
-];
-
-
-// platform adjustment
-
-if(platform==="tiktok"){
-
-popularTags.push("#fyp","#foryou");
-
-}
-
-
-if(platform==="youtube"){
-
-popularTags.push("#youtube","#shorts");
-
-}
-
-
-if(platform==="x"){
-
-popularTags.push("#thread","#community");
-
-}
-
-
-let tags=[...new Set(
-
-popularTags.concat(nicheTags,longTags)
-
-)];
-
-
-tags=tags.slice(0,amount);
-
-
-
-let output=tags.join(" ");
-
-
-
-let popularOutput=popularTags.join(" ");
-
-let nicheOutput=nicheTags.join(" ");
-
-let longOutput=longTags.join(" ");
-
-
-document.getElementById("output").innerHTML=
-
-`
-
-<div class="category">
-
-<b>🔥 Popular Hashtags</b>
-
-<br><br>
-
-${popularOutput}
-
-</div>
-
-
-<div class="category">
-
-<b>🎯 Niche Hashtags</b>
-
-<br><br>
-
-${nicheOutput}
-
-</div>
-
-
-<div class="category">
-
-<b>📌 Long-tail Hashtags</b>
-
-<br><br>
-
-${longOutput}
-
-</div>
-
-`;
-
-
-
-document.getElementById("output").style.display="block";
-
-
-document.getElementById("count").innerHTML=
-
-tags.length+" Hashtags";
-
-
-showMessage("Hashtags generated successfully ✓");
-
-
-}
-
-
-
-async function copyHashtags(){
-
-let text=document.getElementById("output").innerText;
-
-
-if(!text){
-
-return;
-
-}
-
-
-await navigator.clipboard.writeText(text);
-
-
-showMessage("Copied successfully ✓");
-
-
-}
-
-
-
-function downloadHashtags(){
-
-let text=document.getElementById("output").innerText;
-
-
-if(!text){
-
-return;
-
-}
-
-
-let blob=new Blob(
-
-[text],
-
-{type:"text/plain"}
-
-);
-
-
-let a=document.createElement("a");
-
-a.href=URL.createObjectURL(blob);
-
-a.download="hashtags.txt";
-
-a.click();
-
-
-showMessage("Downloaded ✓");
-
-
-}
-
-
-
-function clearHashtags(){
-
-document.getElementById("topic").value="";
-
-document.getElementById("output").style.display="none";
-
-document.getElementById("count").innerHTML="0 Hashtags";
-
-
-showMessage("Cleared ✓");
-
-}
-
-
-
-function showMessage(text){
-
-let box=document.getElementById("success");
-
-box.innerHTML=text;
-
-box.style.display="block";
-
-
-setTimeout(()=>{
-
-box.style.display="none";
-
-},3000);
-
-
-}
-
-
-</script>
-
-
-
-<section class="tool-guide">
-
-<h2>About Hashtag Generator</h2>
-<p>Generate hashtag suggestions from keywords or topics to help organize and prepare social-media content.</p>
-
-<h2>How to Use Hashtag Generator</h2>
-<ol>
-<li>Enter the topic or keywords for your content.</li>
-<li>Choose any available generation options.</li>
-<li>Generate hashtag suggestions.</li>
-<li>Review and copy the hashtags you want to use.</li>
-</ol>
-
-<h2>Key Features</h2>
-<ul>
-<li>Generate hashtag suggestions</li>
-<li>Useful for social-media workflows</li>
-<li>Quick copy-ready results</li>
-<li>No account required</li>
-</ul>
-
-<h2>Privacy &amp; Security</h2>
-<p>
-Information entered into this tool is processed in your browser whenever
-supported by the tool. Avoid entering sensitive information unless you
-understand how the specific tool handles it.
-</p>
-
-<div class="guide-faq">
-
-<h2>Frequently Asked Questions</h2>
-
-<h3>
-How many hashtags should I use?
-</h3>
-
-<p>
-The best number depends on the platform and your content strategy.
-</p>
-
-
-<h3>
-Can I use these hashtags everywhere?
-</h3>
-
-<p>
-You can customize hashtags based on each social media platform.
-</p>
-
-
-<h3>
-Are generated hashtags stored?
-</h3>
-
-<p>
-No. The tool works locally in your browser.
-</p>
-
-</div>
-
-</section>
+<section class="tool-guide"><h2>How Hashtag Suggestions works</h2><p>Build Unicode hashtag suggestions from the topic words you enter.</p><h3>Steps</h3><p>Enter a specific topic, choose 10, 20 or 30 suggestions, generate and remove irrelevant tags before posting.</p><h3>Example to check</h3><p>An Arabic topic retains Arabic letters rather than being reduced to empty tags.</p><h3>Limits and review</h3><p>Suggestions use word combinations and a fixed suffix list. The tool does not query trend data, measure competition or predict reach. Platform selection does not provide live platform analytics.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
 
 
 
@@ -675,13 +273,15 @@ No. The tool works locally in your browser.
 <section class="tool-connections" aria-labelledby="related-tools-heading">
   <h2 id="related-tools-heading">Related Generator Tools</h2>
   <div class="tool-connections-grid">
-    <a href="ai-detector.html">AI Detector →</a>
-    <a href="ai-text-humanizer.html">AI Text Humanizer →</a>
+    <a href="ai-detector.html">Writing Pattern Analyzer →</a>
+    <a href="ai-text-humanizer.html">Text Cleanup and Simple Rewrites →</a>
     <a href="invoice-generator.html">Invoice Generator →</a>
     <a class="all-tools-link" href="../">Browse all 48 free tools →</a>
   </div>
 </section>
 
+<script src="../assets/js/tools/hashtag-generator.js?v=repair-4"></script>
+<footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 
 </html>
