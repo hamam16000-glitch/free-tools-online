@@ -23,3 +23,8 @@ css/*backup*
 
 # Tool backup files
 tools/*.backup*
+
+# SEO repair local output (not published)
+.fto-backups/
+fto-audit.csv
+fto-audit-summary.txt
