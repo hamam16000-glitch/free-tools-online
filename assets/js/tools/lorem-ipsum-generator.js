@@ -28,39 +28,55 @@ text += paragraph.trim()+"\n\n";
 document.getElementById("result").value=text;
 }
 
-async function copyText(){
 
-    const result = document.getElementById("result");
+async function copyText() {
+    const result = document.getElementById('result');
+    const box = document.getElementById('copySuccess');
 
-    if(!result.value.trim()){
+    clearTimeout(window.loremCopyTimer);
+
+    function showMessage(message, failed) {
+        if (!box) return;
+
+        box.textContent = message;
+        box.style.display = 'block';
+
+        box.style.color = failed ? '#b91c1c' : '';
+        box.style.backgroundColor =
+            failed ? '#fef2f2' : '';
+    }
+
+    if (!result.value.trim()) {
+        showMessage(
+            'Generate text before copying.',
+            true
+        );
         return;
     }
 
-    try{
-        if(navigator.clipboard && window.isSecureContext){
-            await navigator.clipboard.writeText(result.value);
-        }else{
-            result.focus();
-            result.select();
+    try {
+        const safety = window.FTOSafety;
 
-            if(!document.execCommand("copy")){
-                throw new Error("Copy failed");
-            }
-
-            result.setSelectionRange(0,0);
+        if (!safety ||
+            typeof safety.copyText !== 'function') {
+            throw new Error(
+                'Clipboard service unavailable.'
+            );
         }
 
-        const box = document.getElementById("copySuccess");
-        box.style.display = "block";
+        await safety.copyText(result.value);
 
-        clearTimeout(window.loremCopyTimer);
+        showMessage('Copied successfully.', false);
 
         window.loremCopyTimer = setTimeout(() => {
-            box.style.display = "none";
+            if (box) box.style.display = 'none';
         }, 3000);
 
-    }catch(error){
-        console.error("Copy error:", error);
+    } catch (error) {
+        showMessage(
+            'Copy failed. Select and copy the text manually.',
+            true
+        );
     }
 }
 
