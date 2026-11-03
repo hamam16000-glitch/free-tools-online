@@ -5,7 +5,7 @@
 
 <title>Unit Converter | Free Tools Online</title>
 
-<meta name="description" content="Convert supported length, mass and temperature units with explicit factors.">
+<meta name="description" content="Convert meters, kilometers, centimeters, miles, kilograms, grams, pounds, Celsius and Fahrenheit. Explore examples, accuracy notes and conversion tips.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -273,17 +273,17 @@ Convert length, weight and temperature units online.
 
 <label for="value">Value</label>
 
-<input type="number" id="value" placeholder="Enter value">
+<input type="number" id="value" placeholder="Enter value" step="any" oninput="invalidateConversion()" onchange="invalidateConversion()">
 
 
 <label for="fromUnit">From</label>
 
-<select id="fromUnit"></select>
+<select id="fromUnit" onchange="invalidateConversion()"></select>
 
 
 <label for="toUnit">To</label>
 
-<select id="toUnit"></select>
+<select id="toUnit" onchange="invalidateConversion()"></select>
 <div class="unit-actions">
 <button onclick="convertUnit()">Convert</button>
 <button onclick="copyResult()">Copy</button>
@@ -304,7 +304,349 @@ Result copied successfully.
 
 
 
-<section class="tool-guide"><h2>How Unit Converter works</h2><p>Convert supported length, mass and temperature units with explicit factors.</p><h3>Steps</h3><p>Choose a category, enter a finite value, choose source and destination units and convert.</p><h3>Example to check</h3><p>One international mile is 1609.344 meters, one avoirdupois pound is 0.45359237 kilograms, and 0 Celsius is 32 Fahrenheit.</p><h3>Limits and review</h3><p>Displayed values use up to 12 significant digits, so floating-point rounding can remain. Only the units shown in each category are supported. The weight category performs mass conversion, not force conversion.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide"
+id="unit-practical-guide"
+aria-labelledby="unit-guide-heading">
+
+<h2 id="unit-guide-heading">
+Unit Converter: Practical Guide
+</h2>
+
+<p>
+Unit conversion helps you express
+the same measurement using a
+different unit. This free converter
+supports length, mass and temperature
+calculations directly in your browser.
+</p>
+
+<p>
+Choose a measurement category,
+enter a numeric value, select the
+original and destination units,
+then press Convert.
+</p>
+
+<p>
+The calculator supports decimal
+values and negative numbers.
+After changing a value or unit,
+press Convert again to calculate
+a new result.
+</p>
+
+<h2>Supported Measurement Units</h2>
+
+<h3>Length</h3>
+
+<p>
+Convert between meters,
+kilometers, centimeters
+and international miles.
+</p>
+
+<h3>Mass</h3>
+
+<p>
+Convert between kilograms,
+grams and avoirdupois pounds.
+The interface calls this
+category Weight, but these
+units measure mass rather
+than force.
+</p>
+
+<h3>Temperature</h3>
+
+<p>
+Convert between degrees Celsius
+and degrees Fahrenheit.
+</p>
+
+<h2>Length Conversion Examples</h2>
+
+<h3>Example 1: Miles to Meters</h3>
+
+<p>
+One international mile equals
+exactly 1609.344 meters.
+</p>
+
+<p>
+Enter 1, select Length,
+choose Mile as the source
+unit and Meter as the
+destination unit.
+</p>
+
+<p>
+The result is 1609.344 meters.
+This is useful when comparing
+distances recorded in different
+measurement systems.
+</p>
+
+<h3>Example 2: Kilometers to Meters</h3>
+
+<p>
+One kilometer equals 1000 meters.
+For example, 1.5 kilometers
+equals 1500 meters.
+</p>
+
+<p>
+This conversion is useful
+when comparing longer distances
+with measurements expressed
+in meters.
+</p>
+
+<h3>Example 3: Centimeters to Meters</h3>
+
+<p>
+One hundred centimeters equal
+one meter. Therefore,
+250 centimeters equal
+2.5 meters.
+</p>
+
+<p>
+This can help when reviewing
+furniture dimensions or
+other everyday measurements.
+</p>
+
+<h2>Mass Conversion Examples</h2>
+
+<h3>Pounds to Kilograms</h3>
+
+<p>
+One avoirdupois pound equals
+exactly 0.45359237 kilograms.
+</p>
+
+<p>
+For example, enter 1,
+select Weight, choose Pound
+and then Kilogram to see
+the converted mass.
+</p>
+
+<h3>Grams to Kilograms</h3>
+
+<p>
+One kilogram equals 1000 grams.
+Therefore, 500 grams equal
+0.5 kilograms.
+</p>
+
+<p>
+These conversions can be useful
+when comparing product masses,
+food ingredient quantities
+or shipping measurements.
+</p>
+
+<h2>Temperature Conversion Examples</h2>
+
+<h3>Celsius to Fahrenheit</h3>
+
+<p>
+To convert Celsius to Fahrenheit,
+multiply by 9/5 and add 32.
+</p>
+
+<p>
+For example, 0 degrees Celsius
+equals 32 degrees Fahrenheit.
+</p>
+
+<p>
+Similarly, 100 degrees Celsius
+equals 212 degrees Fahrenheit.
+</p>
+
+<h3>Fahrenheit to Celsius</h3>
+
+<p>
+To convert Fahrenheit to Celsius,
+subtract 32 and multiply
+the result by 5/9.
+</p>
+
+<p>
+For example, 98.6 degrees
+Fahrenheit equals 37 degrees
+Celsius.
+</p>
+
+<p>
+An interesting reference point
+is minus 40 degrees: -40 Celsius
+and -40 Fahrenheit represent
+the same temperature.
+</p>
+
+<h2>Understanding Accuracy and Rounding</h2>
+
+<p>
+The converter uses defined
+conversion factors and
+JavaScript numeric calculations.
+</p>
+
+<p>
+Results are displayed using
+up to 12 significant digits.
+Significant digits are not
+the same as a fixed number
+of decimal places.
+</p>
+
+<p>
+Some decimal values cannot
+be represented exactly using
+ordinary floating-point
+arithmetic. Small rounding
+differences may therefore occur.
+</p>
+
+<p>
+For specialized scientific,
+engineering or regulatory
+calculations, verify the
+required precision and
+measurement definitions.
+</p>
+
+<h2>Important Conversion Limitations</h2>
+
+<p>
+Only the nine units listed
+in this tool are supported.
+It does not currently convert
+currency, volume, area,
+speed or other unit categories.
+</p>
+
+<p>
+The tool accepts negative
+numeric values, but a
+mathematically valid result
+does not necessarily represent
+a physically meaningful
+measurement.
+</p>
+
+<p>
+Very large numeric inputs
+may exceed the supported
+numeric range.
+</p>
+
+<p>
+The calculator does not
+independently verify whether
+an entered measurement is
+appropriate for a particular
+real-world application.
+</p>
+
+<h2>Privacy and Local Processing</h2>
+
+<p>
+Unit conversion calculations
+take place in your browser.
+The converter does not need
+to submit the entered value
+to an external conversion API.
+</p>
+
+<p>
+When you select Copy,
+the displayed conversion result
+is placed on your device's
+clipboard if clipboard access
+is available.
+</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Is this unit converter free?</h3>
+
+<p>
+Yes. You can convert the
+supported units without
+paying for the tool.
+</p>
+
+<h3>Can I enter decimal numbers?</h3>
+
+<p>
+Yes. Decimal values are
+supported. For example,
+you can convert 1.5
+kilometers into meters.
+</p>
+
+<h3>Does the tool support negative values?</h3>
+
+<p>
+Yes. The calculator accepts
+negative numbers, including
+negative temperatures.
+Consider whether negative
+values make sense for the
+measurement being converted.
+</p>
+
+<h3>Why did my previous result disappear?</h3>
+
+<p>
+Changing the input or
+selected units clears the
+previous result to prevent
+confusion. Press Convert
+to calculate the updated value.
+</p>
+
+<h3>Why does a result contain rounded digits?</h3>
+
+<p>
+The tool displays up to
+12 significant digits.
+Floating-point calculations
+may introduce small rounding
+differences.
+</p>
+
+<h3>Can I convert kilograms to pounds?</h3>
+
+<p>
+Yes. Choose Weight,
+select Kilogram as the
+original unit and Pound
+as the destination unit.
+</p>
+
+<h3>Can I convert Kelvin or ounces?</h3>
+
+<p>
+No. Kelvin and ounces
+are not included in the
+current selection of units.
+</p>
+
+<h3>Does the converter send my value to a server?</h3>
+
+<p>
+The conversion functions
+run locally in your browser
+without calling an external
+unit-conversion API.
+</p>
+
+</section>
 
 
 </div>
