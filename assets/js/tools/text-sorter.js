@@ -1,79 +1,183 @@
 
-function getLines(){
-return document.getElementById("text").value.split("\n");
+'use strict';
+
+// Recognize LF, CRLF and CR line endings.
+// Do not change the original textarea content.
+function getLines() {
+    const text =
+        document.getElementById('text').value;
+
+    return text === ''
+        ? []
+        : text.split(/\r\n|\n|\r/);
 }
 
-function sortAZ(){
-let lines=getLines();
-lines.sort((a,b)=>a.localeCompare(b));
-document.getElementById("result").value = lines.join("\n");
+function resetSorterFeedback() {
+    const box =
+        document.getElementById('copySuccess');
+
+    clearTimeout(window.textSorterCopyTimer);
+
+    if (box) {
+        box.style.display = 'none';
+        box.style.color = '';
+        box.style.backgroundColor = '';
+        box.textContent = '';
+    }
 }
 
-function sortZA(){
-let lines=getLines();
-lines.sort((a,b)=>b.localeCompare(a));
-document.getElementById("result").value = lines.join("\n");
+function invalidateSortedResult() {
+    window.textSorterRevision =
+        (window.textSorterRevision || 0) + 1;
+
+    document.getElementById('result').value = '';
+
+    resetSorterFeedback();
 }
 
-function removeEmpty(){
-let lines=getLines().filter(line=>line.trim()!=="");
-document.getElementById("result").value = lines.join("\n");
+function displaySortedResult(lines) {
+    invalidateSortedResult();
+
+    document.getElementById('result').value =
+        lines.join('\n');
 }
 
-function countLines(){
-let text=document.getElementById("text").value;
-let lines=text===""?0:text.split("\n").length;
-document.getElementById("info").innerHTML = "Lines: " + lines;
+// Locale-aware, lexicographic sorting.
+function sortAZ() {
+    displaySortedResult(
+        getLines().sort(
+            (a, b) => a.localeCompare(b)
+        )
+    );
 }
 
-async function copyResult(){
+function sortZA() {
+    displaySortedResult(
+        getLines().sort(
+            (a, b) => b.localeCompare(a)
+        )
+    );
+}
 
-    const result = document.getElementById("result");
+// Remove empty and whitespace-only lines.
+// Preserve whitespace in remaining lines.
+function removeEmpty() {
+    displaySortedResult(
+        getLines().filter(
+            line => line.trim() !== ''
+        )
+    );
+}
 
-    if(!result.value.trim()){
+function countLines() {
+    invalidateSortedResult();
+
+    document.getElementById('info').textContent =
+        'Lines: ' + getLines().length;
+}
+
+function showSorterFeedback(message, failed) {
+    const box =
+        document.getElementById('copySuccess');
+
+    if (!box) return;
+
+    clearTimeout(window.textSorterCopyTimer);
+
+    box.textContent = message;
+    box.style.display = 'block';
+
+    box.style.color =
+        failed ? '#b91c1c' : '';
+
+    box.style.backgroundColor =
+        failed ? '#fef2f2' : '';
+
+    if (!failed) {
+        const revision =
+            window.textSorterRevision || 0;
+
+        window.textSorterCopyTimer = setTimeout(
+            () => {
+                if (
+                    revision ===
+                    (window.textSorterRevision || 0)
+                ) {
+                    box.style.display = 'none';
+                }
+            },
+            3000
+        );
+    }
+}
+
+async function copyResult() {
+    const result =
+        document.getElementById('result');
+
+    const text = result.value;
+
+    const revision =
+        window.textSorterRevision || 0;
+
+    if (text === '') {
+        showSorterFeedback(
+            'Generate a result before copying.',
+            true
+        );
         return;
     }
 
-    try{
-
-        if(navigator.clipboard && window.isSecureContext){
-
-            await navigator.clipboard.writeText(result.value);
-
-        }else{
-
-            result.focus();
-            result.select();
-
-            if(!document.execCommand("copy")){
-                throw new Error("Copy failed");
-            }
-
-            result.setSelectionRange(0,0);
+    try {
+        if (
+            !window.FTOSafety ||
+            typeof window.FTOSafety.copyText !==
+                'function'
+        ) {
+            throw new Error(
+                'Clipboard service unavailable'
+            );
         }
 
-        const box = document.getElementById("copySuccess");
+        const copied =
+            await window.FTOSafety.copyText(text);
 
-        box.style.display = "block";
+        if (copied === false) {
+            throw new Error(
+                'Copy was not confirmed'
+            );
+        }
 
-        clearTimeout(window.textSorterCopyTimer);
+        if (
+            revision !==
+                (window.textSorterRevision || 0) ||
+            result.value !== text
+        ) {
+            return;
+        }
 
-        window.textSorterCopyTimer = setTimeout(() => {
-            box.style.display = "none";
-        }, 3000);
+        showSorterFeedback(
+            'Result copied successfully.',
+            false
+        );
 
-    }catch(error){
+    } catch (error) {
+        if (
+            revision !==
+                (window.textSorterRevision || 0) ||
+            result.value !== text
+        ) {
+            return;
+        }
 
-        console.error("Copy error:", error);
-
+        showSorterFeedback(
+            'Copy failed. Select and copy the result manually.',
+            true
+        );
     }
 }
 
-function clearText(){
-document.getElementById("text").value="";
-document.getElementById("result").value="";
-document.getElementById("info").innerHTML="Lines: 0";
-
-const box=document.getElementById("copySuccess");
-if(box) box.style.display="none";
+function clearText() {
+    document.getElementById('text').value = '';
+    countLines();
 }

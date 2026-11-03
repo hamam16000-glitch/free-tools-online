@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Text Line Sorter | Free Tools Online</title>
-<meta name="description" content="Sort complete lines in ascending or descending browser locale order, or remove empty lines.">
+<meta name="description" content="Sort text lines A-Z or Z-A online, remove blank and whitespace-only lines, and copy the result. Learn about locale-aware sorting and line endings.">
 <meta name="keywords" content="text sorter, sort lines online, alphabetic sorter, text organizer">
 <link rel="stylesheet" href="../css/style.css">
 
@@ -198,7 +198,306 @@ Lines: 0
 </div>
 
 
-<section class="tool-guide"><h2>How Text Line Sorter works</h2><p>Sort complete lines in ascending or descending browser locale order, or remove empty lines.</p><h3>Steps</h3><p>Paste lines, choose an operation and copy the resulting list.</p><h3>Example to check</h3><p>Sorting &#x27;z&#x27;, &#x27;a&#x27;, &#x27;b&#x27; ascending produces &#x27;a&#x27;, &#x27;b&#x27;, &#x27;z&#x27;. Empty-line removal leaves nonempty line content intact.</p><h3>Limits and review</h3><p>Sorting is lexicographic, not a numeric sort. Accented letters and case order can vary with the browser locale. Duplicate removal is provided by the separate duplicate-lines tool.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide"
+id="text-sorter-practical-guide"
+aria-labelledby="text-sorter-guide-heading">
+
+<h2 id="text-sorter-guide-heading">
+Text Line Sorter: Practical Guide
+</h2>
+
+<p>
+Organize lists by sorting complete text
+lines in ascending or descending order.
+This free browser-based tool also lets
+you remove empty lines without sorting
+the remaining text.
+</p>
+
+<h2>How to Sort Text Lines</h2>
+
+<ol>
+<li>Paste your text into the input box.</li>
+<li>Put each item on a separate line.</li>
+<li>Choose Sort A-Z or Sort Z-A.</li>
+<li>Review the sorted result.</li>
+<li>Use Copy Result to copy the output.</li>
+</ol>
+
+<p>
+Choose Remove Empty Lines instead
+when you only want to remove blank
+or whitespace-only lines.
+Use Clear to reset the tool.
+</p>
+
+<h2>Example: Sort Lines A-Z</h2>
+
+<h3>Original Text</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;box-sizing:border-box"><code>zebra
+apple
+banana
+apple</code></pre>
+
+<h3>Sorted Result</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;box-sizing:border-box"><code>apple
+apple
+banana
+zebra</code></pre>
+
+<p>
+Sorting places the lowercase words
+in alphabetical order. Both copies
+of apple remain because this is
+a sorting tool, not a duplicate
+removal tool.
+</p>
+
+<h2>Ascending and Descending Sorting</h2>
+
+<h3>Sort A-Z</h3>
+
+<p>
+Sort A-Z places text lines in ascending
+order using the browser's locale-aware
+string comparison.
+</p>
+
+<h3>Sort Z-A</h3>
+
+<p>
+Sort Z-A uses descending order.
+For example, zebra, banana and apple
+appear in that order when sorting
+those three lowercase words Z-A.
+</p>
+
+<h2>How Sorting Handles Numbers</h2>
+
+<p>
+This tool uses text comparison,
+not numeric comparison.
+</p>
+
+<p>
+For example, sorting the lines
+1, 2 and 10 in ascending text order
+produces 1, 10 and 2.
+</p>
+
+<p>
+If you need mathematical numeric
+sorting, use a dedicated numeric
+sorting tool instead.
+</p>
+
+<h2>Case, Accents and Browser Language</h2>
+
+<p>
+The tool does not convert letters
+to uppercase or lowercase before
+sorting.
+</p>
+
+<p>
+It uses JavaScript localeCompare
+to compare text lines. The relative
+position of uppercase letters,
+lowercase letters and accented
+characters can vary by browser
+and language settings.
+</p>
+
+<p>
+Consequently, results involving
+different languages or accents
+may not match a simple
+character-code sort.
+</p>
+
+<h2>Spaces and Duplicate Lines</h2>
+
+<p>
+Sorting keeps the original contents
+of each line, including leading
+spaces and trailing spaces.
+</p>
+
+<p>
+Spaces and tabs can affect the
+sorting order. The tool does not
+trim or normalize nonempty lines
+when sorting.
+</p>
+
+<p>
+Duplicate lines remain in the
+sorted result. To remove repeated
+lines, use the separate
+Remove Duplicate Lines tool.
+</p>
+
+<h2>Remove Empty Lines</h2>
+
+<p>
+The Remove Empty Lines action removes
+both completely blank lines and lines
+containing only spaces or tabs.
+</p>
+
+<p>
+Nonempty lines retain their original
+content and order.
+</p>
+
+<p>
+For example, a list containing apple,
+a blank line and banana becomes
+apple followed by banana.
+</p>
+
+<p>
+This operation does not alphabetically
+sort the remaining lines and does
+not remove duplicates.
+</p>
+
+<h2>Line Endings and Line Counts</h2>
+
+<p>
+The sorter recognizes LF, CRLF and CR
+line separators, which may appear
+in text copied from different
+operating systems.
+</p>
+
+<p>
+Generated results use LF line endings.
+The original text in the input box
+is not rewritten by the sorting
+operation.
+</p>
+
+<p>
+The live line counter shows zero
+for an empty input. A final newline
+counts as an additional empty line.
+</p>
+
+<p>
+Changing the source text clears
+the previous result to prevent
+accidentally copying outdated data.
+Run your chosen operation again
+after making an edit.
+</p>
+
+<h2>Important Limitations</h2>
+
+<p>
+This tool sorts complete lines
+rather than individual words,
+columns or structured data fields.
+</p>
+
+<p>
+Sorting is lexicographic and
+locale-aware, not numeric.
+It does not remove duplicate
+lines automatically.
+</p>
+
+<p>
+Since output uses LF line endings,
+the generated text may have different
+line separators from the original.
+</p>
+
+<p>
+Review the result before using it
+in workflows where exact line
+ordering or whitespace matters.
+</p>
+
+<h2>Privacy and Local Processing</h2>
+
+<p>
+Sorting and empty-line removal
+run locally in your browser using
+JavaScript. These operations do not
+send your pasted text to an external
+sorting API.
+</p>
+
+<p>
+Copy Result attempts to place the
+generated text on your device's
+clipboard. Clipboard access
+depends on browser permissions.
+</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Can I sort text from A-Z or Z-A?</h3>
+
+<p>
+Yes. The tool offers ascending
+and descending text-line sorting.
+</p>
+
+<h3>Does the sorter handle numbers?</h3>
+
+<p>
+Yes, as text. It does not use
+numeric value ordering, so
+10 may appear before 2.
+</p>
+
+<h3>Are duplicate lines removed?</h3>
+
+<p>
+No. Sorting retains repeated lines.
+Use Remove Duplicate Lines if
+you want to eliminate repeats.
+</p>
+
+<h3>Does Remove Empty Lines also sort?</h3>
+
+<p>
+No. It removes blank and
+whitespace-only lines while
+preserving the order of
+the remaining lines.
+</p>
+
+<h3>Does sorting change uppercase letters?</h3>
+
+<p>
+No. Original capitalization
+is preserved. Case and accent
+ordering depend on locale-aware
+string comparison.
+</p>
+
+<h3>Why did the previous result disappear?</h3>
+
+<p>
+Editing the input clears the
+previous result so that you
+do not copy outdated text.
+</p>
+
+<h3>Does this tool upload my text?</h3>
+
+<p>
+The sorting operations run
+in your browser without
+calling an external text-sorting API.
+</p>
+
+</section>
 
 
 
@@ -214,7 +513,7 @@ Lines: 0
   </div>
 </section>
 
-<script src="../assets/js/tools/text-sorter.js?v=repair-4"></script>
+<script src="../assets/js/tools/text-sorter.js?v=sortfix-1"></script>
 
 <!-- FTO-EDITORIAL-REPAIR-V1 -->
 <aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>
