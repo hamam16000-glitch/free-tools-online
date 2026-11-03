@@ -401,10 +401,19 @@ color:#666;
 .fto-practice p{line-height:1.75;margin:10px 0}.fto-practice code{overflow-wrap:anywhere}
 @media(max-width:620px){.fto-learning-hub{margin:20px 12px;padding:18px}.fto-practice{margin:16px 12px;padding:18px}}
 </style>
+<link rel="stylesheet" href="css/fto-preview-home.css">
 </head>
 
 
-<body>
+<body class="fto-v2">
+<div class="fto-v2-topbar">
+ <div class="fto-v2-topbar-inner">
+  <a class="fto-v2-brand" href="index.html" aria-label="Free Tools Online home"><span aria-hidden="true">⚡</span> Free Tools Online</a>
+  <nav class="fto-v2-toplinks" aria-label="Site shortcuts"><a href="#pdf-tools">PDF</a><a href="#image-tools">Images</a><a href="#text-tools">Text</a><a href="about.html">About</a></nav>
+  <button type="button" id="ftoV2Theme" class="fto-v2-theme" aria-label="Turn on dark theme" aria-pressed="false">☾</button>
+ </div>
+</div>
+
 
 
 <header>
@@ -429,6 +438,7 @@ placeholder="🔍 Search 48+ free tools..."
 No Signup • Fast • Secure
 </div>
 
+<div class="fto-v2-popular" aria-label="Popular tools"><strong>Popular tools</strong><a href="tools/merge-pdf.html">Merge PDF<span aria-hidden="true"> ↗</span></a><a href="tools/image-compressor.html">Image Compressor<span aria-hidden="true"> ↗</span></a><a href="tools/images-to-pdf.html">Images to PDF<span aria-hidden="true"> ↗</span></a><a href="tools/qr-generator.html">QR Generator<span aria-hidden="true"> ↗</span></a><a href="tools/json-formatter.html">JSON Formatter<span aria-hidden="true"> ↗</span></a></div>
 </header>
 
 <nav class="category-nav" aria-label="Tool categories" data-indexing-links="v1">
@@ -902,6 +912,7 @@ No tools found.
 
 
 <script src="assets/js/home.js?v=repair-4"></script>
+<script src="assets/js/fto-preview-home.js"></script>
 </body>
 
 </html>

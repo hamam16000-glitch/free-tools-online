@@ -6,7 +6,13 @@
 <meta property="og:type" content="article"><meta property="og:title" content="Text and Data Tools: Counts, Encodings and Safe Exports">
 <meta property="og:description" content="Practical examples for counting words, converting Unicode text, handling CSV safely, and avoiding encoding mistakes."><meta property="og:url" content="https://hamam16000-glitch.github.io/free-tools-online/guides/text-and-data.html">
 <style>body{margin:0;font:17px/1.8 system-ui,-apple-system,Segoe UI,sans-serif;color:#172033;background:#f5f8fc}a{color:#1d4ed8}header,footer{background:white;padding:20px 5%;border-bottom:1px solid #e2e8f0}header a,footer a{margin-right:18px}main{max-width:890px;margin:32px auto 55px;background:#fff;padding:28px 34px;border-radius:15px;box-shadow:0 5px 20px #091b2a10}h1{font-size:clamp(28px,4vw,40px);line-height:1.2}h2{margin-top:35px;font-size:25px;line-height:1.35}h3{margin-top:23px;line-height:1.35}p,li{line-height:1.85}code{font-size:.88em;background:#f1f5f9;padding:2px 4px;overflow-wrap:anywhere}.intro{font-size:19px;color:#475569}.back{font-weight:bold}@media(max-width:600px){main{margin:0;padding:22px 18px;border-radius:0}header,footer{padding:15px 18px}}</style>
-</head><body><header><nav aria-label="Breadcrumb"><a href="../">Home</a> / <a href="index.html">Practical Guides</a> / Text &amp; Data</nav></header>
+<link rel="stylesheet" href="../css/fto-preview-inner.css">
+</head><body class="fto-v2-secondary">
+<div class="fto-v2-sitebar" role="banner"><div class="fto-v2-sitebar-inner">
+<a class="fto-v2-brand" href="../index.html"><span class="fto-v2-bolt" aria-hidden="true">⚡</span><span>Free Tools Online</span></a>
+<nav class="fto-v2-nav" aria-label="Main navigation"><a href="../index.html#pdf-tools">PDF Tools</a><a href="../index.html#image-tools">Image Tools</a><a href="../index.html#text-tools">Text Tools</a><a href="../about.html">About</a></nav>
+<button type="button" id="ftoV2Theme" class="fto-v2-theme" aria-label="Use dark theme" aria-pressed="false">☾</button>
+</div></div><header><nav aria-label="Breadcrumb"><a href="../">Home</a> / <a href="index.html">Practical Guides</a> / Text &amp; Data</nav></header>
 <main><article><h1>Text and Data Tools: Counts, Encodings and Safe Exports</h1><p class="intro">Practical examples for counting words, converting Unicode text, handling CSV safely, and avoiding encoding mistakes.</p>
 <h2>Word counting depends on the definition</h2>
 <p>A “word” may mean a sequence separated by whitespace, a linguistic token, or a character group recognized by a language-specific parser. The <a href="../tools/word-counter.html">Word Counter</a> uses whitespace separation, which works predictably for many space-delimited texts but can undercount scripts written without spaces.</p>
@@ -26,4 +32,5 @@
 <h2>Frequently asked questions</h2><h3>Why is my word count different in Word or Google Docs?</h3><p>Different software can split contractions, punctuation, emoji and non-space-delimited scripts differently.</p>
 <h3>Is Base64 suitable for secrets?</h3><p>No. It is a reversible representation. Use proper encryption and secure transmission for sensitive information.</p>
 <h3>Why are all Excel cells text?</h3><p>The converter favors preserving literal content, including leading zeros and values that might otherwise execute as formulas.</p></article><hr><p><a class="back" href="index.html">← More practical guides</a></p></main>
-<footer><a href="../">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../contact.html">Contact</a></footer></body></html>
+<footer><a href="../">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../contact.html">Contact</a></footer><script src="../assets/js/fto-preview-inner.js"></script>
+</body></html>
