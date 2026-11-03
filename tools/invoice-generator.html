@@ -547,6 +547,7 @@ button{
 @media(max-width:620px){.fto-learning-hub{margin:20px 12px;padding:18px}.fto-practice{margin:16px 12px;padding:18px}}
 </style>
 <link rel="stylesheet" href="../css/fto-preview-inner.css">
+<link rel="stylesheet" href="../css/invoice-english-locale.css">
 </head>
 
 <body class="fto-v2-secondary">
@@ -630,12 +631,12 @@ button{
 <div class="two">
 <div>
 <label for="invoiceDate">Invoice Date</label>
-<input id="invoiceDate" type="date" onchange="updatePreview()">
+<input id="invoiceDate" type="text" readonly inputmode="none" lang="en-US" dir="ltr" placeholder="YYYY-MM-DD" onchange="updatePreview()">
 </div>
 
 <div>
 <label for="dueDate">Due Date</label>
-<input id="dueDate" type="date" onchange="updatePreview()">
+<input id="dueDate" type="text" readonly inputmode="none" lang="en-US" dir="ltr" placeholder="YYYY-MM-DD" onchange="updatePreview()">
 </div>
 </div>
 </div>
@@ -654,7 +655,7 @@ button{
 <div class="two">
 <div>
 <label for="tax">Tax (%)</label>
-<input id="tax" type="number" min="0" step="0.01" value="0" oninput="updatePreview()">
+<input id="tax" type="text" inputmode="decimal" min="0" step="0.01" value="0" oninput="updatePreview()">
 </div>
 
 <div>
@@ -678,7 +679,7 @@ Fixed Amount ($)
 <div>
 <label for="discount">Discount Value</label>
 
-<input id="discount" type="number" min="0" step="0.01" value="0" oninput="updatePreview()">
+<input id="discount" type="text" inputmode="decimal" min="0" step="0.01" value="0" oninput="updatePreview()">
 
 </div>
 </div>
@@ -801,6 +802,7 @@ Fixed Amount ($)
 </section>
 
 <script src="../assets/js/tools/invoice-generator.js?v=repair-4"></script>
+<script src="../assets/js/tools/invoice-english-locale.js"></script>
 
 <!-- FTO-EDITORIAL-REPAIR-V1 -->
 <aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>

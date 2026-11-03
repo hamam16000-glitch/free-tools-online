@@ -1,0 +1,21 @@
+/* Invoice-only locale-independent English date picker and ASCII numeric controls. */
+.fto-en-date-control{position:relative;min-width:0}
+.fto-en-date-control>input{padding-right:52px;cursor:pointer;direction:ltr;text-align:left;font-variant-numeric:tabular-nums}
+.fto-en-date-toggle{position:absolute;right:4px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:44px;height:44px;border:0;background:transparent;color:#334155;cursor:pointer}
+.fto-en-calendar[hidden]{display:none!important}
+.fto-en-calendar{position:absolute;z-index:9999;left:0;top:calc(100% + 6px);width:min(310px,calc(100vw - 42px));padding:14px;border:1px solid #cbd5e1;border-radius:14px;box-shadow:0 15px 35px rgba(15,23,42,.2);background:#fff;color:#16243b;font-family:Arial,sans-serif;direction:ltr;text-align:center}
+.fto-en-cal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.fto-en-cal-head strong{font-size:15px}
+.fto-en-cal-head button{font-size:28px;line-height:1;min-width:40px;min-height:38px;background:#eef2ff;color:#1d4ed8;padding:4px;border-radius:8px}
+.fto-en-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.fto-en-cal-weekday{font-size:11px;font-weight:700;color:#64748b;padding:8px 0}
+.fto-en-cal-day{min-width:0;min-height:38px;border:0;border-radius:7px;padding:4px 0;font-size:13px;color:#111827;background:#f8fafc;cursor:pointer}
+.fto-en-cal-day:hover,.fto-en-cal-day:focus-visible{background:#dbeafe;outline:2px solid #2563eb;outline-offset:-2px}
+.fto-en-cal-day.is-selected{background:#2563eb;color:white}
+.fto-en-cal-footer{display:flex;gap:8px;justify-content:space-between;margin-top:12px}
+.fto-en-cal-footer button{min-height:40px;padding:8px 16px;background:#eff6ff;color:#1d4ed8;border:1px solid #c7d2fe;border-radius:8px;font-size:13px}
+#itemsList .item-qty,#itemsList .item-rate,#tax,#discount{direction:ltr;text-align:left;font-variant-numeric:tabular-nums}
+body[data-fto-theme="dark"] .fto-en-calendar{background:#182235;color:#f8fafc;border-color:#475569}
+body[data-fto-theme="dark"] .fto-en-cal-day{background:#27344b;color:#f8fafc}
+body[data-fto-theme="dark"] .fto-en-cal-day.is-selected{background:#2563eb;color:white}
+body[data-fto-theme="dark"] .fto-en-date-toggle{color:#e2e8f0}
