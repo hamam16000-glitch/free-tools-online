@@ -5,7 +5,7 @@
 
 <title>XML Formatter and Validator | Free Tools Online</title>
 
-<meta name="description" content="Validate XML syntax and indent element-only content while preserving mixed text and explicit whitespace rules.">
+<meta name="description" content="Validate XML syntax and format simple element-only XML in your browser. See examples, learn why CDATA and mixed content are protected, and copy results.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -105,7 +105,7 @@ Beautify and validate XML code online.
 
 <div class="tool-box">
 
-<textarea id="xmlInput" placeholder="Paste XML code here..."></textarea>
+<textarea id="xmlInput" placeholder="Paste XML code here..." oninput="xmlInputChanged()"></textarea>
 
 <div class="tool-actions">
 
@@ -127,7 +127,290 @@ Beautify and validate XML code online.
 
 
 
-<section class="tool-guide"><h2>How XML Formatter and Validator works</h2><p>Validate XML syntax and indent element-only content while preserving mixed text and explicit whitespace rules.</p><h3>Steps</h3><p>Paste XML, format it, and read the validation message before using the output.</p><h3>Example to check</h3><p>A paragraph containing text around a nested bold element is left unchanged so spaces between words are preserved.</p><h3>Limits and review</h3><p>This is syntax validation, not XSD schema validation. Content marked xml:space=&#x27;preserve&#x27; stays unchanged. Invalid XML is reported rather than silently repaired; external resources are not fetched by this formatter.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide"
+id="xml-practical-guide"
+aria-labelledby="xml-guide-heading">
+
+<h2 id="xml-guide-heading">
+XML Formatter and Validator: Practical Guide
+</h2>
+
+<p>
+XML is a markup language used to organize
+structured data. XML documents contain
+elements, attributes and text that
+applications can read and process.
+</p>
+
+<p>
+This tool checks whether XML is
+well-formed and offers conservative
+formatting for simple element-only
+documents.
+</p>
+
+<h2>How to Use the XML Tool</h2>
+
+<ol>
+<li>Paste your XML into the editor.</li>
+<li>Select Validate XML to check its syntax.</li>
+<li>Select Format XML to attempt indentation.</li>
+<li>Read the status message before using the result.</li>
+<li>Use Copy to copy the current XML text.</li>
+</ol>
+
+<p>
+The Clear button removes the current
+input. Editing the XML also clears
+an earlier validation message.
+</p>
+
+<h2>XML Formatting Example</h2>
+
+<h3>Before Formatting</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:auto"><code>&lt;root&gt;&lt;one/&gt;&lt;two/&gt;&lt;/root&gt;</code></pre>
+
+<h3>After Formatting</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:auto"><code>&lt;root&gt;
+  &lt;one/&gt;
+  &lt;two/&gt;
+&lt;/root&gt;</code></pre>
+
+<p>
+For a simple document containing
+adjacent element tags, the formatter
+can insert line breaks and two-space
+indentation to improve readability.
+</p>
+
+<p>
+The formatted output should still be
+reviewed before use. Adding indentation
+also introduces whitespace between
+elements, which some applications
+may interpret as text.
+</p>
+
+<h2>Why Some Valid XML Is Left Unchanged</h2>
+
+<p>
+Readable formatting must not come
+at the cost of silently changing
+important data.
+</p>
+
+<p>
+This tool deliberately skips formatting
+when it detects existing text nodes,
+including whitespace-only text nodes.
+It also skips documents containing
+special XML nodes.
+</p>
+
+<h3>Mixed Text Content</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:auto"><code>&lt;p&gt;Hello &lt;b&gt;world&lt;/b&gt;!&lt;/p&gt;</code></pre>
+
+<p>
+The spaces around the nested bold
+element are meaningful. The formatter
+therefore leaves this input unchanged.
+</p>
+
+<h3>CDATA Sections</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:auto"><code>&lt;root&gt;&lt;![CDATA[A &gt; &lt; B]]&gt;&lt;/root&gt;</code></pre>
+
+<p>
+A CDATA section can contain characters
+that would otherwise need escaping.
+The formatter does not rewrite
+documents containing CDATA.
+</p>
+
+<h3>Comments and Processing Instructions</h3>
+
+<p>
+XML comments and processing instructions
+may contain characters and spacing
+that should remain untouched.
+Documents containing these nodes
+are left unchanged by the formatter.
+</p>
+
+<h3>Existing Whitespace and Declarations</h3>
+
+<p>
+The formatter avoids rewriting
+documents with existing whitespace
+text nodes. It also skips formatting
+when an XML declaration, DOCTYPE or
+an xml:space attribute is present.
+</p>
+
+<p>
+This is an intentionally conservative
+approach, not an advanced automatic
+pretty-printing system for every
+possible XML document.
+</p>
+
+<h2>XML Validation vs XSD Validation</h2>
+
+<p>
+XML syntax validation checks whether
+the document is well-formed.
+For example, element tags must be
+properly nested and attributes
+must follow XML syntax rules.
+</p>
+
+<p>
+XSD schema validation is different.
+It checks whether a document follows
+an expected structure, including
+specified elements, attributes
+and data types.
+</p>
+
+<p>
+This tool checks XML well-formedness.
+It does not validate documents
+against an XSD schema.
+</p>
+
+<h2>XML Namespaces and Attributes</h2>
+
+<p>
+XML namespaces help distinguish
+elements with similar names.
+The browser's XML parser is used
+to check the input, including
+namespace-related syntax.
+</p>
+
+<p>
+For simple documents that can be
+formatted, the formatter retains
+the original element names,
+namespace prefixes and
+attribute text.
+</p>
+
+<p>
+It does not rename namespace prefixes
+or reorder attributes. Formatting
+can add whitespace text nodes
+between otherwise adjacent elements.
+</p>
+
+<h2>Important Limitations</h2>
+
+<p>
+This is a lightweight XML
+formatting and syntax-checking tool.
+It does not repair invalid XML,
+perform XSD validation or guarantee
+that added whitespace is harmless
+for every XML-consuming application.
+</p>
+
+<p>
+Some valid documents are intentionally
+left unchanged to protect their
+existing content.
+</p>
+
+<p>
+Always retain the original XML
+and test formatted output in the
+application that will consume it.
+</p>
+
+<h2>Privacy and Local Processing</h2>
+
+<p>
+XML validation and formatting use
+JavaScript and the browser's XML
+parser. The tool does not submit
+your XML text to an external
+formatting API.
+</p>
+
+<p>
+Selecting Copy sends the current
+XML text to your device's clipboard.
+Clipboard permissions and storage
+depend on the browser and
+operating system.
+</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Is this XML formatter free?</h3>
+
+<p>
+Yes. The XML formatting and syntax
+validation functions are free
+to use.
+</p>
+
+<h3>Does this tool fix broken XML?</h3>
+
+<p>
+No. Invalid XML is reported,
+but the tool does not automatically
+repair malformed documents.
+</p>
+
+<h3>Why was my valid XML not formatted?</h3>
+
+<p>
+The formatter may leave the input
+unchanged to protect text,
+whitespace, comments, CDATA
+or other sensitive XML content.
+</p>
+
+<h3>Does it support XML namespaces?</h3>
+
+<p>
+The browser's XML parser checks
+namespace-related syntax. The
+formatter does not modify
+namespace prefixes.
+</p>
+
+<h3>Can I validate an XML file against XSD?</h3>
+
+<p>
+No. This tool checks XML syntax
+but does not perform XSD schema
+validation.
+</p>
+
+<h3>Will formatting preserve every XML data model?</h3>
+
+<p>
+Not necessarily. Indentation adds
+whitespace between elements.
+Avoid formatting when extra
+whitespace could affect the
+application reading the document.
+</p>
+
+<h3>Does the tool upload my XML?</h3>
+
+<p>
+The formatting and validation
+functions run in your browser
+without submitting the text
+to an external XML processing API.
+</p>
+
+</section>
 
 
 
