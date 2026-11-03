@@ -5,7 +5,7 @@
 
 <title>CSS Formatter and Minifier | Free Tools Online</title>
 
-<meta name="description" content="Reformat CSS spacing while protecting quoted strings, comments, escapes and parenthesized expressions.">
+<meta name="description" content="Format and minify CSS in your browser. Compare before-and-after examples, learn how comments and calc() values are handled, and review important limitations.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -188,12 +188,258 @@ Clear
 
 
 
-<section class="tool-guide"><h2>How CSS Formatter and Minifier works</h2><p>Reformat CSS spacing while protecting quoted strings, comments, escapes and parenthesized expressions.</p><h3>Steps</h3><p>Paste CSS, choose format or minify, and compare the result in your stylesheet before publishing.</p><h3>Example to check</h3><p>The value calc(100% - 2px) and a quoted content string retain their internal spaces. A descendant selector such as &#x27;a :hover&#x27; retains its meaning.</p><h3>Limits and review</h3><p>This lightweight tool does not validate CSS or replace a standards-aware production optimizer. It preserves comments and does not resolve imports, variables or browser compatibility.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide"><h2>How CSS Formatter and Minifier works</h2><p>Reformat CSS spacing while protecting quoted strings, comments, escapes and parenthesized expressions.</p><h3>Steps</h3><p>Paste CSS, choose format or minify, and compare the result in your stylesheet before publishing.</p><h3>Example to check</h3><p>The value calc(100% - 2px) and a quoted content string retain their internal spaces. A descendant selector such as &#x27;a :hover&#x27; retains its meaning.</p><h3>Limits and review</h3><p>This lightweight tool does not validate CSS or replace a standards-aware production optimizer. It preserves comments and does not resolve imports, variables or browser compatibility.</p><h3>Local CSS Processing</h3><p>CSS formatting and minification run locally in your browser. The tool does not submit your stylesheet to an external CSS processing API. Copying places the result on your device's clipboard.</p></section>
 
 
 </div>
 
 
+
+<section class="tool-guide"
+id="css-practical-guide"
+aria-labelledby="css-practical-heading">
+
+<h2 id="css-practical-heading">
+CSS Formatter and Minifier: Practical Guide
+</h2>
+
+<p>
+CSS controls the appearance of web pages,
+including colors, spacing, typography and
+responsive layouts. Readable CSS can make
+stylesheets easier to inspect and maintain.
+This tool offers two operations: formatting
+and minification.
+</p>
+
+<h2>Example 1: Format CSS</h2>
+
+<p>
+Formatting adds line breaks and spacing
+to make CSS declarations easier to read.
+</p>
+
+<h3>Before Formatting</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere"><code>.card{color:red;padding:10px}</code></pre>
+
+<h3>After Formatting</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere"><code>.card {
+    color:red;
+    padding:10px
+}</code></pre>
+
+<p>
+The formatter separates declarations onto
+different lines. It does not automatically
+apply every formatting convention used by
+professional CSS code formatters.
+</p>
+
+<h2>Example 2: Minify CSS</h2>
+
+<p>
+Minification removes selected unnecessary
+spaces and line breaks to produce a more
+compact stylesheet.
+</p>
+
+<h3>Before Minification</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere"><code>.card {
+    color: red;
+    padding: 10px;
+}</code></pre>
+
+<h3>After Minification</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere"><code>.card{color: red;padding: 10px;}</code></pre>
+
+<p>
+This lightweight minifier reduces some
+whitespace. It does not rename selectors,
+remove unused rules or perform advanced
+production optimizations.
+</p>
+
+<h2>Format CSS vs Minify CSS</h2>
+
+<h3>When to Use Format CSS</h3>
+
+<p>
+Use formatting when reading unfamiliar
+stylesheets, debugging layout problems,
+learning CSS or preparing code for
+review by another developer.
+</p>
+
+<h3>When to Use Minify CSS</h3>
+
+<p>
+Use minification when you want a more
+compact representation of your styles.
+For production projects, consider a
+standards-aware CSS build tool that
+provides comprehensive optimization
+and validation.
+</p>
+
+<h2>Handling CSS Strings and Functions</h2>
+
+<p>
+CSS may contain values where spaces
+and punctuation are meaningful.
+The tool uses a protection helper
+to shield common quoted strings,
+comments, escaped characters and
+parenthesized expressions during
+text transformations.
+</p>
+
+<h3>Quoted Content</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere"><code>.badge::after{content:"Hello; world"}</code></pre>
+
+<p>
+The semicolon inside the quoted string
+is part of its content and should not
+be treated as a declaration separator.
+</p>
+
+<h3>Calculations</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere"><code>.box{width:calc(100% - 2px)}</code></pre>
+
+<p>
+The helper protects the parenthesized
+expression so that its internal
+spacing is not rewritten by the
+formatter or minifier.
+</p>
+
+<h3>CSS Comments</h3>
+
+<p>
+Comments are preserved by this tool,
+including during minification.
+The minifier is not designed to
+remove documentation comments.
+</p>
+
+<h2>Important Limitations</h2>
+
+<p>
+This tool uses lightweight text
+transformations rather than a
+complete CSS syntax parser.
+It does not validate CSS properties,
+check browser compatibility or
+automatically repair invalid rules.
+</p>
+
+<p>
+Complex nesting, unusual syntax and
+advanced CSS features may require
+manual review. Always test the
+processed stylesheet before using
+it on a production website.
+</p>
+
+<p>
+Keep a copy of your original CSS
+so you can compare the output or
+restore an earlier version.
+</p>
+
+<h2>Privacy and Clipboard Handling</h2>
+
+<p>
+CSS processing takes place locally
+inside your browser. Formatting
+and minification do not require
+sending the entered code to an
+external CSS conversion service.
+</p>
+
+<p>
+When you select Copy, the resulting
+CSS is placed on your device's
+clipboard. Clipboard access
+depends on your browser and
+operating system.
+</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Is this CSS formatter free?</h3>
+
+<p>
+Yes. You can format, minify and
+copy CSS without paying for
+the tool.
+</p>
+
+<h3>Does formatting fix CSS errors?</h3>
+
+<p>
+No. Formatting changes the layout
+of the text. It does not validate
+CSS syntax or correct invalid
+property values.
+</p>
+
+<h3>Does Minify CSS remove comments?</h3>
+
+<p>
+No. This tool preserves CSS comments.
+It focuses on selected whitespace
+transformations.
+</p>
+
+<h3>Does the tool preserve calc() expressions?</h3>
+
+<p>
+The protection helper shields
+parenthesized expressions, including
+common calc() expressions, from
+the spacing transformations.
+</p>
+
+<p>
+Review and test the result when
+working with complicated CSS.
+</p>
+
+<h3>Can I process media queries?</h3>
+
+<p>
+Yes, you can enter CSS containing
+media queries. However, this tool
+does not implement a full
+syntax-aware indentation system
+for nested CSS.
+</p>
+
+<h3>Will minification always reduce file size?</h3>
+
+<p>
+Not necessarily. The result depends
+on the original CSS. This tool does
+not implement every possible
+size optimization.
+</p>
+
+<h3>Is my CSS uploaded to a server?</h3>
+
+<p>
+The formatting and minification
+functions process the text in
+your browser without submitting
+it to an external CSS processing API.
+</p>
+
+</section>
 
 <section class="tool-connections" aria-labelledby="related-tools-heading">
   <h2 id="related-tools-heading">Related Developer Tools</h2>

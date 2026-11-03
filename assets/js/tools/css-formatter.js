@@ -9,19 +9,38 @@ const input=document.getElementById('cssInput').value;document.getElementById('c
 
 function minifyCSS(){
 const input=document.getElementById('cssInput').value;document.getElementById('cssInput').value=window.FTOSafety.protectedCSS(input,text=>text.replace(/\/\*[\s\S]*?\*\//g,'').replace(/\s+/g,' ').replace(/\s*([{};,])\s*/g,'$1').trim());document.getElementById('status').textContent='CSS minified; quoted strings and URLs are preserved.';
-}function copyCSS(){
-
-let output=document.getElementById("cssInput");
-
-output.select();
-
-document.execCommand("copy");
-
-alert("CSS copied successfully");
-
 }
 
+async function copyCSS() {
+    const input = document.getElementById('cssInput');
+    const status = document.getElementById('status');
+    const text = input.value;
 
+    if (!text.trim()) {
+        status.textContent = 'Enter CSS before copying.';
+        return;
+    }
+
+    try {
+        const safety = window.FTOSafety;
+
+        if (!safety ||
+            typeof safety.copyText !== 'function') {
+            throw new Error(
+                'Clipboard service unavailable.'
+            );
+        }
+
+        await safety.copyText(text);
+
+        status.textContent = 'CSS copied successfully.';
+
+    } catch (error) {
+        status.textContent =
+            'Copy failed: ' +
+            (error.message || 'Clipboard unavailable.');
+    }
+}
 
 function clearCSS(){
 
