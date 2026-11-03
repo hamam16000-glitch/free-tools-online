@@ -1,63 +1,171 @@
 
-function removeDuplicates(){
-let text=document.getElementById("text").value;
-let lines=text===""?[]:text.split("\n");
-let unique=[...new Set(lines)];
-document.getElementById("result").value=unique.join("\n");
-document.getElementById("info").innerHTML =
-"Original Lines: " + lines.length +
-"<br>Unique Lines: " + unique.length +
-"<br>Removed Lines: " + (lines.length - unique.length);
+'use strict';
+
+// Normalize line separators, not line contents.
+function duplicateLines(text) {
+    return text === ''
+        ? []
+        : text.split(/\r\n|\n|\r/);
 }
 
-function countLines(){
-let text=document.getElementById("text").value;
-let lines=text === "" ? 0 : text.split("\n").length;
-document.getElementById("info").innerHTML =
-"Original Lines: " + lines;
+function resetDuplicateFeedback() {
+    const box =
+        document.getElementById('copySuccess');
+
+    clearTimeout(window.duplicateCopyTimer);
+
+    if (box) {
+        box.style.display = 'none';
+        box.style.color = '';
+        box.style.backgroundColor = '';
+        box.textContent = '';
+    }
 }
 
-async function copyResult(){
+function invalidateDuplicateOutput() {
+    window.duplicateResultRevision =
+        (window.duplicateResultRevision || 0) + 1;
 
-    const result = document.getElementById("result");
+    document.getElementById('result').value = '';
 
-    if(!result.value.trim()){
+    resetDuplicateFeedback();
+}
+
+function removeDuplicates() {
+    const text =
+        document.getElementById('text').value;
+
+    const lines = duplicateLines(text);
+
+    const unique = [...new Set(lines)];
+
+    invalidateDuplicateOutput();
+
+    document.getElementById('result').value =
+        unique.join('\n');
+
+    document.getElementById('info').innerHTML =
+        'Original Lines: ' + lines.length +
+        '<br>Unique Lines: ' + unique.length +
+        '<br>Removed Lines: ' +
+        (lines.length - unique.length);
+}
+
+function countLines() {
+    const text =
+        document.getElementById('text').value;
+
+    const count = duplicateLines(text).length;
+
+    invalidateDuplicateOutput();
+
+    document.getElementById('info').textContent =
+        'Original Lines: ' + count;
+}
+
+function showDuplicateFeedback(message, failed) {
+    const box =
+        document.getElementById('copySuccess');
+
+    if (!box) return;
+
+    clearTimeout(window.duplicateCopyTimer);
+
+    box.textContent = message;
+    box.style.display = 'block';
+
+    box.style.color =
+        failed ? '#b91c1c' : '';
+
+    box.style.backgroundColor =
+        failed ? '#fef2f2' : '';
+
+    if (!failed) {
+        const revision =
+            window.duplicateResultRevision || 0;
+
+        window.duplicateCopyTimer = setTimeout(() => {
+            if (
+                revision ===
+                (window.duplicateResultRevision || 0)
+            ) {
+                box.style.display = 'none';
+            }
+        }, 3000);
+    }
+}
+
+async function copyResult() {
+    const result =
+        document.getElementById('result');
+
+    const text = result.value;
+
+    const revision =
+        window.duplicateResultRevision || 0;
+
+    if (text === '') {
+        showDuplicateFeedback(
+            'Remove duplicates to create a result before copying.',
+            true
+        );
         return;
     }
 
-    try{
-        if(navigator.clipboard && window.isSecureContext){
-            await navigator.clipboard.writeText(result.value);
-        }else{
-            result.focus();
-            result.select();
-
-            if(!document.execCommand("copy")){
-                throw new Error("Copy failed");
-            }
-
-            result.setSelectionRange(0,0);
+    try {
+        if (
+            !window.FTOSafety ||
+            typeof window.FTOSafety.copyText !==
+                'function'
+        ) {
+            throw new Error(
+                'Clipboard helper unavailable'
+            );
         }
 
-        const box = document.getElementById("copySuccess");
-        box.style.display = "block";
+        const copied =
+            await window.FTOSafety.copyText(text);
 
-        clearTimeout(window.duplicateCopyTimer);
+        if (copied === false) {
+            throw new Error(
+                'Copy was not confirmed'
+            );
+        }
 
-        window.duplicateCopyTimer = setTimeout(() => {
-            box.style.display = "none";
-        }, 3000);
+        if (
+            revision !==
+                (window.duplicateResultRevision || 0) ||
+            result.value !== text
+        ) {
+            return;
+        }
 
-    }catch(error){
-        console.error("Copy error:", error);
+        showDuplicateFeedback(
+            'Result copied successfully.',
+            false
+        );
+
+    } catch (error) {
+        if (
+            revision !==
+                (window.duplicateResultRevision || 0) ||
+            result.value !== text
+        ) {
+            return;
+        }
+
+        showDuplicateFeedback(
+            'Copy failed. Select and copy the result manually.',
+            true
+        );
     }
 }
 
-function clearText(){
-document.getElementById("text").value="";
-document.getElementById("result").value="";
-document.getElementById("info").innerHTML="Original Lines: 0";
+function clearText() {
+    document.getElementById('text').value = '';
 
-const box=document.getElementById("copySuccess");
-if(box) box.style.display="none";
+    invalidateDuplicateOutput();
+
+    document.getElementById('info').textContent =
+        'Original Lines: 0';
 }

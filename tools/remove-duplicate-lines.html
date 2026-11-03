@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Remove Duplicate Lines | Free Tools Online</title>
-<meta name="description" content="Keep the first occurrence of each exact text line and remove later identical lines.">
+<meta name="description" content="Remove duplicate lines from pasted text while preserving first-occurrence order and case-sensitive matching. Handle blank lines and copy clean results.">
 <meta name="keywords" content="remove duplicate lines, duplicate remover, unique lines tool, text cleaner">
 <link rel="stylesheet" href="../css/style.css">
 
@@ -180,7 +180,287 @@ Original Lines: 0
 </div>
 
 
-<section class="tool-guide"><h2>How Remove Duplicate Lines works</h2><p>Keep the first occurrence of each exact text line and remove later identical lines.</p><h3>Steps</h3><p>Paste one item per line, remove duplicates, compare counts and copy the result.</p><h3>Example to check</h3><p>The lines &#x27;a&#x27;, &#x27;a&#x27; and &#x27;A&#x27; become &#x27;a&#x27; and &#x27;A&#x27;; matching is case-sensitive.</p><h3>Limits and review</h3><p>Whitespace is significant and line order is preserved. A blank line can remain once. This does not normalize names, email addresses, punctuation or spelling before comparison.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide"
+id="duplicate-practical-guide"
+aria-labelledby="duplicate-guide-heading">
+
+<h2 id="duplicate-guide-heading">
+Remove Duplicate Lines: Practical Guide
+</h2>
+
+<p>
+Repeated lines can make lists difficult
+to review. This free online tool removes
+duplicate text lines while keeping the
+first occurrence of each unique line.
+</p>
+
+<p>
+The original order is preserved.
+The tool does not alphabetically sort
+your text or change the capitalization
+of individual lines.
+</p>
+
+<h2>How to Remove Duplicate Lines</h2>
+
+<ol>
+<li>Paste your list into the input box.</li>
+<li>Place each item on a separate line.</li>
+<li>Click Remove Duplicate Lines.</li>
+<li>Review the cleaned result and line counts.</li>
+<li>Click Copy Result to copy the output.</li>
+</ol>
+
+<p>
+Use Clear to remove the original text,
+cleaned result and previous counts.
+</p>
+
+<h2>Example: Before and After</h2>
+
+<h3>Original Text</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:auto;max-width:100%;box-sizing:border-box"><code>Apple
+Banana
+Apple
+apple</code></pre>
+
+<h3>Cleaned Result</h3>
+
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:auto;max-width:100%;box-sizing:border-box"><code>Apple
+Banana
+apple</code></pre>
+
+<p>
+The second occurrence of Apple is removed.
+The lowercase word apple remains because
+matching is case-sensitive.
+</p>
+
+<p>
+In this example, the original list has
+four lines, the result has three unique
+lines, and one duplicate line is removed.
+</p>
+
+<h2>How Duplicate Matching Works</h2>
+
+<h3>Case-Sensitive Comparison</h3>
+
+<p>
+The tool compares the text of each line
+exactly. Apple and apple are treated
+as different values.
+</p>
+
+<p>
+It does not automatically convert text
+to lowercase or uppercase before
+checking for duplicates.
+</p>
+
+<h3>Spaces and Tabs Matter</h3>
+
+<p>
+Leading spaces, trailing spaces and
+tab characters are significant.
+A line containing extra whitespace
+is different from an otherwise
+identical line without that whitespace.
+</p>
+
+<p>
+The tool does not trim spaces or
+normalize spelling, punctuation,
+email addresses or names.
+</p>
+
+<h3>Original Line Order</h3>
+
+<p>
+When a repeated line is found,
+the first occurrence is retained
+and later identical occurrences
+are removed.
+</p>
+
+<p>
+Remaining lines appear in their
+original order. No sorting is applied.
+</p>
+
+<h2>Blank Lines and Line Endings</h2>
+
+<p>
+Repeated empty lines are reduced
+to one empty line. A line containing
+spaces is not the same as an
+entirely empty line.
+</p>
+
+<p>
+An empty input contains zero lines.
+A final newline creates an additional
+empty line, which is included
+in the line count.
+</p>
+
+<p>
+The tool recognizes LF, CRLF and CR
+line separators when processing text.
+Cleaned output uses LF line endings.
+</p>
+
+<p>
+Your original input remains available
+in the input box until you edit
+or clear it.
+</p>
+
+<h2>Understanding the Line Counts</h2>
+
+<p>
+After removing duplicates, the tool
+displays the original line count,
+the number of unique lines and
+the number of removed lines.
+</p>
+
+<p>
+The removed count equals the
+original count minus the
+unique count.
+</p>
+
+<p>
+If you change the source text,
+the previous cleaned result is
+cleared automatically.
+Click Remove Duplicate Lines
+again to generate an updated result.
+</p>
+
+<h2>When This Tool Is Useful</h2>
+
+<p>
+You can use it to clean repeated
+keywords, product identifiers,
+simple text lists, tags and other
+line-based data.
+</p>
+
+<p>
+For structured data such as CSV,
+JSON or spreadsheets, use a
+dedicated tool when field boundaries
+and data relationships must
+be preserved.
+</p>
+
+<h2>Important Limitations</h2>
+
+<p>
+This tool performs exact
+line-by-line comparison after
+recognizing line separators.
+It does not identify similar
+words, spelling variations,
+extra spaces or equivalent
+Unicode representations.
+</p>
+
+<p>
+It does not sort the output.
+Because cleaned results use
+LF separators, line endings
+may differ from those in
+the original text.
+</p>
+
+<p>
+Review the output before using
+it in a system where whitespace
+or line endings have special meaning.
+</p>
+
+<h2>Privacy and Local Processing</h2>
+
+<p>
+Duplicate removal runs in your browser
+using JavaScript. The tool does not
+submit your pasted text to an
+external duplicate-removal API.
+</p>
+
+<p>
+Selecting Copy Result attempts to
+place the cleaned text on your
+device's clipboard. Clipboard
+access depends on your browser
+and device permissions.
+</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Does this tool keep the first occurrence?</h3>
+
+<p>
+Yes. The first appearance of each
+exact line is retained, and later
+identical lines are removed.
+</p>
+
+<h3>Is duplicate matching case-sensitive?</h3>
+
+<p>
+Yes. For example, Hello and hello
+are considered different lines.
+</p>
+
+<h3>Does it remove extra spaces?</h3>
+
+<p>
+No. Spaces and tabs are preserved.
+Lines that differ only in whitespace
+are not considered exact duplicates.
+</p>
+
+<h3>What happens to empty lines?</h3>
+
+<p>
+Repeated empty lines are reduced
+to one. Whitespace-only lines
+are compared according to
+their exact contents.
+</p>
+
+<h3>Does the tool change line endings?</h3>
+
+<p>
+Yes. It accepts common line
+separators and uses LF line
+endings in the cleaned result.
+</p>
+
+<h3>Will the original order change?</h3>
+
+<p>
+No. The tool keeps the original
+order of the first occurrence
+of each unique line.
+</p>
+
+<h3>Does the tool upload my text?</h3>
+
+<p>
+The duplicate-removal operation
+runs locally in your browser
+without calling an external
+text-processing API.
+</p>
+
+</section>
 
 
 
@@ -196,7 +476,7 @@ Original Lines: 0
   </div>
 </section>
 
-<script src="../assets/js/tools/remove-duplicate-lines.js?v=repair-4"></script>
+<script src="../assets/js/tools/remove-duplicate-lines.js?v=dupfix-1"></script>
 
 <!-- FTO-EDITORIAL-REPAIR-V1 -->
 <aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>
