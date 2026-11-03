@@ -127,6 +127,24 @@
 .fto-practice{max-width:900px;margin:22px auto;padding:24px;background:#f8fbff;border-left:4px solid #2563eb;border-radius:12px;box-sizing:border-box;line-height:1.75;color:#334155}
 .fto-practice h2{font-size:22px;margin:0 0 12px}.fto-practice h3{font-size:18px;margin:16px 0 8px}
 .fto-practice p{line-height:1.75;margin:10px 0}.fto-practice code{overflow-wrap:anywhere}
+.fto-practice a{
+display:inline;
+color:#1d4ed8;
+font-weight:700;
+text-decoration:underline;
+padding:0;
+margin:0;
+background:transparent;
+border:0;
+border-radius:0;
+box-shadow:none;
+}
+.fto-practice a:hover,
+.fto-practice a:focus-visible{
+color:#1e40af;
+text-decoration-thickness:2px;
+}
+
 @media(max-width:620px){.fto-learning-hub{margin:20px 12px;padding:18px}.fto-practice{margin:16px 12px;padding:18px}}
 </style>
 </head>
@@ -224,7 +242,7 @@ Copied successfully.
 
 
 
-<section class="tool-guide"><h2>How Case Converter works</h2><p>Convert text to uppercase, lowercase, title case or sentence case using browser Unicode casing.</p><h3>Steps</h3><p>Paste text, choose one conversion, and copy or clear the output.</p><h3>Example to check</h3><p>The sentence-case option changes &#x27;hello. WORLD&#x27; to &#x27;Hello. World&#x27;. Title case capitalizes letters at word boundaries.</p><h3>Limits and review</h3><p>Capitalization follows simple rules. Names, abbreviations and language-specific title conventions may need manual correction. Languages without letter case will look unchanged.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide"><h2>How Case Converter works</h2><p>Convert text to uppercase, lowercase, title case or sentence case using browser Unicode casing.</p><h3>Steps</h3><p>Paste text, choose one conversion, and copy or clear the output.</p><h3>Example to check</h3><p>The sentence-case option changes &#x27;hello. WORLD&#x27; to &#x27;Hello. World&#x27;. Title case capitalizes letters at word boundaries.</p><h3>Limits and review</h3><p>Capitalization follows simple rules. Names, abbreviations and language-specific title conventions may need manual correction. Languages without letter case will look unchanged.</p><h3>Where your data goes</h3><p>Text case conversion is performed locally in your browser using JavaScript. The conversion functions read the text field and display the result without sending the entered text to a conversion server. The page still loads its website files from the hosting provider.</p></section>
 
 
 
@@ -235,6 +253,121 @@ Copied successfully.
 
 
 </div>
+
+<!-- FTO-EDITORIAL-REPAIR-V1 -->
+
+<aside class="fto-practice" aria-label="Case conversion guide">
+
+<h2>How to Convert Text Case Correctly</h2>
+
+<p>
+Case Converter helps you change the capitalization of
+text without rewriting it manually. It supports uppercase,
+lowercase, title case and sentence case.
+</p>
+
+<h3>1. Uppercase Conversion</h3>
+
+<p>
+Uppercase changes letters to capital letters.
+For example, <code>Hello World</code> becomes
+<code>HELLO WORLD</code>.
+It can be useful for short labels and headings.
+</p>
+
+<h3>2. Lowercase Conversion</h3>
+
+<p>
+Lowercase converts capital letters into small letters.
+For example, <code>HELLO WORLD</code> becomes
+<code>hello world</code>.
+This is useful when standardizing text.
+</p>
+
+<h3>3. Title Case Conversion</h3>
+
+<p>
+Title case capitalizes the beginning of words according
+to the tool's character-boundary rules.
+For example, <code>hello world</code> becomes
+<code>Hello World</code>.
+</p>
+
+<p>
+The converter also handles common contractions.
+For example, <code>don't stop</code> becomes
+<code>Don't Stop</code>.
+</p>
+
+<p>
+This is a mechanical conversion, not a publishing
+style guide. Some editorial title styles keep short
+words such as "and" or "the" lowercase.
+Review important headings before publishing.
+</p>
+
+<h3>4. Sentence Case Conversion</h3>
+
+<p>
+Sentence case changes the text to lowercase and
+capitalizes the beginning of the text and text following
+sentence-ending punctuation.
+</p>
+
+<p>
+For example, <code>HELLO WORLD. HOW ARE YOU?</code>
+becomes <code>Hello world. How are you?</code>.
+</p>
+
+<p>
+Abbreviations such as Dr. and decimal numbers may
+require manual review because punctuation does not
+always indicate the end of a sentence.
+</p>
+
+<h3>5. How to Use the Tool</h3>
+
+<ol>
+<li>Enter or paste your text into the input field.</li>
+<li>Select the capitalization style you need.</li>
+<li>Review the converted text.</li>
+<li>Use Copy Result to copy the output.</li>
+<li>Use Clear when you want to start again.</li>
+</ol>
+
+<h3>6. Important Limitations</h3>
+
+<p>
+Capitalization is not the same as grammar correction.
+The converter does not rewrite sentences, translate
+languages or verify proper names.
+</p>
+
+<p>
+Languages without uppercase and lowercase forms
+may remain unchanged. Language-specific casing
+rules can also require manual correction.
+</p>
+
+<h3>Privacy and Text Processing</h3>
+
+<p>
+The case transformations are performed using
+JavaScript in your browser. The conversion functions
+do not need to send the entered text to a server.
+Review sensitive text before copying it to other apps.
+</p>
+
+<h3>Related Learning Resources</h3>
+
+<p>
+Explore our
+<a href="../guides/text-and-data.html">Text and Data Guide</a>
+for additional explanations about text processing,
+character counts and data formats.
+</p>
+
+</aside>
 
 <section class="tool-connections" aria-labelledby="related-tools-heading">
   <h2 id="related-tools-heading">Related Text Tools</h2>
@@ -248,8 +381,8 @@ Copied successfully.
 
 <script src="../assets/js/tools/case-converter.js?v=repair-4"></script>
 
-<!-- FTO-EDITORIAL-REPAIR-V1 -->
-<aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>
+
+
 <footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 

@@ -153,6 +153,60 @@ grid-column:auto;
 }
 
 
+
+#details{
+    white-space:pre-line;
+    line-height:1.85;
+    color:#334155;
+    overflow-wrap:anywhere;
+}
+.analysis-label{
+    text-align:center;
+    font-weight:700;
+    margin-bottom:18px;
+    color:#475569;
+}
+.analysis-disclaimer{
+    padding:12px;
+    background:#fff7ed;
+    color:#9a3412;
+    border-radius:10px;
+    line-height:1.7;
+    margin-top:18px;
+}
+#inputHelp{
+    color:#64748b;
+    font-size:13px;
+    line-height:1.6;
+}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+}
+.stats>div{
+    text-align:center;
+    padding:12px 5px;
+    background:#f8fafc;
+    border-radius:10px;
+}
+.success{
+    line-height:1.6;
+}
+.success-error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+@media(max-width:600px){
+    .stats{
+        grid-template-columns:1fr;
+    }
+}
+
 </style>
 
 
@@ -259,9 +313,7 @@ grid-column:auto;
 <h1>Writing Pattern Analyzer</h1>
 
 
-<p class="tool-description">
-Analyze text patterns, readability and writing characteristics.
-</p>
+<p class="tool-description">Analyze word counts, vocabulary diversity, repeated terms and sentence length using transparent text statistics. No AI-authorship verdict is produced.</p>
 
 
 <div class="detector-box">
@@ -272,36 +324,35 @@ Enter Text
 </label>
 
 
-<textarea id="inputText" placeholder="Paste your text here..."></textarea>
+<textarea id="inputText"
+    rows="12"
+    maxlength="50000"
+    spellcheck="true"
+    aria-label="Text to analyze"
+    aria-describedby="inputHelp"
+    placeholder="Paste your English or Arabic text here..."></textarea>
+<p id="inputHelp">Maximum 50,000 characters. Your text is analyzed locally in your browser.</p>
 
 
 <div class="actions">
 
 
-<button class="primary" onclick="analyzeText()">
-Analyze Text
-</button>
+<button type="button" class="primary" onclick="analyzeText()">Analyze Text</button>
 
 
-<button onclick="copyReport()">
-Copy Report
-</button>
+<button type="button" id="copyReportButton" onclick="copyReport()" disabled>Copy Report</button>
 
 
-<button onclick="downloadReport()">
-Download TXT
-</button>
+<button type="button" id="downloadReportButton" onclick="downloadReport()" disabled>Download TXT</button>
 
 
-<button onclick="clearText()">
-Clear
-</button>
+<button type="button" onclick="clearText()">Clear</button>
 
 
 </div>
 
 
-<div class="stats">
+<div class="stats" role="group" aria-label="Text statistics" aria-live="polite">
 
 <div id="wordCount">
 0 Words
@@ -320,30 +371,53 @@ Clear
 </div>
 
 
-<div id="result" class="result-box" style="display:none">
+<div id="result" class="result-box" style="display:none"
+     role="region" aria-labelledby="resultHeading" aria-live="polite">
 
+<h2 id="resultHeading">Text Pattern Summary</h2>
 
-<div id="score" class="score">
-0%
+<div id="diversityValue" class="score">0%</div>
+
+<div id="levelText" class="analysis-label">
+Lexical diversity: unique words divided by total words.
 </div>
-
-
-<div id="levelText" style="text-align:center;font-weight:bold;font-size:20px;"></div>
-
 
 <div id="details"></div>
 
-
+<p class="analysis-disclaimer">
+These are descriptive text statistics, not an AI detector,
+authorship probability or evidence of misconduct.
+</p>
 </div>
 
-
-<div id="success" class="success"></div>
-
+<div id="success" class="success" role="status" aria-live="polite"></div>
 
 
 
 
-<section class="tool-guide"><h2>How Writing Pattern Analyzer works</h2><p>Measure repeated whitespace-separated words and average sentence length with a transparent, rule-based index.</p><h3>Steps</h3><p>Paste text, run the analysis and read the measured statistics before copying the report.</p><h3>Example to check</h3><p>Repeating the same word lowers the distinct-word percentage. Longer sentences increase the sentence-length component.</p><h3>Limits and review</h3><p>The index cannot establish whether a person or AI wrote text. It is not a probability, accuracy score or evidence of misconduct. Short texts and languages without spaces can produce misleading statistics.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+
+<section class="tool-guide">
+<h2>How Writing Pattern Analyzer Works</h2>
+<p>This tool examines measurable characteristics of written text, including vocabulary variety, repeated words, character counts and approximate sentence length.</p>
+
+<h3>How to Use</h3>
+<p>Paste your text into the analysis box and select Analyze Text. Review the statistics, then copy or download your report.</p>
+
+<h3>Vocabulary Diversity</h3>
+<p>Lexical diversity is calculated by dividing the number of distinct words by the total number of words. For example, a text containing 100 words and 70 distinct words has a lexical diversity of 70%.</p>
+
+<h3>Sentence Analysis</h3>
+<p>Sentence boundaries are estimated using common English and Arabic punctuation marks. Average sentence length is calculated from the word count divided by the estimated sentence count.</p>
+
+<h3>Limitations</h3>
+<p>The tool does not determine whether a text was written by a human or an AI system. It does not calculate AI probability, verify originality or establish plagiarism.</p>
+
+<h3>Language Support</h3>
+<p>Word counting supports Unicode letters and numbers, including Arabic and English.</p>
+
+<h3>Privacy</h3>
+<p>Text analysis takes place locally in your browser. Your pasted text is not submitted to an external text-analysis or AI API.</p>
+</section>
 
 
 
@@ -361,7 +435,7 @@ Clear
   </div>
 </section>
 
-<script src="../assets/js/tools/ai-detector.js?v=repair-4"></script>
+<script src="../assets/js/tools/ai-detector.js?v=repair-5"></script>
 
 <!-- FTO-EDITORIAL-REPAIR-V1 -->
 <aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>

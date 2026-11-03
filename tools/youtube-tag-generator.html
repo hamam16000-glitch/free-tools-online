@@ -221,7 +221,7 @@ grid-template-columns:1fr;
 
 
 <p class="tool-description">
-Create SEO optimized YouTube tags and hashtags for better video discovery.
+Create relevant YouTube tag and hashtag suggestions from your title, keywords and optional category.
 </p>
 
 
@@ -238,16 +238,15 @@ Create SEO optimized YouTube tags and hashtags for better video discovery.
 <input id="keywords" placeholder="flutter, dart, firebase">
 
 
-<label for="category">Video Category</label>
+<label for="category">Video Category (Optional)</label>
 
 <select id="category">
-
+<option value="">Select a category (optional)</option>
 <option value="Technology">Technology</option>
 <option value="Education">Education</option>
 <option value="Gaming">Gaming</option>
 <option value="Business">Business</option>
 <option value="Entertainment">Entertainment</option>
-
 </select>
 
 
@@ -272,7 +271,7 @@ Clear
 </div>
 
 
-<div class="stats">
+<div class="stats" aria-live="polite">
 
 <div id="tagCount">
 0 Tags
@@ -285,7 +284,7 @@ Clear
 </div>
 
 
-<textarea id="output" readonly></textarea>
+<label for="output">Generated Tags</label><textarea id="output" readonly aria-label="Generated YouTube tags"></textarea>
 
 
 <h3>Suggested Hashtags</h3>
@@ -293,12 +292,12 @@ Clear
 <p id="hashtags" class="hashtags"></p>
 
 
-<div id="success" class="success"></div>
+<div id="success" class="success" role="status" aria-live="polite"></div>
 
 
 
 
-<section class="tool-guide"><h2>How YouTube Tag Suggestions works</h2><p>Build Unicode tag suggestions from your title and keywords within a 500-character metadata budget.</p><h3>Steps</h3><p>Enter a relevant title and keywords, generate, then remove suggestions that do not describe the video.</p><h3>Example to check</h3><p>Arabic topic words are kept. The budget includes separators and quotation costs for tags containing spaces.</p><h3>Limits and review</h3><p>The generator does not query search volume, competition or current YouTube trends. Tags alone cannot guarantee rankings or views. Review the visible budget and relevance before pasting into your video&#x27;s metadata.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide"><h2>How YouTube Tag Suggestions works</h2><p>Build Unicode tag suggestions from your title and keywords within a 500-character metadata budget.</p><h3>Steps</h3><p>Enter a relevant title and keywords, generate, then remove suggestions that do not describe the video.</p><h3>Example to check</h3><p>Arabic topic words are kept. The 500-character counter includes the comma-and-space separators shown in the output.</p><h3>Limits and review</h3><p>The generator does not query search volume, competition or current YouTube trends. Tags alone cannot guarantee rankings or views. Review the visible budget and relevance before pasting into your video&#x27;s metadata.</p><h3>Where your data goes</h3><p>Tag suggestions are generated locally in your browser. Your video title, keywords and selected category are not uploaded to an external tag-generation service by this tool.</p></section>
 
 
 

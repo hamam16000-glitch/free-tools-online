@@ -1,25 +1,5 @@
 
 
-document.getElementById("copyFaviconCode")
-.addEventListener("click", async ()=>{
-
-let code=document.getElementById("faviconCodeOutput").textContent;
-
-
-if(!code){
-
-return;
-
-}
-
-
-await FTOSafety.copyText(code);
-
-
-});
-
-
-
 (() => {
     "use strict";
 
@@ -46,6 +26,7 @@ await FTOSafety.copyText(code);
     const zoomValue = document.getElementById("faviconZoomValue");
     const resetCropButton = document.getElementById("faviconResetCrop");
     const generateButton = document.getElementById("faviconGenerateButton");
+    const copyButton = document.getElementById("copyFaviconCode");
     const statusBox = document.getElementById("faviconStatus");
     const sizePreviewSection = document.getElementById("faviconSizePreviewSection");
     const sizePreviewsBox = document.getElementById("faviconSizePreviews");
@@ -93,6 +74,34 @@ await FTOSafety.copyText(code);
     });
 
     generateButton.addEventListener("click", generateFavicons);
+
+    copyButton.addEventListener("click", async () => {
+        const code = document.getElementById("faviconCodeOutput").textContent.trim();
+
+        if (!code) {
+            setStatus("Generate your favicon files before copying the HTML code.", "warning");
+            return;
+        }
+
+        const originalText = copyButton.textContent;
+        copyButton.disabled = true;
+
+        try {
+            await FTOSafety.copyText(code);
+            setStatus("HTML embed code copied successfully.", "success");
+        } catch (error) {
+            setStatus(
+                error && error.message
+                    ? error.message
+                    : "Could not copy the HTML code.",
+                "error"
+            );
+        } finally {
+            copyButton.disabled = false;
+            copyButton.textContent = originalText;
+        }
+    });
+
 
     cropModeButton.addEventListener("click", () => setEditorMode("cover"));
     fitModeButton.addEventListener("click", () => setEditorMode("contain"));
@@ -371,13 +380,13 @@ await FTOSafety.copyText(code);
             
 
 const faviconCode = `
-
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
-
+<link rel="icon" type="image/png" sizes="512x512" href="favicon-512x512.png">
 <link rel="apple-touch-icon" sizes="180x180" href="favicon-180x180.png">
-
 `;
 
 document.getElementById("faviconCodeOutput").textContent = faviconCode;

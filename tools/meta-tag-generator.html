@@ -163,6 +163,38 @@ text-align:center;
 .fto-practice p{line-height:1.75;margin:10px 0}.fto-practice code{overflow-wrap:anywhere}
 @media(max-width:620px){.fto-learning-hub{margin:20px 12px;padding:18px}.fto-practice{margin:16px 12px;padding:18px}}
 </style>
+
+<style id="fto-meta-mobile-repair">
+.meta-box{
+    width:calc(100% - 24px);
+    max-width:900px;
+    min-width:0;
+    box-sizing:border-box;
+}
+.meta-box input,.meta-box textarea,.meta-box select{
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+}
+#output.code{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+    overflow-x:hidden;
+    line-height:1.7;
+}
+.preview{
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    overflow-wrap:anywhere;
+}
+</style>
+
 </head>
 
 
@@ -289,7 +321,7 @@ Clear
 </button>
 
 
-<div id="success" class="success"></div>
+<div id="success" class="success" role="status" aria-live="polite"></div>
 
 
 <div id="preview" class="preview" style="display:none"></div>
@@ -307,7 +339,59 @@ Clear
 
 
 
-<section class="tool-guide"><h2>How Meta Tag Generator works</h2><p>Generate escaped HTML metadata and a text-based search preview from the values you supply.</p><h3>Steps</h3><p>Enter a title, description and public URLs, generate the tags, review them and paste the result into your page&#x27;s head element.</p><h3>Example to check</h3><p>A quote or an ampersand in a description is escaped so it cannot break the generated HTML attribute.</p><h3>Limits and review</h3><p>A preview is illustrative. Search engines may rewrite titles and snippets. Length checks do not measure ranking quality, guarantee visibility or submit a page to a search engine.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+
+<section class="tool-guide">
+<h2>How Meta Tag Generator Works</h2>
+
+<p>
+Create a copy-ready HTML metadata snippet for your website.
+The generated code is intended for the head section of your HTML page.
+</p>
+
+<h3>How to use the generator</h3>
+<ol>
+<li>Enter a unique and descriptive page title.</li>
+<li>Write a useful description that accurately summarizes the page.</li>
+<li>Enter the canonical URL when the page has a preferred public URL.</li>
+<li>Add Open Graph and social sharing image URLs if available.</li>
+<li>Choose the appropriate robots directive.</li>
+<li>Generate, review, copy or download the resulting HTML.</li>
+</ol>
+
+<h3>Understanding the generated tags</h3>
+<ul>
+<li><strong>Title:</strong> Defines the document title.</li>
+<li><strong>Description:</strong> Provides a summary that may be used in search snippets.</li>
+<li><strong>Canonical:</strong> Identifies the preferred URL for a page.</li>
+<li><strong>Robots:</strong> Specifies supported indexing and crawling directives.</li>
+<li><strong>Open Graph:</strong> Provides metadata for social sharing previews.</li>
+<li><strong>Twitter Card:</strong> Defines the appearance of supported social cards.</li>
+</ul>
+
+<h3>Title and description length</h3>
+<p>
+Approximately 50–60 characters for titles and 150–160 characters
+for descriptions are common editorial guidelines. Search engines
+may truncate or rewrite displayed titles and descriptions depending
+on the device, query and available display space.
+</p>
+
+<h3>Important SEO limitations</h3>
+<p>
+The keywords meta tag is not used by Google as a ranking signal.
+A canonical tag is a signal rather than a guaranteed indexing decision.
+A noindex directive must be accessible to crawlers to be processed.
+This generator does not submit pages or guarantee indexing or rankings.
+</p>
+
+<h3>Where your data goes</h3>
+<p>
+The entered metadata is processed in your browser.
+This generator does not send your metadata to a remote generation API.
+The page and its scripts are served by this website.
+</p>
+</section>
+
 
 
 

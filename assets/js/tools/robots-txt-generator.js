@@ -2,7 +2,7 @@
 
 
 function generateRobots(){
-const a=document.getElementById('agent').value.trim(),rule=document.getElementById('rule').value,path=document.getElementById('path').value.trim(),map=document.getElementById('sitemap').value.trim(),out=document.getElementById('output');out.value='';try{if(!/^[A-Za-z0-9_.*-]+$/.test(a)||!['Allow','Disallow'].includes(rule)||/[\r\n]/.test(path)||path&&!path.startsWith('/'))throw Error('Use one user-agent and a root-relative path beginning with /.');let s='User-agent: '+a+'\n'+rule+': '+path+'\n';if(map){const u=new URL(map);if(!['http:','https:'].includes(u.protocol)||u.username||u.password)throw Error('Use a public HTTP(S) sitemap URL.');s+='\nSitemap: '+u.href+'\n';}out.value=s;document.getElementById('status').textContent='Created. Install robots.txt at your hostname root. This does not guarantee indexing.';}catch(e){document.getElementById('status').textContent=e.message;}
+const a=document.getElementById('agent').value.trim(),rule=document.getElementById('rule').value,path=document.getElementById('path').value.trim(),map=document.getElementById('sitemap').value.trim(),out=document.getElementById('output');out.value='';try{if(!/^[A-Za-z0-9_.*-]+$/.test(a)||!['Allow','Disallow'].includes(rule)||/[\r\n]/.test(path)||path&&!path.startsWith('/')||path.startsWith('//'))throw Error('Use one user-agent and a path beginning with exactly one slash (/).');let s='User-agent: '+a+'\n'+rule+': '+path+'\n';if(map){const u=new URL(map);if(!['http:','https:'].includes(u.protocol)||u.username||u.password)throw Error('Use a public HTTP(S) sitemap URL.');s+='\nSitemap: '+u.href+'\n';}out.value=s;document.getElementById('status').textContent='Created. Install robots.txt at your hostname root. This does not guarantee indexing.';}catch(e){document.getElementById('status').textContent=e.message;}
 }
 
 
@@ -41,7 +41,44 @@ async function copyRobots(){
     }catch(error){
         console.error("Copy error:", error);
     }
-}function clearRobots(){
+}
+function downloadRobots(){
+
+    const output = document.getElementById("output");
+    const status = document.getElementById("status");
+
+    if(!output.value.trim()){
+        status.textContent = "Generate a robots.txt file before downloading.";
+        return;
+    }
+
+    const blob = new Blob(
+        [output.value],
+        {type:"text/plain;charset=utf-8"}
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "robots.txt";
+    link.style.display = "none";
+
+    document.body.appendChild(link);
+
+    link.click();
+    link.remove();
+
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 1000);
+
+    status.textContent =
+        "Download started. Save robots.txt in your hostname root directory.";
+}
+
+function clearRobots(){
 
 document.getElementById("agent").value="*";
 

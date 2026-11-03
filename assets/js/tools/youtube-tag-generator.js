@@ -1,85 +1,231 @@
+'use strict';
 
+let tagMessageTimer = null;
 
-function generateTags(){
-const title=document.getElementById('title').value.trim(),keywords=document.getElementById('keywords').value.trim(),category=document.getElementById('category').value,clean=s=>(s.normalize('NFKC').match(/[\p{L}\p{N}]+/gu)||[]).join(' ');document.getElementById('output').textContent='';document.getElementById('hashtags').textContent='';if(!clean(title)&&!clean(keywords)){document.getElementById('tagCount').textContent='0 Tags';document.getElementById('charCount').textContent='0 / 500';showMessage('Enter your title or keywords.');return;}const candidates=[clean(title),...keywords.split(/[,،\n]/).map(clean),...title.split(/\s+/).map(clean)],tags=[];let used=0;for(const tag of [...new Set(candidates.filter(Boolean))]){const cost=tag.length+(tag.includes(' ')?2:0)+(tags.length?1:0);if(used+cost<=500){tags.push(tag);used+=cost;}}document.getElementById('output').textContent=tags.join(', ');document.getElementById('hashtags').textContent=tags.slice(0,3).map(t=>'#'+t.replace(/ /g,'')).join(' ');document.getElementById('tagCount').textContent=tags.length+' Tags';document.getElementById('charCount').textContent=used+' / 500';showMessage('Suggestions from your inputs. Review relevance; rankings are not guaranteed.');
+function showMessage(message) {
+    const box = document.getElementById('success');
+
+    if (!box) return;
+
+    box.textContent = String(message);
+    box.style.display = 'block';
+
+    clearTimeout(tagMessageTimer);
+
+    tagMessageTimer = setTimeout(() => {
+        box.style.display = 'none';
+    }, 3500);
 }
 
-async function copyTags(){
-try{await FTOSafety.copyText(document.getElementById('output').innerText);showMessage('Copied.');}catch(e){showMessage(e.message);}
+function cleanTag(value) {
+    return String(value ?? '')
+        .normalize('NFKC')
+        .replace(/[\u0000-\u001f\u007f]/g, ' ')
+        .replace(/[,،;\r\n]+/g, ' ')
+        .replace(/\s+/gu, ' ')
+        .trim();
 }
 
-
-
-function downloadTags(){
-
-let text=document.getElementById("output").value;
-
-
-if(!text){
-
-return;
-
+function countCharacters(text) {
+    return Array.from(text).length;
 }
 
+function generateTags() {
+    const title = cleanTag(
+        document.getElementById('title').value
+    );
 
-let blob=new Blob(
-[text],
-{type:"text/plain"}
-);
+    const keywordsInput = document.getElementById('keywords').value;
 
+    const category = cleanTag(
+        document.getElementById('category').value
+    );
 
-let a=document.createElement("a");
+    const output = document.getElementById('output');
+    const hashtagsBox = document.getElementById('hashtags');
 
-a.href=URL.createObjectURL(blob);
+    const tagCount = document.getElementById('tagCount');
+    const charCount = document.getElementById('charCount');
 
-a.download="youtube-tags.txt";
+    const keywords = keywordsInput
+        .split(/[,،;\n]+/u)
+        .map(cleanTag)
+        .filter(Boolean);
 
-a.click();
+    output.value = '';
+    hashtagsBox.textContent = '';
 
+    if (!title && !keywords.length) {
+        tagCount.textContent = '0 Tags';
+        charCount.textContent = '0 / 500 Characters';
 
-showMessage("TXT file downloaded ✓");
+        showMessage('Enter your video title or main keywords.');
+        return;
+    }
 
+    const titleWords = title
+        ? title.split(/\s+/u)
+        : [];
 
+    const candidates = [
+        title,
+        ...keywords,
+        category,
+        ...titleWords
+    ];
+
+    const tags = [];
+    const used = new Set();
+
+    let finalOutput = '';
+
+    for (const candidate of candidates) {
+        const tag = cleanTag(candidate);
+
+        if (!tag || !/[\p{L}\p{N}]/u.test(tag)) {
+            continue;
+        }
+
+        const key = tag.toLowerCase();
+
+        if (used.has(key)) {
+            continue;
+        }
+
+        const nextOutput = finalOutput
+            ? finalOutput + ', ' + tag
+            : tag;
+
+        if (countCharacters(nextOutput) > 500) {
+            continue;
+        }
+
+        tags.push(tag);
+        used.add(key);
+        finalOutput = nextOutput;
+    }
+
+    output.value = finalOutput;
+
+    const actualCount = countCharacters(finalOutput);
+
+    tagCount.textContent = tags.length + ' Tags';
+
+    charCount.textContent =
+        actualCount + ' / 500 Characters';
+
+    const hashtagCandidates = [
+        ...keywords,
+        ...titleWords,
+        category
+    ];
+
+    const hashtags = [];
+    const hashtagSet = new Set();
+
+    for (const candidate of hashtagCandidates) {
+        const word = cleanTag(candidate)
+            .replace(/[^\p{L}\p{N}_]/gu, '');
+
+        if (!word || countCharacters(word) > 50) {
+            continue;
+        }
+
+        const key = word.toLowerCase();
+
+        if (hashtagSet.has(key)) {
+            continue;
+        }
+
+        hashtags.push('#' + word);
+        hashtagSet.add(key);
+
+        if (hashtags.length === 3) {
+            break;
+        }
+    }
+
+    hashtagsBox.textContent = hashtags.join(' ');
+
+    if (!tags.length) {
+        showMessage(
+            'No suggestions fit the 500-character limit. Try shorter keywords.'
+        );
+        return;
+    }
+
+    showMessage(
+        'Generated ' + tags.length +
+        ' suggestions within the 500-character limit. Review relevance before publishing.'
+    );
 }
 
+async function copyTags() {
+    const text = document.getElementById('output').value.trim();
 
+    if (!text) {
+        showMessage('Generate tags before copying.');
+        return;
+    }
 
-function clearTags(){
+    try {
+        const safety = window.FTOSafety;
 
-document.getElementById("title").value="";
+        if (!safety || typeof safety.copyText !== 'function') {
+            throw Error('Copy service is unavailable.');
+        }
 
-document.getElementById("keywords").value="";
+        await safety.copyText(text);
 
-document.getElementById("output").value="";
-
-document.getElementById("hashtags").innerHTML="";
-
-document.getElementById("tagCount").innerHTML="0 Tags";
-
-document.getElementById("charCount").innerHTML="0 Characters";
-
-showMessage("Cleared ✓");
-
+        showMessage('Tags copied successfully.');
+    } catch (error) {
+        showMessage('Copy failed: ' + error.message);
+    }
 }
 
+function downloadTags() {
+    const text = document.getElementById('output').value.trim();
 
+    if (!text) {
+        showMessage('Generate tags before downloading.');
+        return;
+    }
 
-function showMessage(text){
+    try {
+        const safety = window.FTOSafety;
 
-let box=document.getElementById("success");
+        if (!safety || typeof safety.downloadBlob !== 'function') {
+            throw Error('Download service is unavailable.');
+        }
 
-box.innerHTML=text;
+        const blob = new Blob(
+            [text],
+            {type: 'text/plain;charset=utf-8'}
+        );
 
-box.style.display="block";
+        safety.downloadBlob(blob, 'youtube-tags.txt');
 
-
-setTimeout(()=>{
-
-box.style.display="none";
-
-},3000);
-
-
+        showMessage('TXT file download requested.');
+    } catch (error) {
+        showMessage('Download failed: ' + error.message);
+    }
 }
 
+function clearTags() {
+    document.getElementById('title').value = '';
 
+    document.getElementById('keywords').value = '';
+
+    document.getElementById('category').value = '';
+
+    document.getElementById('output').value = '';
+
+    document.getElementById('hashtags').textContent = '';
+
+    document.getElementById('tagCount').textContent = '0 Tags';
+
+    document.getElementById('charCount').textContent =
+        '0 / 500 Characters';
+
+    showMessage('All fields cleared.');
+}

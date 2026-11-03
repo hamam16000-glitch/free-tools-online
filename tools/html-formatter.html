@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Conservative HTML Formatter | Free Tools Online</title>
+<title>HTML Formatter &amp; Minifier | Free Tools Online</title>
 
-<meta name="description" content="Change spacing between block-level tags while preserving inline text, attribute values and raw-text blocks.">
+<meta name="description" content="Format or compact whitespace between HTML block elements while preserving attributes, inline text and protected content.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -95,36 +95,63 @@
 </nav>
 
 
-<h1>Conservative HTML Formatter</h1>
+<h1>HTML Formatter &amp; Minifier</h1>
 
-<p class="tool-description">
-Beautify and compress HTML code online.
-</p>
+<p class="tool-description">Format or remove whitespace between recognized block-level HTML elements without rewriting attributes or inline text.</p>
 
 <div class="tool-box">
 
-<textarea id="htmlInput" placeholder="Paste HTML code here..."></textarea>
+<label for="htmlInput">HTML Source Code</label>
+<textarea id="htmlInput"
+    rows="16"
+    spellcheck="false"
+    autocomplete="off"
+    autocapitalize="off"
+    aria-label="HTML source code"
+    placeholder="Paste HTML code here..."></textarea>
 <div class="tool-actions">
 
-<button onclick="formatHTML()">Format HTML</button>
+<button type="button" onclick="formatHTML()">Format HTML</button>
 
-<button onclick="minifyHTML()">Minify HTML</button>
+<button type="button" onclick="minifyHTML()">Minify HTML</button>
 
-<button onclick="copyHTML()">Copy</button>
+<button type="button" onclick="copyHTML()">Copy</button>
 
-<button onclick="clearHTML()">Clear</button>
+<button type="button" onclick="clearHTML()">Clear</button>
 
 </div>
 
 
-<div id="status"></div>
+<div id="status" role="status" aria-live="polite"></div>
 
 
 
 
 
 
-<section class="tool-guide"><h2>How Conservative HTML Formatter works</h2><p>Change spacing between block-level tags while preserving inline text, attribute values and raw-text blocks.</p><h3>Steps</h3><p>Paste HTML, apply formatting or compact block spacing, then inspect the result before using it.</p><h3>Example to check</h3><p>A space between adjacent inline span elements stays in place. Documents with pre, script, style or textarea blocks are left unchanged.</p><h3>Limits and review</h3><p>This is not an HTML validator, sanitizer or complete parser-based formatter. It deliberately leaves complex input unchanged to avoid changing text or script behavior.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide">
+<h2>How HTML Formatter &amp; Minifier Works</h2>
+
+<p>This tool formats or removes whitespace-only gaps between recognized block-level HTML elements. It does not rewrite HTML attributes or ordinary text content.</p>
+
+<h3>How to Format HTML</h3>
+<p>Paste your HTML source code and select Format HTML. The tool inserts line breaks between adjacent recognized block-level elements to improve source readability.</p>
+
+<h3>How to Minify HTML</h3>
+<p>Select Minify HTML to remove unnecessary whitespace-only gaps between recognized block-level elements. Other whitespace and text content remain unchanged.</p>
+
+<h3>Example</h3>
+<p>Adjacent div, section and paragraph elements can receive line breaks. Spaces between inline span elements remain unchanged.</p>
+
+<h3>Protected HTML Content</h3>
+<p>Content inside script, style, pre, textarea, title and other protected elements is preserved. Comments and attribute values are also retained.</p>
+
+<h3>Limitations</h3>
+<p>This is a conservative whitespace formatter, not a complete HTML parser, validator or sanitizer. It does not automatically indent nested elements, remove comments, optimize attributes or repair malformed HTML. Always inspect the result before publishing.</p>
+
+<h3>Privacy</h3>
+<p>HTML processing takes place locally in your browser. Your source code is not sent to an external formatting API.</p>
+</section>
 
 
 
@@ -142,7 +169,7 @@ Beautify and compress HTML code online.
   </div>
 </section>
 
-<script src="../assets/js/tools/html-formatter.js?v=repair-4"></script>
+<script src="../assets/js/tools/html-formatter.js?v=repair-5"></script>
 
 <!-- FTO-EDITORIAL-REPAIR-V1 -->
 <aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>

@@ -5,7 +5,7 @@
 
 <title>Robots.txt Generator | Free Tools Online</title>
 
-<meta name="description" content="Create a user-agent rule and an optional public sitemap reference.">
+<meta name="description" content="Generate a robots.txt file with crawler rules, Allow and Disallow paths, and a sitemap URL. Learn where to publish it and what crawl rules cannot protect.">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -209,6 +209,7 @@ Create SEO friendly robots.txt file online.
 <button onclick="generateRobots()">Generate Robots.txt</button>
 
 <button onclick="copyRobots()">Copy</button>
+<button onclick="downloadRobots()">Download robots.txt</button>
 
 <button onclick="clearRobots()">Clear</button>
 
@@ -227,13 +228,206 @@ Robots.txt copied successfully.
 
 
 
-<section class="tool-guide"><h2>How Robots.txt Generator works</h2><p>Create a user-agent rule and an optional public sitemap reference.</p><h3>Steps</h3><p>Enter one user-agent, choose Allow or Disallow and a path beginning with a slash. Copy the result to your hostname&#x27;s root robots.txt.</p><h3>Example to check</h3><p>Disallow: /private/ asks compliant crawlers not to crawl that path. It does not make those pages private.</p><h3>Limits and review</h3><p>A project subfolder&#x27;s robots.txt is not the hostname root file. Robots rules control crawling, not access security or guaranteed removal from search. A sitemap reference does not guarantee indexing.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+
+<section class="tool-guide">
+
+<h2>How Robots.txt Generator Works</h2>
+
+<p>
+A robots.txt file provides crawling instructions for compliant
+search engine crawlers. It identifies which website paths
+crawlers are requested to access or avoid.
+This generator creates a basic robots.txt file using
+a crawler identifier, one rule and an optional sitemap URL.
+</p>
+
+<h3>1. Understanding User-Agent</h3>
+
+<p>
+User-Agent identifies the crawler that a rule applies to.
+Use an asterisk (*) for all crawlers that follow the
+Robots Exclusion Protocol, or enter a crawler token
+such as Googlebot.
+</p>
+
+<h3>2. Understanding Allow and Disallow</h3>
+
+<p>
+Allow specifies a path that a compliant crawler may crawl.
+Disallow requests that the crawler should not crawl
+a matching path.
+</p>
+
+<p>
+For example, Disallow: /private/ requests crawlers
+to avoid URLs under the /private/ directory.
+</p>
+
+<h3>3. Understanding Website Paths</h3>
+
+<p>
+Paths should begin with a forward slash and are interpreted
+relative to the website origin.
+Examples include /private/, /admin/ and /temporary/.
+</p>
+
+<h3>4. Adding a Sitemap</h3>
+
+<p>
+A Sitemap directive provides crawlers with the absolute
+URL of your public sitemap.
+Use a complete HTTP or HTTPS address.
+The reference helps crawlers discover the sitemap,
+but does not guarantee crawling or indexing.
+</p>
+
+<h3>5. Complete Example</h3>
+
+<pre><code>User-agent: *
+Disallow: /private/
+
+Sitemap: https://example.com/sitemap.xml</code></pre>
+
+<p>
+Replace example.com with your actual website domain
+and change the restricted path to match your needs.
+</p>
+
+<h3>6. Where to Publish robots.txt</h3>
+
+<p>
+The standard robots.txt file belongs at the root
+of the website origin.
+For example:
+https://example.com/robots.txt
+</p>
+
+<p>
+For a GitHub Pages project website hosted inside
+a subfolder, the hostname root and project folder
+are different locations. A robots.txt file inside
+the project folder does not replace the hostname
+root file.
+</p>
+
+<h3>7. Important Limitations</h3>
+
+<ul>
+<li>Robots.txt does not protect confidential files.</li>
+<li>Disallow does not prevent visitors from opening a URL.</li>
+<li>Crawl restrictions do not guarantee removal from search results.</li>
+<li>Different crawlers may support different directives.</li>
+<li>A sitemap reference does not guarantee indexing.</li>
+<li>This generator creates one crawler group and one rule.</li>
+<li>Advanced multi-group configurations require manual editing.</li>
+</ul>
+
+<h3>8. How to Use the Generator</h3>
+
+<ol>
+<li>Enter a crawler identifier.</li>
+<li>Choose Allow or Disallow.</li>
+<li>Enter a path beginning with /.</li>
+<li>Optionally enter your public sitemap URL.</li>
+<li>Click Generate Robots.txt.</li>
+<li>Review and copy the generated content.</li>
+<li>Save it as robots.txt and publish it at the correct hostname root.</li>
+</ol>
+
+<h3>Where Your Data Goes</h3>
+
+<p>
+The generator processes the entered values using JavaScript
+in your browser. It does not send the rules to a separate
+generation API or fetch the sitemap URL for verification.
+The website itself loads its HTML, CSS and JavaScript
+from its hosting provider.
+</p>
+
+</section>
+
 
 
 
 </div>
 
 
+
+<!-- FTO-EDITORIAL-REPAIR-V1 -->
+
+<aside class="fto-practice"
+aria-label="Robots.txt examples and troubleshooting">
+
+<h2>Practical Robots.txt Examples</h2>
+
+<h3>Allow Crawling</h3>
+
+<pre><code>User-agent: *
+Allow: /</code></pre>
+
+<p>
+This rule explicitly allows compliant crawlers
+to crawl the website paths covered by the rule.
+</p>
+
+<h3>Restrict a Directory</h3>
+
+<pre><code>User-agent: *
+Disallow: /private/</code></pre>
+
+<p>
+This requests crawlers to avoid matching URLs
+under the private directory. It does not provide
+password protection or access restrictions.
+</p>
+
+<h3>Request Crawlers to Avoid the Entire Website</h3>
+
+<pre><code>User-agent: *
+Disallow: /</code></pre>
+
+<p>
+Use this configuration carefully because it requests
+compliant crawlers to avoid the entire website.
+</p>
+
+<h3>Common Mistakes and Solutions</h3>
+
+<ul>
+<li><strong>Wrong location:</strong> Publish the file at the hostname root.</li>
+<li><strong>Wrong filename:</strong> Use robots.txt exactly.</li>
+<li><strong>Incorrect path:</strong> Start root-relative paths with /.</li>
+<li><strong>Security confusion:</strong> Use authentication to protect private content.</li>
+<li><strong>Indexing confusion:</strong> Blocking crawling does not guarantee deindexing.</li>
+<li><strong>Sitemap problems:</strong> Verify that the sitemap is publicly accessible.</li>
+</ul>
+
+<h3>Generator Scope</h3>
+
+<p>
+This generator creates a basic single-rule configuration.
+If your website requires multiple crawler groups,
+several rules or advanced matching patterns,
+review and edit the generated file before publishing.
+</p>
+
+<h3>Further Reading</h3>
+
+<p>
+Read our
+<a href="../guides/seo-and-indexing.html">
+SEO and Indexing Guide</a>
+for practical explanations of robots.txt,
+sitemaps and canonical URLs.
+</p>
+
+<p>
+You can also explore our
+<a href="sitemap-generator.html">
+Sitemap Generator</a>.
+</p>
+
+</aside>
 
 <section class="tool-connections" aria-labelledby="related-tools-heading">
   <h2 id="related-tools-heading">Related SEO Tools</h2>
@@ -246,8 +440,8 @@ Robots.txt copied successfully.
 
 <script src="../assets/js/tools/robots-txt-generator.js?v=repair-4"></script>
 
-<!-- FTO-EDITORIAL-REPAIR-V1 -->
-<aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/seo-and-indexing.html">Sitemaps, Robots.txt, Canonical URLs and Indexing</a> — practical checks, examples and limitations.</p></aside>
+
+
 <footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 </html>

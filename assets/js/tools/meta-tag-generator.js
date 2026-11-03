@@ -1,242 +1,336 @@
-
-
-
-function generateMeta(){
-
-let title=document.getElementById("title").value.trim();
-
-let description=document.getElementById("description").value.trim();
-
-let keywords=document.getElementById("keywords").value.trim();
-
-let author=document.getElementById("author").value.trim();
-
-let url=document.getElementById("url").value.trim();
-
-let ogImage=document.getElementById("ogImage").value.trim();
-
-let twitterImage=document.getElementById("twitterImage").value.trim();
-
-let language=document.getElementById("language").value.trim() || "en";
-
-let themeColor=document.getElementById("themeColor").value.trim() || "#2563eb";
-
-let robots=document.getElementById("robots").value;
-
-
-
-if(!title || !description){
-
-showMessage("Please enter title and description.");
-
-return;
-
+function escapeMetaHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
 }
 
+function normalizeMetaURL(value, label) {
+    if (!value) return "";
 
+    let url;
 
-try{for(const s of [url,ogImage,twitterImage].filter(Boolean)){const u=new URL(s);if(!['http:','https:'].includes(u.protocol)||u.username||u.password)throw Error('Use public HTTP(S) URLs.');}}catch(e){document.getElementById('output').innerText='';document.getElementById('output').textContent='';document.getElementById('googlePreview').textContent='';showMessage(e.message);return;}
-const titleLength=Array.from(title).length,descriptionLength=Array.from(description).length;
-[title,description,keywords,author,url,ogImage,twitterImage,language,themeColor,robots]=[title,description,keywords,author,url,ogImage,twitterImage,language,themeColor,robots].map(window.FTOSafety.escapeHTML);
-let html=`
+    try {
+        url = new URL(value);
+    } catch {
+        throw new Error("Enter a valid " + label + " URL.");
+    }
 
-<title>${title}</title>
+    if (
+        !["http:", "https:"].includes(url.protocol) ||
+        url.username ||
+        url.password
+    ) {
+        throw new Error(label + " must be a public HTTP(S) URL.");
+    }
 
-<meta name="description" content="${description}">
-
-<meta name="keywords" content="${keywords}">
-
-<meta name="author" content="${author}">
-
-<meta name="robots" content="${robots}">
-
-<meta name="language" content="${language}">
-
-<meta name="theme-color" content="${themeColor}">
-
-<link rel="canonical" href="${url}">
-
-<meta property="og:image" content="${ogImage}">
-
-<meta name="twitter:image" content="${twitterImage}">
-
-
-<!-- Open Graph -->
-
-<meta property="og:title" content="${title}">
-
-<meta property="og:description" content="${description}">
-
-<meta property="og:url" content="${url}">
-
-<meta property="og:type" content="website">
-
-
-<!-- Twitter Card -->
-
-<meta name="twitter:card" content="summary">
-
-<meta name="twitter:title" content="${title}">
-
-<meta name="twitter:description" content="${description}">
-
-`;
-
-
-
-document.getElementById("output").innerText=html;
-
-document.getElementById("output").style.display="block";
-
-
-
-document.getElementById("preview").innerHTML=
-
-`
-
-<h3>${title}</h3>
-
-<p>${description}</p>
-
-<small>${url}</small>
-
-`;
-
-
-
-document.getElementById("preview").style.display="block";
-
-
-document.getElementById("googlePreview").innerHTML=
-
-`
-
-<h3 style="color:#1a0dab">
-${title}
-</h3>
-
-<p style="color:#008000">
-${url}
-</p>
-
-<p>
-${description}
-</p>
-
-`;
-
-document.getElementById("googlePreview").style.display="block";
-
-
-let titleScore = titleLength <= 60 ? "Title length within the 60-character guideline" : "Title exceeds the 60-character guideline";
-
-let descScore = descriptionLength <= 160 ? "Description within the 160-character guideline" : "Description exceeds the 160-character guideline";
-
-
-document.getElementById("seoScore").innerHTML=
-
-`
-
-<h3>Length guidelines</h3>
-
-<p>${titleScore} (${titleLength}/60)</p>
-
-<p>${descScore} (${descriptionLength}/160)</p>
-
-<p>Length is only a guideline. Search appearance and ranking are not guaranteed.</p>
-
-`;
-
-document.getElementById("seoScore").style.display="block";
-
-
-showMessage("Meta tags generated successfully ✓");
-
-
+    return url.href;
 }
 
-
-
-async function copyMeta(){
-try{await FTOSafety.copyText(document.getElementById('output').innerText);showMessage('Copied.');}catch(e){showMessage(e.message);}
+function resetMetaResults() {
+    ["output", "preview", "googlePreview", "seoScore"].forEach(id => {
+        const element = document.getElementById(id);
+        element.textContent = "";
+        element.style.display = "none";
+    });
 }
 
-
-
-function downloadMeta(){
-
-let text=document.getElementById("output").innerText;
-
-
-if(!text){
-
-return;
-
+function addMetaText(parent, tag, value) {
+    const element = document.createElement(tag);
+    element.textContent = value;
+    parent.appendChild(element);
+    return element;
 }
 
+function generateMeta() {
 
-let blob=new Blob(
+    resetMetaResults();
 
-[text],
+    const title = document.getElementById("title").value
+        .replace(/\s+/g, " ").trim();
 
-{type:"text/html"}
+    const description = document.getElementById("description").value
+        .replace(/\s+/g, " ").trim();
 
-);
+    const keywords = document.getElementById("keywords").value.trim();
+    const author = document.getElementById("author").value.trim();
 
+    const rawURL = document.getElementById("url").value.trim();
+    const rawOGImage = document.getElementById("ogImage").value.trim();
+    const rawTwitterImage = document.getElementById("twitterImage").value.trim();
 
-let a=document.createElement("a");
+    const rawLanguage =
+        document.getElementById("language").value.trim() || "en";
 
-a.href=URL.createObjectURL(blob);
+    const themeColor =
+        document.getElementById("themeColor").value.trim() || "#2563eb";
 
-a.download="meta-tags.html";
+    const robots = document.getElementById("robots").value;
 
-a.click();
+    try {
 
+        if (!title || !description) {
+            throw new Error("Enter both page title and meta description.");
+        }
 
-showMessage("HTML downloaded ✓");
+        const canonical = normalizeMetaURL(rawURL, "Canonical");
+        const ogImage = normalizeMetaURL(rawOGImage, "Open Graph image");
+        const twitterImage = normalizeMetaURL(
+            rawTwitterImage,
+            "Twitter image"
+        );
 
+        let language;
 
+        try {
+            const locales = Intl.getCanonicalLocales(rawLanguage);
+
+            if (locales.length !== 1) throw new Error();
+
+            language = locales[0];
+
+        } catch {
+            throw new Error("Enter a valid language code, such as en or en-US.");
+        }
+
+        if (!/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(themeColor)) {
+            throw new Error("Theme color must be a valid hexadecimal color.");
+        }
+
+        if (!["index, follow", "noindex, nofollow"].includes(robots)) {
+            throw new Error("Select a valid robots directive.");
+        }
+
+        const e = escapeMetaHTML;
+
+        const lines = [
+            "<!-- Basic SEO Metadata -->",
+            "<title>" + e(title) + "</title>",
+            '<meta name="description" content="' + e(description) + '">'
+        ];
+
+        if (keywords) {
+            lines.push(
+                '<meta name="keywords" content="' + e(keywords) + '">'
+            );
+        }
+
+        if (author) {
+            lines.push(
+                '<meta name="author" content="' + e(author) + '">'
+            );
+        }
+
+        lines.push(
+            '<meta name="robots" content="' + robots + '">',
+            '<meta name="language" content="' + e(language) + '">',
+            '<meta name="theme-color" content="' + themeColor + '">'
+        );
+
+        if (canonical) {
+            lines.push(
+                '<link rel="canonical" href="' + e(canonical) + '">'
+            );
+        }
+
+        lines.push(
+            "",
+            "<!-- Open Graph Metadata -->",
+            '<meta property="og:title" content="' + e(title) + '">',
+            '<meta property="og:description" content="' + e(description) + '">',
+            '<meta property="og:type" content="website">'
+        );
+
+        if (canonical) {
+            lines.push(
+                '<meta property="og:url" content="' + e(canonical) + '">'
+            );
+        }
+
+        if (ogImage) {
+            lines.push(
+                '<meta property="og:image" content="' + e(ogImage) + '">'
+            );
+        }
+
+        const socialImage = twitterImage || ogImage;
+
+        lines.push(
+            "",
+            "<!-- Twitter Card Metadata -->",
+            '<meta name="twitter:card" content="' +
+                (socialImage ? "summary_large_image" : "summary") + '">',
+            '<meta name="twitter:title" content="' + e(title) + '">',
+            '<meta name="twitter:description" content="' + e(description) + '">'
+        );
+
+        if (socialImage) {
+            lines.push(
+                '<meta name="twitter:image" content="' + e(socialImage) + '">'
+            );
+        }
+
+        const html = lines.join("\n") + "\n";
+
+        const output = document.getElementById("output");
+        output.textContent = html;
+        output.style.display = "block";
+
+        // Safe search preview: user input is inserted as text.
+        const preview = document.getElementById("preview");
+
+        addMetaText(preview, "h3", title);
+        addMetaText(preview, "p", description);
+        addMetaText(
+            preview,
+            "small",
+            canonical || "Canonical URL not provided"
+        );
+
+        preview.style.display = "block";
+
+        // Google-style illustrative preview.
+        const google = document.getElementById("googlePreview");
+
+        const googleTitle = addMetaText(google, "h3", title);
+        googleTitle.style.color = "#1a0dab";
+
+        const googleURL = addMetaText(
+            google,
+            "p",
+            canonical || "Add a canonical URL"
+        );
+        googleURL.style.color = "#008000";
+
+        addMetaText(google, "p", description);
+
+        google.style.display = "block";
+
+        // Length guidance.
+        const titleLength = Array.from(title).length;
+        const descriptionLength = Array.from(description).length;
+
+        const score = document.getElementById("seoScore");
+
+        addMetaText(score, "h3", "Length Guidelines");
+
+        addMetaText(
+            score,
+            "p",
+            "Title: " + titleLength + "/60 characters — " +
+            (titleLength <= 60 ? "Within guideline." : "Exceeds guideline.")
+        );
+
+        addMetaText(
+            score,
+            "p",
+            "Description: " + descriptionLength + "/160 characters — " +
+            (descriptionLength <= 160 ? "Within guideline." : "Exceeds guideline.")
+        );
+
+        addMetaText(
+            score,
+            "p",
+            "These are approximate display guidelines, not ranking guarantees."
+        );
+
+        score.style.display = "block";
+
+        showMessage("Meta tags generated successfully.");
+
+    } catch (error) {
+
+        resetMetaResults();
+        showMessage(error.message || "Unable to generate metadata.");
+    }
 }
 
+async function copyMeta() {
 
+    const text = document.getElementById("output").textContent;
 
-function clearMeta(){
-document.getElementById('output').innerText='';document.getElementById('output').textContent='';document.getElementById('googlePreview').textContent='';document.getElementById('seoScore').textContent='';
+    if (!text.trim()) {
+        showMessage("Generate Meta Tags before copying.");
+        return;
+    }
 
-document.querySelectorAll("input,textarea").forEach(e=>{
+    try {
+        await window.FTOSafety.copyText(text);
+        showMessage("Meta HTML copied successfully.");
 
-e.value="";
-
-});
-
-
-document.getElementById("output").style.display="none";
-
-document.getElementById("preview").style.display="none";
-
-
-showMessage("Cleared ✓");
-
+    } catch (error) {
+        showMessage(error.message || "Copy failed.");
+    }
 }
 
+function downloadMeta() {
 
+    const text = document.getElementById("output").textContent;
 
-function showMessage(text){
+    if (!text.trim()) {
+        showMessage("Generate Meta Tags before downloading.");
+        return;
+    }
 
-let box=document.getElementById("success");
+    let objectURL = "";
 
-box.innerHTML=text;
+    try {
 
-box.style.display="block";
+        const blob = new Blob(
+            [text],
+            {type: "text/html;charset=utf-8"}
+        );
 
+        objectURL = URL.createObjectURL(blob);
 
-setTimeout(()=>{
+        const link = document.createElement("a");
 
-box.style.display="none";
+        link.href = objectURL;
+        link.download = "meta-tags.html";
+        link.style.display = "none";
 
-},3000);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
 
+        setTimeout(() => URL.revokeObjectURL(objectURL), 1000);
 
+        showMessage("meta-tags.html download started.");
+
+    } catch (error) {
+
+        if (objectURL) URL.revokeObjectURL(objectURL);
+
+        showMessage(error.message || "Download failed.");
+    }
 }
 
+function clearMeta() {
 
+    document.querySelectorAll("input, textarea").forEach(element => {
+        element.value = "";
+    });
+
+    document.getElementById("robots").value = "index, follow";
+
+    resetMetaResults();
+
+    showMessage("All fields and results cleared.");
+}
+
+function showMessage(text) {
+
+    const box = document.getElementById("success");
+
+    box.textContent = text;
+    box.style.display = "block";
+
+    clearTimeout(window.metaMessageTimer);
+
+    window.metaMessageTimer = setTimeout(() => {
+        box.style.display = "none";
+    }, 3000);
+}

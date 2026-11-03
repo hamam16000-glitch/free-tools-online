@@ -57,16 +57,18 @@ margin-bottom:12px;
 
 
 .result{
-
 background:#f8fafc;
 padding:20px;
 border-radius:15px;
-white-space:pre;
+white-space:pre-wrap;
 overflow:auto;
+overflow-wrap:anywhere;
+word-break:break-word;
 font-family:monospace;
 font-size:14px;
-line-height:1.6;
-
+line-height:1.7;
+max-width:100%;
+box-sizing:border-box;
 }
 
 
@@ -166,6 +168,31 @@ text-align:center;
 .fto-practice p{line-height:1.75;margin:10px 0}.fto-practice code{overflow-wrap:anywhere}
 @media(max-width:620px){.fto-learning-hub{margin:20px 12px;padding:18px}.fto-practice{margin:16px 12px;padding:18px}}
 </style>
+
+<style id="fto-sitemap-mobile-wrap">
+.sitemap-box {
+    width:100%;
+    max-width:900px;
+    min-width:0;
+    box-sizing:border-box;
+    overflow:hidden;
+}
+
+#output.result {
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+    white-space:pre-wrap !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-all !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+    font-size:13px !important;
+    line-height:1.7 !important;
+}
+</style>
+
 </head>
 
 

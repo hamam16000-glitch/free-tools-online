@@ -35,7 +35,15 @@ function titleCase(){
 let text=getText().toLowerCase();
 
 document.getElementById("result").value =
-text.replace(/(^|[^\p{L}\p{N}])(\p{L})/gu, (_,before,letter)=>before+letter.toUpperCase());
+text.replace(/(^|[^\p{L}\p{N}])(\p{L})/gu,
+(match, before, letter, offset, input) => {
+  if ((before === "'" || before === "’") &&
+      offset > 0 &&
+      /[\p{L}\p{N}]/u.test(input[offset - 1])) {
+    return match;
+  }
+  return before + letter.toUpperCase();
+});
 
 }
 
@@ -47,7 +55,7 @@ function sentenceCase(){
 let text=getText().toLowerCase();
 
 document.getElementById("result").value =
-text.replace(/(^|[.!?؟]\s+)(\p{L})/gu,(_,before,letter)=>before+letter.toUpperCase());
+text.replace(/(^\s*|[.!?؟]+\s*)(\p{L})/gu,(_,before,letter)=>before+letter.toUpperCase());
 
 }
 

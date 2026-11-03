@@ -270,6 +270,18 @@
     display:block;
 }
 
+.favicon-section{
+    display:none;
+    margin-top:26px;
+}
+.favicon-section.is-visible{
+    display:block;
+}
+.favicon-section pre{
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+}
+
 .favicon-download-section h3{
     margin:0 0 14px;
     text-align:center;
@@ -553,9 +565,9 @@
 
 <h3>HTML Embed Code</h3>
 
-<pre id="faviconCodeOutput"></pre>
+<pre id="faviconCodeOutput" aria-label="Generated favicon HTML embed code"></pre>
 
-<button id="copyFaviconCode">
+<button id="copyFaviconCode" type="button">
 Copy HTML Code
 </button>
 

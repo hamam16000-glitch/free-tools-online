@@ -13,23 +13,17 @@ const id=extractVideoId(document.getElementById('videoUrl').value.trim()),box=do
 
 
 
-function showMessage(text){
+let thumbnailMessageTimer = null;
 
-let box=document.getElementById("success");
+function showMessage(text) {
+    const box = document.getElementById("success");
 
-box.innerHTML=text;
+    box.textContent = String(text);
+    box.style.display = "block";
 
-box.style.display="block";
+    clearTimeout(thumbnailMessageTimer);
 
-
-setTimeout(()=>{
-
-box.style.display="none";
-
-},3000);
-
-
+    thumbnailMessageTimer = setTimeout(() => {
+        box.style.display = "none";
+    }, 3000);
 }
-
-
-

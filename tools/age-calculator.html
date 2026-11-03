@@ -90,6 +90,34 @@ margin:20px;
     }
 }
 
+
+.birth-date-group{
+    border:0;
+    padding:0;
+    margin:0;
+    min-width:0;
+}
+.birth-date-group legend{
+    padding:0;
+    margin-bottom:8px;
+    font-weight:700;
+    color:#1f2937;
+}
+.date-range-note{
+    font-size:13px;
+    color:#64748b;
+    margin:8px 0;
+}
+#result.status-error{
+    color:#b91c1c;
+}
+#result.status-success{
+    color:#15803d;
+}
+#result.status-info{
+    color:#2563eb;
+}
+
 </style>
 
 <link rel="canonical" href="https://hamam16000-glitch.github.io/free-tools-online/tools/age-calculator.html">
@@ -242,8 +270,8 @@ Calculate your exact age in years, months and days.
 <div class="tool-box">
 
 
-<label>Date of Birth</label>
-
+<fieldset class="birth-date-group" aria-labelledby="birthDateLegend">
+<legend id="birthDateLegend">Date of Birth</legend>
 <div class="birth-date-fields">
 <select id="birthDay" aria-label="Birth day">
 <option value="">Day</option>
@@ -269,20 +297,38 @@ Calculate your exact age in years, months and days.
 <option value="">Year</option>
 </select>
 </div>
-
-
+</fieldset>
+<p class="date-range-note">Birth years from 1900 through the current year are supported.</p>
 <div class="tool-actions">
 
-<button onclick="calculateAge()">Calculate Age</button>
+<button type="button" onclick="calculateAge()">Calculate Age</button>
 
-<button onclick="clearAge()">Clear</button>
+<button type="button" onclick="clearAge()">Clear</button>
 
 </div>
 
 
-<div id="result"></div>
+<div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
 
-<section class="tool-guide"><h2>How Age Calculator works</h2><p>Calculate completed years, months and days from a valid birth date to today in your browser&#x27;s local time.</p><h3>Steps</h3><p>Select all three date fields, then calculate. Clear the result before entering another date.</p><h3>Example to check</h3><p>From January 31 to February 28 in a non-leap year, the completed-month convention gives one month and zero days.</p><h3>Limits and review</h3><p>An anniversary that falls beyond a month&#x27;s final day is clamped to that final day. This is a calendar convention, not a legal age determination.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide">
+<h2>How Age Calculator Works</h2>
+<p>Calculate completed years, months and days between your date of birth and the current local date.</p>
+
+<h3>How to Use</h3>
+<p>Select your birth day, month and year, then choose Calculate Age. Use Clear to reset the fields and result.</p>
+
+<h3>Calculation Method</h3>
+<p>The calculator counts completed calendar months and the remaining days. Monthly anniversaries that fall beyond the final day of a month are adjusted to that month's last day.</p>
+
+<h3>Examples and Special Dates</h3>
+<p>A birth date of January 31 reaches one completed month on February 28 in a non-leap year. February 29 anniversaries are adjusted to February 28 in non-leap years.</p>
+
+<h3>Limitations</h3>
+<p>Birth years from 1900 through the current year are supported. Future dates and invalid calendar dates are rejected. This calculation is informational and is not a legal age determination.</p>
+
+<h3>Privacy</h3>
+<p>Your birth date is processed locally in your browser. The calculator does not send or store your birth date on an external server.</p>
+</section>
 
 
 </div>
@@ -298,7 +344,7 @@ Calculate your exact age in years, months and days.
   </div>
 </section>
 
-<script src="../assets/js/tools/age-calculator.js?v=repair-4"></script>
+<script src="../assets/js/tools/age-calculator.js?v=repair-5"></script>
 
 <!-- FTO-EDITORIAL-REPAIR-V1 -->
 <aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>

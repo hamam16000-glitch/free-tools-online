@@ -209,7 +209,7 @@ font-weight:bold;
 <h1>YouTube Thumbnail Links</h1>
 
 <p>
-Download YouTube thumbnails in high quality instantly.
+Preview YouTube thumbnail images and save available versions using your browser.
 </p>
 
 
@@ -230,7 +230,7 @@ Get Thumbnail
 
 <div class="preview">
 
-<img id="previewImage" style="display:none">
+<img id="previewImage" alt="YouTube video thumbnail preview" width="480" height="270" decoding="async" style="display:none">
 
 </div>
 
@@ -238,7 +238,7 @@ Get Thumbnail
 <div class="downloads" id="downloads"></div>
 
 
-<div id="success" class="success"></div>
+<div id="success" class="success" role="status" aria-live="polite"></div>
 
 
 
@@ -264,7 +264,87 @@ Get Thumbnail
 <script src="../assets/js/tools/youtube-thumbnail-downloader.js?v=repair-4"></script>
 
 <!-- FTO-EDITORIAL-REPAIR-V1 -->
-<aside class="fto-practice" aria-label="More help"><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>
+
+<aside class="fto-practice" aria-label="YouTube thumbnail guide">
+
+<h2>How to Find and Save YouTube Thumbnails</h2>
+
+<p>
+YouTube videos can have several thumbnail image versions.
+This tool extracts the video ID from a supported YouTube URL
+and creates links to available thumbnail images.
+</p>
+
+<h3>Step-by-Step Example</h3>
+
+<p>
+Copy a YouTube video URL and paste it into the input field.
+Click Get Thumbnail to generate image links and a preview.
+</p>
+
+<p>
+For example, a standard YouTube watch URL contains a video
+identifier after the v= parameter. The tool extracts that
+identifier and uses it to construct image URLs.
+</p>
+
+<h3>Understanding Image Quality</h3>
+
+<p>
+Maximum resolution provides the largest image version when
+available. High quality and medium quality versions can be
+useful alternatives when the maximum-resolution image
+does not exist.
+</p>
+
+<p>
+Image availability depends on the video. A valid video URL
+does not guarantee that every thumbnail resolution exists.
+</p>
+
+<h3>How to Download an Image</h3>
+
+<p>
+Use one of the Download buttons. If direct downloading fails,
+select the corresponding Open image link. On mobile devices,
+you can usually save the opened image using the browser's
+image-saving option.
+</p>
+
+<h3>Common Problems and Solutions</h3>
+
+<p>
+If the tool rejects a URL, verify that it belongs to a
+supported YouTube domain and contains a valid video ID.
+Unrelated websites and lookalike domains are not accepted.
+</p>
+
+<p>
+If an image does not load, try another resolution.
+Removed or unavailable videos may not provide usable
+thumbnail images.
+</p>
+
+<h3>Privacy and Copyright</h3>
+
+<p>
+The tool generates image links in your browser.
+Opening or downloading a thumbnail contacts YouTube's
+image servers. Only reuse images when you have the
+necessary rights or permission.
+</p>
+
+<h3>Related Resources</h3>
+
+<p>
+Learn about image formats and resolution in our
+<a href="../guides/image-quality.html">Image Quality Guide</a>.
+You can also explore our
+<a href="youtube-tag-generator.html">YouTube Tag Generator</a>.
+</p>
+
+</aside>
+
 <footer class="tool-footer" aria-label="Site information"><a href="../index.html">All tools</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></footer>
 </body>
 

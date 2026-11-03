@@ -240,7 +240,7 @@ vCard Contact
 Website URL
 </label>
 
-<input id="mainInput" placeholder="https://example.com" value="https://freetoolsonline.com">
+<input id="mainInput" placeholder="https://example.com" value="">
 
 
 </div>
@@ -304,7 +304,7 @@ border-radius:10px;
 cursor:pointer;
 font-weight:bold;">
 Choose Logo File
-<input type="file" id="logoInput" accept="image/*" style="display:none;">
+<input type="file" id="logoInput" accept="image/png,image/jpeg,image/webp" style="display:none;">
 </label>
 
 
@@ -321,7 +321,7 @@ Generate QR Code
 
 <div class="qr-preview">
 
-<img id="qrImage" style="display:none">
+<img id="qrImage" alt="Generated QR code preview" width="300" height="300" decoding="async" style="display:none">
 
 </div>
 
@@ -343,12 +343,12 @@ Clear
 </div>
 
 
-<div id="success" class="success"></div>
+<div id="success" class="success" role="status" aria-live="polite"></div>
 
 
 
 
-<section class="tool-guide"><h2>How Local QR Code Generator works</h2><p>Generate UTF-8 QR images locally for URLs, text, WiFi, email, phone or contact details.</p><h3>Steps</h3><p>Choose a content type, fill the required fields, choose a dark foreground on a light background, generate and scan-test the PNG.</p><h3>Example to check</h3><p>Arabic text and emoji are encoded as UTF-8. WiFi reserved characters are escaped before encoding.</p><h3>Limits and review</h3><p>Long content needs more modules and a larger image. A logo can reduce scan reliability even with high correction. The QR payload, including WiFi passwords, stays in your browser and is visible to anyone who scans the image.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide"><h2>How Local QR Code Generator works</h2><p>Generate UTF-8 QR images locally for URLs, text, WiFi, email, phone or contact details.</p><h3>Steps</h3><p>Choose a content type, fill the required fields, choose a dark foreground on a light background, generate and scan-test the PNG.</p><h3>Example to check</h3><p>Arabic text and emoji are encoded as UTF-8. WiFi reserved characters are escaped before encoding.</p><h3>Limits and review</h3><p>Long content needs more modules and a larger image. A logo can reduce scan reliability even with high correction. The QR payload, including WiFi passwords, stays in your browser and is visible to anyone who scans the image.</p><h3>Where your data goes</h3><p>QR generation happens locally in your browser. The text, website addresses, Wi-Fi credentials and selected logo are not uploaded by this tool. The QR library runs locally. Anyone who scans your generated QR code can read its encoded content.</p></section>
 
 
 
@@ -366,7 +366,7 @@ Clear
   </div>
 </section>
 
-<script src="../assets/js/tools/qr-generator.js?v=repair-4"></script>
+<script src="../assets/js/tools/qr-generator.js?v=repair-5"></script>
 
 <!-- FTO-EDITORIAL-REPAIR-V1 -->
 <aside class="fto-practice" aria-label="More help"><h2>Practice: scan the code before sharing it</h2><p>Create a QR code from a short URL and scan the displayed result with two different phones or camera applications. Check the decoded address carefully before printing posters or handouts. For Wi-Fi codes, test the network name, authentication type and password on a device that has never joined the network.</p><h3>Print and privacy cautions</h3><p>Leave clear space around the symbol, keep adequate contrast and avoid shrinking it until scanning becomes unreliable. The QR pattern itself does not encrypt the contained content: anyone scanning it can read the encoded URL, message or Wi-Fi credentials.</p><p><strong>Explore further:</strong> <a href="../guides/text-and-data.html">Text and Data Tools: Counts, Encodings and Safe Exports</a> — practical checks, examples and limitations.</p></aside>

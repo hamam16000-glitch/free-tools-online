@@ -192,7 +192,7 @@ margin-top:15px;
 
 
 <p class="tool-description">
-Generate optimized hashtags for your social media content.
+Generate topic-based hashtag ideas for your social media content.
 </p>
 
 
@@ -203,7 +203,7 @@ Generate optimized hashtags for your social media content.
 Topic / Keyword
 </label>
 
-<input id="topic" placeholder="Example: fitness, travel, technology">
+<input id="topic" maxlength="2000" autocomplete="off" placeholder="Example: fitness, travel, technology">
 
 
 <label for="platform">
@@ -238,22 +238,22 @@ Number of Hashtags
 </select>
 
 
-<button onclick="generateHashtags()">
+<button type="button" onclick="generateHashtags()">
 Generate Hashtags
 </button>
 
 
-<button onclick="copyHashtags()">
+<button type="button" onclick="copyHashtags()">
 Copy Hashtags
 </button>
 
 
-<button onclick="downloadHashtags()">
+<button type="button" onclick="downloadHashtags()">
 Download TXT
 </button>
 
 
-<button onclick="clearHashtags()">
+<button type="button" onclick="clearHashtags()">
 Clear
 </button>
 
@@ -267,15 +267,26 @@ Clear
 </div>
 
 
-<div id="success" class="success"></div>
+<div id="success" class="success" role="status" aria-live="polite"></div>
 
 
-<div id="output" class="output" style="display:none"></div>
+<div id="output" class="output" role="region" aria-label="Generated hashtags" aria-live="polite" style="display:none"></div>
 
 
 
 
-<section class="tool-guide"><h2>How Hashtag Suggestions works</h2><p>Build Unicode hashtag suggestions from the topic words you enter.</p><h3>Steps</h3><p>Enter a specific topic, choose 10, 20 or 30 suggestions, generate and remove irrelevant tags before posting.</p><h3>Example to check</h3><p>An Arabic topic retains Arabic letters rather than being reduced to empty tags.</p><h3>Limits and review</h3><p>Suggestions use word combinations and a fixed suffix list. The tool does not query trend data, measure competition or predict reach. Platform selection does not provide live platform analytics.</p><h3>Where your data goes</h3><p>Your selected files and entered content are processed in your browser. Processing does not upload them to a conversion, QR or AI API. The site serves the scripts, fonts and any OCR models needed for the task.</p></section>
+<section class="tool-guide">
+<h2>How Hashtag Suggestions Works</h2>
+<p>Create topic-based hashtag suggestions using words and phrases you provide.</p>
+<h3>How to Use</h3>
+<p>Enter a topic, select your intended social media platform, choose the number of suggestions, and generate your hashtags.</p>
+<h3>Example</h3>
+<p>For a topic such as fitness tips, the generator can suggest #fitnesstips, #fitness, and related topic-based variations.</p>
+<h3>Limitations</h3>
+<p>Suggestions are generated using predefined word combinations. The tool does not retrieve live trends, search volume, competition, engagement statistics, or ranking predictions. Always review hashtag relevance before publishing.</p>
+<h3>Privacy</h3>
+<p>Your topic and platform selection are processed locally in your browser. The tool does not send your topic to an external hashtag-generation API.</p>
+</section>
 
 
 
