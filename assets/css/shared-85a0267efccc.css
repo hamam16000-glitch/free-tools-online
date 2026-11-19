@@ -1,0 +1,48 @@
+
+/* Final mobile guide normalization */
+.tool-guide{
+    text-align:left !important;
+}
+
+.tool-guide p,
+.tool-guide li,
+.tool-guide h2,
+.tool-guide h3{
+    text-align:left !important;
+}
+
+.tool-guide ol,
+.tool-guide ul{
+    padding-left:24px;
+    margin-left:0;
+}
+
+@media(max-width:600px){
+    .tool-guide{
+        width:auto !important;
+        max-width:none !important;
+        margin:28px 16px !important;
+        padding:24px 22px !important;
+    }
+
+    .tool-guide h2{
+        font-size:24px !important;
+        line-height:1.3 !important;
+    }
+
+    .tool-guide h3{
+        font-size:18px !important;
+        line-height:1.45 !important;
+    }
+
+    .tool-guide p,
+    .tool-guide li{
+        font-size:16px !important;
+        line-height:1.7 !important;
+    }
+
+    .tool-guide ol,
+    .tool-guide ul{
+        padding-left:22px !important;
+    }
+}

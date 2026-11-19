@@ -1,29 +1,21 @@
-# AdSense integration — 6 November 2026
+# AdSense review build — 19 November 2026
 
-This update adds the same publisher loader already present on the calculator site to the Free Tools Online site. It does not submit another AdSense site or restart the review in the account.
+This release supersedes the earlier runtime-loader integration. It preserves publisher account `ca-pub-4791337719438849` through Google's supported `google-adsense-account` meta tag. The root `ads.txt` already contains the matching publisher entry.
 
-- Publisher: `ca-pub-4791337719438849`, copied from the live root site's script and matching the publisher shown in the supplied AdSense screenshot.
-- Base commit: `9f424e5795153518c5f5d51c0d688d486fdefb8f` in `hamam16000-glitch/free-tools-online`.
-- Loader added once inside `<head>` on 54 content pages: homepage, 48 tools and 5 guide pages.
-- The loader has the standard `async` and `crossorigin="anonymous"` attributes. No fabricated ad-unit ID or manual ad placement was added.
-- Existing tool code, inputs, outputs, styles, canonical URLs and links are preserved. The insertion is the only change in each of the 54 content pages.
-- About, contact and terms pages remain unchanged; no loader is added to them or to privacy. Privacy now describes Google's advertising requests and identifiers, and links to Google's explanation. Only the privacy entry's sitemap date changes.
-- The root calculator repository and root ads.txt are outside this update. The existing root ads.txt already contains the matching publisher entry.
+Advertising is disabled in this review build. No AdSense or Monetag runtime loader is included. This is a release choice while content and navigation are repaired, not a general Google requirement to remove advertising code.
 
-## Verification and scope
+The former Monetag homepage script and verification tag are removed. `sw.js` is replaced with a worker that activates and unregisters itself. The scoped cleanup script updates only registrations for `/free-tools-online/sw.js`; it does not remove workers belonging to other applications on the origin. Browser notification permissions are not changed by this code.
 
-The preparation checks one correctly configured head loader per content page, unchanged content after removing that insertion, and preservation of the other tracked files. Local browser checks use a stub in place of Google's advertising response so they do not generate real ad requests. The Termux package is tested against a private local Git remote before delivery.
+Privacy now describes this release's actual requests and storage. About identifies the public source publisher and the existing correction email. Existing file-processing tool engines and local vendor libraries remain in place.
 
-This is an integration change, not a new content review or an AdSense approval. Actual ad serving depends on account/site approval and the ad configuration in AdSense. Any required consent and account setup is managed in the publisher account.
+Before enabling advertising, configure any applicable consent solution in the publisher account, including a Google-certified CMP for personalized advertising where required. Update the privacy policy to reflect the providers actually activated. Do not substitute a homemade cookie banner for a certified CMP requirement.
 
-## Termux
+The Termux delivery `DCH_AdSense_Repair.py` applies both this repository and the root calculator repository from verified file hashes. Python and Git are sufficient. `--apply` prepares local files; `--publish` commits and pushes without force, then checks whether the expected files appear on GitHub Pages. It does not submit an AdSense review or alter the publisher account.
 
-`fto-adsense.py --prepare-repo` prepares a separate checkout in `~/fto-adsense/repo`, keeps an archive of the pinned published source, and saves the installer itself in `~/fto-adsense/fto-adsense.py`.
+The supplied refusal notice allows a new review only after 26 November. Successful source publication is not AdSense approval. See the root repository's `ADSENSE_REVIEW.md` for the audit scope and remaining review limits.
 
-`--publish` pushes a backup branch and then main without force push. It refuses changed source history, extra local work, an unexpected staged tree or a changed backup. `--status`, `--diff` and `--preview` are available. Python and Git are sufficient; no nano, pip or npm is required.
-
-Sources:
+Official references:
 
 - https://support.google.com/adsense/answer/7584263?hl=en
-- https://support.google.com/publisherpolicies/answer/10437794?hl=en
-- https://policies.google.com/technologies/partner-sites
+- https://support.google.com/adsense/answer/7299563?hl=en
+- https://support.google.com/adsense/answer/13554116?hl=en

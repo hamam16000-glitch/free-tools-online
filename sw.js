@@ -1,6 +1,8 @@
-self.options = {
-    "domain": "3nbf4.com",
-    "zoneId": 12287098
-}
-self.lary = ""
-importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw')
+/* Retire the previous advertising worker at this exact URL.
+   No fetch, push, notification or remote import handlers are installed. */
+self.addEventListener('install', function (event) {
+  event.waitUntil(self.skipWaiting());
+});
+self.addEventListener('activate', function (event) {
+  event.waitUntil(self.registration.unregister());
+});
